@@ -1,0 +1,62 @@
+---
+title: "Claims Dashboard"
+author: "Shantanu Mendhekar"
+date: "November 27, 2018"
+output:
+  html_document:
+    theme: lumen
+    highlight: tango
+    toc: true
+    toc_float: true
+    code_download: true
+    code_folding: show
+    self_contained: false
+    lib_dir: "libs"
+    css: "libs/style.css"
+---
+
+<script src="libs/locationhash.js"></script>
+
+# Claims Replacement Pulse
+
+The Claims Replacement Pulse is a one stop shop to review the overall Claims data. The sheets have actionable filters that will guide you to other sheets if the user wants to further drill down.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Mattis aliquam faucibus purus in massa. Aliquet nec ullamcorper sit amet risus. Lectus urna duis convallis convallis tellus. Nibh mauris cursus mattis molestie a iaculis. Turpis egestas pretium aenean pharetra magna ac. Dis parturient montes nascetur ridiculus mus mauris. Eget sit amet tellus cras. Commodo odio aenean sed adipiscing diam donec adipiscing tristique risus. Viverra aliquet eget sit amet tellus.
+
+
+## Total Header Volume
+
+<div class = "row">
+<div class="col-md-6">
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Mattis aliquam faucibus purus in massa. Aliquet nec ullamcorper sit amet risus. Lectus urna duis convallis convallis tellus. Nibh mauris cursus mattis molestie a iaculis. Turpis egestas pretium aenean pharetra magna ac. Dis parturient montes nascetur ridiculus mus mauris. Eget sit amet tellus cras. Commodo odio aenean sed adipiscing diam donec adipiscing tristique risus. Viverra aliquet eget sit amet tellus.
+</div>
+<div class="col-md-6">
+```{r}
+library(ggplot2)
+
+ggplot(mpg, aes(displ, hwy, colour = class)) + 
+  geom_point()
+```
+</div>
+
+## Claim Type
+
+<div class = "row">
+  
+<div class = "col-md-6">
+<br><br>Since R Markdown use the [bootstrap framework](https://getbootstrap.com/docs/4.0/layout/grid/) under the hood. It is possible to benefit its powerful grid system. Basically, you can consider that your row is divided in 12 subunits of same width. You can then choose to use only a few of this subunits.
+</div>
+  
+<div class = "col-md-6">
+```{r, eval=FALSE}
+IF CONTAINS([CSR Number Description], "FCO") AND CONTAINS([Reason Code], "VENDOR") THEN "FCO"
+ELSEIF CONTAINS([Reason Code],"VENDOR") THEN "Special Projects"
+ELSEIF [Product Family] = "Sprint Site Cleanup" OR [Product Family] = "TMO Hybrid Replc" THEN "Special Projects"
+ELSEIF CONTAINS([Project Name],"Sprint") AND CONTAINS([Project Name],"Clean") OR CONTAINS([Project Name],"SNV") AND CONTAINS([Project Name],"Clean") OR CONTAINS([Project Name],"TMO") AND CONTAINS([Project Name],"Hybrid") OR CONTAINS([Project Name],"TMO") AND CONTAINS([Project Name],"Clean") OR CONTAINS([Project Name],"FCO") THEN "Special Projects"
+ELSEIF CONTAINS([CSR Number Description],"Clean") THEN "Special Projects"
+ELSEIF [Order Type] = "Non-Valuated" THEN "Non-Valuated Claims"
+ELSE "Standard Claims"
+END
+```
+</div>
+</div>

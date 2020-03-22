@@ -1,0 +1,113 @@
+---
+title: "REF_MRP_CONTROLLER"
+author: "Shantanu Mendhekar"
+date: "Last Update: `r format(Sys.time(), '%B %d, %Y, %X')`"
+---
+
+<script src="libs/locationhash.js"></script>
+
+# Summary {.tabset .tabset-fade .tabset-pills}
+
+## Contacts
+
+Table Owner - [Craig Piche](mailto:craig.piche@ericsson.com?subject=QUERY: REF_MRP_CONTROLLER)  
+Table Developer - [Sharon Atkinson](mailto:sharon.xx.atkinson@ericsson.com?subject=QUERY: REF_MRP_CONTROLLER)  
+Table Users - Supply Americas 
+
+## Git
+
+```{r, eval = FALSE}
+
+```
+
+# Info
+
+The REF_MRP_CONTROLLER has information about the current person responsible for a Commodity in the different areas of the Supply Chain. The areas being:
+
+- [Commodity Planners](https://ericsson.sharepoint.com/sites/RNAM_Supply/IntegratedPlanning/CommodityPlanning/Pages/home.aspx) - Responsible for identifying needs and issues, expedite the activities to maintain optimum material levels, facilitate commodity transfer, and improve stock management processes.
+  
+- [Material Managers](https://ericsson.sharepoint.com/sites/RNAM_Supply/IntegratedPlanning/Procurement/Pages/home.aspx) - Responsible for procuring items are aligning with contractual terms and conditions, benchmarking with standard lead-times, and ensure delivery precision key performance indicators support successful end customer deployment satisfaction.
+
+- Commodity Buyer
+
+- [Sourcing Prime](https://internal.ericsson.com/book/23106/north-america-strategic-sourcing?unit=31552270) - Responsible for developing the sources of supply for Products and Services for stakeholders across the region. They provide an appropriate balance of cost, quality, and service from the suppliers.
+
+- PPM Manager
+
+# To Update
+
+<form method="post" action="mailto:email.com?subject=" + firstname + "&message=lastname">
+  First name:<br>
+  <input type="text" name="firstname" id="test1" value1="">
+  <br>
+  Last name:<br>
+  <input type="text" name="lastname" value2="">
+  <br>
+  <input type="submit" value="Submit">
+</form>
+
+# Test2
+
+<form action="/action_page.php" onsubmit="myFunction()">
+  Enter name: <input type="text" name="name" id="uniqueID">
+  <input type="submit" value="Submit">
+</form>
+
+<script>
+var nameValue = document.getElementById("uniqueID").value;
+
+function myFunction() {
+    alert("The form was submitted" + nameValue);
+}
+</script>
+
+# Test 3
+
+<form name="input" action="handle_email.php" method="post">
+  <input type="text" name="email" id="email" />
+  <input type="submit" value="Submit" />
+</form> 
+
+<script>
+   $("form").submit(function() {
+     var emailFromOtherTextBox = $("#email_textbox").val();
+     $("#email").val(emailFromOtherTextBox ); 
+     return true;
+  });
+</script>
+
+# Table
+
+```{r, message=FALSE, warning=FALSE }
+library(RODBC)
+library(DT)
+
+# Connect to SQL Server
+connection <- odbcConnect("REPORTINGDB")
+
+Query = "
+SELECT *
+FROM REF_MRP_CONTROLLER
+"
+
+# Extract Data
+Data <- sqlQuery(connection, Query)
+
+# Close SQL Server Connection
+odbcCloseAll()
+
+# Create Datatable
+datatable(Data
+  ,extensions = c('Buttons', 'Scroller')
+  ,class = 'cell-border stripe'
+  ,style = "default"
+  ,options = list(order = list(list(1, 'asc'))
+    ,pageLength = 20
+    # ,autoWidth = TRUE
+    ,deferRender = TRUE
+    ,scrollY = 1000
+    ,scroller = TRUE
+    ,scrollX = TRUE
+    ,dom = 'Bfrtip', buttons = c('copy','excel'))
+)
+```

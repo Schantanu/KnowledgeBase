@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="John Doe" />
+
+<meta name="date" content="2018-11-12" />
+
+<title>Styling</title>
+
+<script src="libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="libs/navigation-1.1/tabsets.js"></script>
+<script src="libs/navigation-1.1/codefolding.js"></script>
+<script src="libs/navigation-1.1/sourceembed.js"></script>
+
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+<link rel="stylesheet" href="libs\style.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("001_LoremIpsum.rmd");
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Styling</h1>
+<h4 class="author"><em>John Doe</em></h4>
+<h4 class="date"><em>November 12, 2018</em></h4>
+
+</div>
+
+
+<div id="lorem-ipsum" class="section level1">
+<h1>Lorem ipsum</h1>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Mattis aliquam faucibus purus in massa. Aliquet nec ullamcorper sit amet risus. Lectus urna duis convallis convallis tellus. Nibh mauris cursus mattis molestie a iaculis. Turpis egestas pretium aenean pharetra magna ac. Dis parturient montes nascetur ridiculus mus mauris. Eget sit amet tellus cras. Commodo odio aenean sed adipiscing diam donec adipiscing tristique risus. Viverra aliquet eget sit amet tellus.</p>
+</div>
+<div id="elementum" class="section level1">
+<h1>Elementum</h1>
+<p>Elementum nibh tellus molestie nunc non blandit massa enim. Quam id leo in vitae. Odio eu feugiat pretium nibh ipsum. Etiam non quam lacus suspendisse faucibus. Feugiat in fermentum posuere urna. Placerat duis ultricies lacus sed. Pharetra et ultrices neque ornare. Massa sapien faucibus et molestie ac feugiat sed. Eu augue ut lectus arcu. Id aliquet risus feugiat in ante metus dictum at.</p>
+</div>
+<div id="nunc-non" class="section level1">
+<h1>Nunc non</h1>
+<p>Nunc non blandit massa enim nec dui. Vitae congue eu consequat ac felis donec et. Facilisis mauris sit amet massa vitae. Lacus viverra vitae congue eu consequat ac felis donec et. Interdum consectetur libero id faucibus nisl tincidunt eget. Amet venenatis urna cursus eget nunc scelerisque. Tincidunt ornare massa eget egestas purus viverra accumsan in nisl. Nisi est sit amet facilisis magna etiam tempor orci eu. Id consectetur purus ut faucibus pulvinar elementum integer enim neque. Purus in mollis nunc sed id. Nec feugiat in fermentum posuere urna. Morbi leo urna molestie at. Ultrices eros in cursus turpis. Consequat interdum varius sit amet mattis vulputate enim. Ac feugiat sed lectus vestibulum mattis.</p>
+</div>
+<div id="id-neque" class="section level1">
+<h1>Id neque</h1>
+<p>Id neque aliquam vestibulum morbi. Mi proin sed libero enim sed faucibus. Facilisis gravida neque convallis a cras semper auctor neque vitae. Varius sit amet mattis vulputate enim nulla aliquet porttitor lacus.</p>
+<div id="consectetur" class="section level2">
+<h2>Consectetur</h2>
+<p>Consectetur adipiscing elit pellentesque habitant morbi tristique senectus et. Praesent tristique magna sit amet purus gravida quis blandit. Ut tortor pretium viverra suspendisse potenti nullam ac tortor. Feugiat pretium nibh ipsum consequat nisl. Eget mi proin sed libero enim. Odio pellentesque diam volutpat commodo sed egestas egestas fringilla. Eu scelerisque felis imperdiet proin fermentum leo.</p>
+</div>
+<div id="cursus" class="section level2">
+<h2>Cursus</h2>
+<p>Cursus euismod quis viverra nibh cras. Donec massa sapien faucibus et molestie. Integer quis auctor elit sed vulputate mi sit amet. Adipiscing elit duis tristique sollicitudin nibh sit amet commodo. Pulvinar etiam non quam lacus. Mattis molestie a iaculis at erat pellentesque adipiscing. Phasellus vestibulum lorem sed risus. Viverra justo nec ultrices dui sapien eget. Suspendisse interdum consectetur libero id. <img src="C:/RMARKDOWNDOCS/RMD/files/001_LoremIpsum/ab-testing.png" /></p>
+</div>
+</div>
+<div id="imperdiet" class="section level1">
+<h1>Imperdiet</h1>
+<p>Imperdiet nulla malesuada pellentesque elit eget gravida. Ut tortor pretium viverra suspendisse. Adipiscing commodo elit at imperdiet dui accumsan. Cursus euismod quis viverra nibh cras pulvinar mattis. In hac habitasse platea dictumst quisque. Ut etiam sit amet nisl purus in mollis nunc. Lobortis elementum nibh tellus molestie nunc non blandit massa. Laoreet sit amet cursus sit amet dictum sit amet justo. Ut placerat orci nulla pellentesque. Pellentesque habitant morbi tristique senectus et. Nulla porttitor massa id neque aliquam vestibulum morbi blandit cursus. Dapibus ultrices in iaculis nunc sed. Pharetra massa massa ultricies mi. Enim sit amet venenatis urna cursus eget. Volutpat lacus laoreet non curabitur gravida arcu ac. Sit amet commodo nulla facilisi nullam vehicula ipsum a arcu. Mauris rhoncus aenean vel elit scelerisque mauris pellentesque. Arcu felis bibendum ut tristique et egestas quis. Ut eu sem integer vitae justo eget magna fermentum iaculis. A iaculis at erat pellentesque adipiscing commodo elit at.</p>
+</div>
+
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlN0eWxpbmciDQphdXRob3I6ICJKb2huIERvZSINCmRhdGU6ICJOb3ZlbWJlciAxMiwgMjAxOCINCm91dHB1dDoNCiAgaHRtbF9kb2N1bWVudDoNCiAgICB0aGVtZTogbHVtZW4NCiAgICBoaWdobGlnaHQ6IHRhbmdvDQogICAgdG9jOiB0cnVlDQogICAgdG9jX2Zsb2F0OiB0cnVlDQogICAgY29kZV9kb3dubG9hZDogdHJ1ZQ0KICAgIGNvZGVfZm9sZGluZzogaGlkZQ0KICAgIHNlbGZfY29udGFpbmVkOiBmYWxzZQ0KICAgIGxpYl9kaXI6ICJsaWJzIg0KICAgIGNzczogImxpYnMvc3R5bGUuY3NzIg0KLS0tDQoNCiMgTG9yZW0gaXBzdW0NCg0KTG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdCwgc2VkIGRvIGVpdXNtb2QgdGVtcG9yIGluY2lkaWR1bnQgdXQgbGFib3JlIGV0IGRvbG9yZSBtYWduYSBhbGlxdWEuIE5hdG9xdWUgcGVuYXRpYnVzIGV0IG1hZ25pcyBkaXMgcGFydHVyaWVudCBtb250ZXMgbmFzY2V0dXIgcmlkaWN1bHVzLiBNYXR0aXMgYWxpcXVhbSBmYXVjaWJ1cyBwdXJ1cyBpbiBtYXNzYS4gQWxpcXVldCBuZWMgdWxsYW1jb3JwZXIgc2l0IGFtZXQgcmlzdXMuIExlY3R1cyB1cm5hIGR1aXMgY29udmFsbGlzIGNvbnZhbGxpcyB0ZWxsdXMuIE5pYmggbWF1cmlzIGN1cnN1cyBtYXR0aXMgbW9sZXN0aWUgYSBpYWN1bGlzLiBUdXJwaXMgZWdlc3RhcyBwcmV0aXVtIGFlbmVhbiBwaGFyZXRyYSBtYWduYSBhYy4gRGlzIHBhcnR1cmllbnQgbW9udGVzIG5hc2NldHVyIHJpZGljdWx1cyBtdXMgbWF1cmlzLiBFZ2V0IHNpdCBhbWV0IHRlbGx1cyBjcmFzLiBDb21tb2RvIG9kaW8gYWVuZWFuIHNlZCBhZGlwaXNjaW5nIGRpYW0gZG9uZWMgYWRpcGlzY2luZyB0cmlzdGlxdWUgcmlzdXMuIFZpdmVycmEgYWxpcXVldCBlZ2V0IHNpdCBhbWV0IHRlbGx1cy4NCg0KIyBFbGVtZW50dW0NCg0KRWxlbWVudHVtIG5pYmggdGVsbHVzIG1vbGVzdGllIG51bmMgbm9uIGJsYW5kaXQgbWFzc2EgZW5pbS4gUXVhbSBpZCBsZW8gaW4gdml0YWUuIE9kaW8gZXUgZmV1Z2lhdCBwcmV0aXVtIG5pYmggaXBzdW0uIEV0aWFtIG5vbiBxdWFtIGxhY3VzIHN1c3BlbmRpc3NlIGZhdWNpYnVzLiBGZXVnaWF0IGluIGZlcm1lbnR1bSBwb3N1ZXJlIHVybmEuIFBsYWNlcmF0IGR1aXMgdWx0cmljaWVzIGxhY3VzIHNlZC4gUGhhcmV0cmEgZXQgdWx0cmljZXMgbmVxdWUgb3JuYXJlLiBNYXNzYSBzYXBpZW4gZmF1Y2lidXMgZXQgbW9sZXN0aWUgYWMgZmV1Z2lhdCBzZWQuIEV1IGF1Z3VlIHV0IGxlY3R1cyBhcmN1LiBJZCBhbGlxdWV0IHJpc3VzIGZldWdpYXQgaW4gYW50ZSBtZXR1cyBkaWN0dW0gYXQuDQoNCiMgTnVuYyBub24NCg0KTnVuYyBub24gYmxhbmRpdCBtYXNzYSBlbmltIG5lYyBkdWkuIFZpdGFlIGNvbmd1ZSBldSBjb25zZXF1YXQgYWMgZmVsaXMgZG9uZWMgZXQuIEZhY2lsaXNpcyBtYXVyaXMgc2l0IGFtZXQgbWFzc2Egdml0YWUuIExhY3VzIHZpdmVycmEgdml0YWUgY29uZ3VlIGV1IGNvbnNlcXVhdCBhYyBmZWxpcyBkb25lYyBldC4gSW50ZXJkdW0gY29uc2VjdGV0dXIgbGliZXJvIGlkIGZhdWNpYnVzIG5pc2wgdGluY2lkdW50IGVnZXQuIEFtZXQgdmVuZW5hdGlzIHVybmEgY3Vyc3VzIGVnZXQgbnVuYyBzY2VsZXJpc3F1ZS4gVGluY2lkdW50IG9ybmFyZSBtYXNzYSBlZ2V0IGVnZXN0YXMgcHVydXMgdml2ZXJyYSBhY2N1bXNhbiBpbiBuaXNsLiBOaXNpIGVzdCBzaXQgYW1ldCBmYWNpbGlzaXMgbWFnbmEgZXRpYW0gdGVtcG9yIG9yY2kgZXUuIElkIGNvbnNlY3RldHVyIHB1cnVzIHV0IGZhdWNpYnVzIHB1bHZpbmFyIGVsZW1lbnR1bSBpbnRlZ2VyIGVuaW0gbmVxdWUuIFB1cnVzIGluIG1vbGxpcyBudW5jIHNlZCBpZC4gTmVjIGZldWdpYXQgaW4gZmVybWVudHVtIHBvc3VlcmUgdXJuYS4gTW9yYmkgbGVvIHVybmEgbW9sZXN0aWUgYXQuIFVsdHJpY2VzIGVyb3MgaW4gY3Vyc3VzIHR1cnBpcy4gQ29uc2VxdWF0IGludGVyZHVtIHZhcml1cyBzaXQgYW1ldCBtYXR0aXMgdnVscHV0YXRlIGVuaW0uIEFjIGZldWdpYXQgc2VkIGxlY3R1cyB2ZXN0aWJ1bHVtIG1hdHRpcy4NCg0KIyBJZCBuZXF1ZQ0KDQpJZCBuZXF1ZSBhbGlxdWFtIHZlc3RpYnVsdW0gbW9yYmkuIE1pIHByb2luIHNlZCBsaWJlcm8gZW5pbSBzZWQgZmF1Y2lidXMuIEZhY2lsaXNpcyBncmF2aWRhIG5lcXVlIGNvbnZhbGxpcyBhIGNyYXMgc2VtcGVyIGF1Y3RvciBuZXF1ZSB2aXRhZS4gVmFyaXVzIHNpdCBhbWV0IG1hdHRpcyB2dWxwdXRhdGUgZW5pbSBudWxsYSBhbGlxdWV0IHBvcnR0aXRvciBsYWN1cy4gDQoNCiMjIENvbnNlY3RldHVyDQoNCkNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdCBwZWxsZW50ZXNxdWUgaGFiaXRhbnQgbW9yYmkgdHJpc3RpcXVlIHNlbmVjdHVzIGV0LiBQcmFlc2VudCB0cmlzdGlxdWUgbWFnbmEgc2l0IGFtZXQgcHVydXMgZ3JhdmlkYSBxdWlzIGJsYW5kaXQuIFV0IHRvcnRvciBwcmV0aXVtIHZpdmVycmEgc3VzcGVuZGlzc2UgcG90ZW50aSBudWxsYW0gYWMgdG9ydG9yLiBGZXVnaWF0IHByZXRpdW0gbmliaCBpcHN1bSBjb25zZXF1YXQgbmlzbC4gRWdldCBtaSBwcm9pbiBzZWQgbGliZXJvIGVuaW0uIE9kaW8gcGVsbGVudGVzcXVlIGRpYW0gdm9sdXRwYXQgY29tbW9kbyBzZWQgZWdlc3RhcyBlZ2VzdGFzIGZyaW5naWxsYS4gRXUgc2NlbGVyaXNxdWUgZmVsaXMgaW1wZXJkaWV0IHByb2luIGZlcm1lbnR1bSBsZW8uDQoNCiMjIEN1cnN1cw0KDQpDdXJzdXMgZXVpc21vZCBxdWlzIHZpdmVycmEgbmliaCBjcmFzLiBEb25lYyBtYXNzYSBzYXBpZW4gZmF1Y2lidXMgZXQgbW9sZXN0aWUuIEludGVnZXIgcXVpcyBhdWN0b3IgZWxpdCBzZWQgdnVscHV0YXRlIG1pIHNpdCBhbWV0LiBBZGlwaXNjaW5nIGVsaXQgZHVpcyB0cmlzdGlxdWUgc29sbGljaXR1ZGluIG5pYmggc2l0IGFtZXQgY29tbW9kby4gUHVsdmluYXIgZXRpYW0gbm9uIHF1YW0gbGFjdXMuIE1hdHRpcyBtb2xlc3RpZSBhIGlhY3VsaXMgYXQgZXJhdCBwZWxsZW50ZXNxdWUgYWRpcGlzY2luZy4gUGhhc2VsbHVzIHZlc3RpYnVsdW0gbG9yZW0gc2VkIHJpc3VzLiBWaXZlcnJhIGp1c3RvIG5lYyB1bHRyaWNlcyBkdWkgc2FwaWVuIGVnZXQuIFN1c3BlbmRpc3NlIGludGVyZHVtIGNvbnNlY3RldHVyIGxpYmVybyBpZC4NCiFbXShmaWxlcy8wMDFfTG9yZW1JcHN1bS9hYi10ZXN0aW5nLnBuZykNCg0KIyBJbXBlcmRpZXQNCg0KSW1wZXJkaWV0IG51bGxhIG1hbGVzdWFkYSBwZWxsZW50ZXNxdWUgZWxpdCBlZ2V0IGdyYXZpZGEuIFV0IHRvcnRvciBwcmV0aXVtIHZpdmVycmEgc3VzcGVuZGlzc2UuIEFkaXBpc2NpbmcgY29tbW9kbyBlbGl0IGF0IGltcGVyZGlldCBkdWkgYWNjdW1zYW4uIEN1cnN1cyBldWlzbW9kIHF1aXMgdml2ZXJyYSBuaWJoIGNyYXMgcHVsdmluYXIgbWF0dGlzLiBJbiBoYWMgaGFiaXRhc3NlIHBsYXRlYSBkaWN0dW1zdCBxdWlzcXVlLiBVdCBldGlhbSBzaXQgYW1ldCBuaXNsIHB1cnVzIGluIG1vbGxpcyBudW5jLiBMb2JvcnRpcyBlbGVtZW50dW0gbmliaCB0ZWxsdXMgbW9sZXN0aWUgbnVuYyBub24gYmxhbmRpdCBtYXNzYS4gTGFvcmVldCBzaXQgYW1ldCBjdXJzdXMgc2l0IGFtZXQgZGljdHVtIHNpdCBhbWV0IGp1c3RvLiBVdCBwbGFjZXJhdCBvcmNpIG51bGxhIHBlbGxlbnRlc3F1ZS4gUGVsbGVudGVzcXVlIGhhYml0YW50IG1vcmJpIHRyaXN0aXF1ZSBzZW5lY3R1cyBldC4gTnVsbGEgcG9ydHRpdG9yIG1hc3NhIGlkIG5lcXVlIGFsaXF1YW0gdmVzdGlidWx1bSBtb3JiaSBibGFuZGl0IGN1cnN1cy4gRGFwaWJ1cyB1bHRyaWNlcyBpbiBpYWN1bGlzIG51bmMgc2VkLiBQaGFyZXRyYSBtYXNzYSBtYXNzYSB1bHRyaWNpZXMgbWkuIEVuaW0gc2l0IGFtZXQgdmVuZW5hdGlzIHVybmEgY3Vyc3VzIGVnZXQuIFZvbHV0cGF0IGxhY3VzIGxhb3JlZXQgbm9uIGN1cmFiaXR1ciBncmF2aWRhIGFyY3UgYWMuIFNpdCBhbWV0IGNvbW1vZG8gbnVsbGEgZmFjaWxpc2kgbnVsbGFtIHZlaGljdWxhIGlwc3VtIGEgYXJjdS4gTWF1cmlzIHJob25jdXMgYWVuZWFuIHZlbCBlbGl0IHNjZWxlcmlzcXVlIG1hdXJpcyBwZWxsZW50ZXNxdWUuIEFyY3UgZmVsaXMgYmliZW5kdW0gdXQgdHJpc3RpcXVlIGV0IGVnZXN0YXMgcXVpcy4gVXQgZXUgc2VtIGludGVnZXIgdml0YWUganVzdG8gZWdldCBtYWduYSBmZXJtZW50dW0gaWFjdWxpcy4gQSBpYWN1bGlzIGF0IGVyYXQgcGVsbGVudGVzcXVlIGFkaXBpc2NpbmcgY29tbW9kbyBlbGl0IGF0Lg==</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,18 @@
+---
+title: "SQL Advanced"
+author: "Shantanu Mendhekar"
+date: "November 27, 2018"
+output:
+  html_document:
+    theme: lumen
+    highlight: tango
+    toc: true
+    toc_float: true
+    code_folding: hide
+---
+
+<script src="libs/locationhash.js"></script>
+
+# String Concatenation
+
+

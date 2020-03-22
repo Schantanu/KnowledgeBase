@@ -1,0 +1,586 @@
+---
+title: "BI_RETURNS_E2E"
+author: "Shantanu Mendhekar"
+date: "December 6, 2018"
+---
+
+<script src="libs/locationhash.js"></script>
+
+# Summary
+
+Here you will learn all the information about Stored Procedure for TABLE_ABC, and at the bottom you can get the final Stored Procedure. We will go along and explain all the information for each line as we go along.
+
+# Block 1
+
+<div class = "row">
+<div class="col-md-6">
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Mattis aliquam faucibus purus in massa. Aliquet nec ullamcorper sit amet risus. Lectus urna duis convallis convallis tellus. Nibh mauris cursus mattis molestie a iaculis. Turpis egestas pretium aenean pharetra magna ac. Dis parturient montes nascetur ridiculus mus mauris. Eget sit amet tellus cras. Commodo odio aenean sed adipiscing diam donec adipiscing tristique risus. Viverra aliquet eget sit amet tellus.
+</div>
+<div class="col-md-6">
+```{sql block1, eval = FALSE, results='markup'}
+USE [BCAMDB]
+GO
+/****** Object:  StoredProcedure [dbo].[SP_BI_RETURNS_E2E]    Script Date: 12/06/2018 09:08:48 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+ALTER PROCEDURE [dbo].[SP_BI_RETURNS_E2E] AS 
+BEGIN
+	SET NOCOUNT ON;
+	
+	
+  BEGIN TRY
+	
+	--TABLE_STATUS - Querying
+	EXEC UpdateTableStatus 426,'Querying','';
+
+	--Drop temp table if it exists
+	IF OBJECT_ID('tempdb..#RETURNS_TEMP') IS NOT NULL DROP TABLE #RETURNS_TEMP;
+	
+	--Create temp table
+	
+	--INSERT QUERY HERE
+	CREATE TABLE #RETURNS_TEMP
+	(
+		[SO]					varchar(50)  NOT NULL,
+    [SO Item]				varchar(50)  NOT NULL,
+	  [SO CREATE DATE]		datetime	 NULL,
+		[SO CREATE TIME]		varchar(50)	 NULL,
+		[Customer PO]			varchar(50)  NULL,
+    [Overdue Indicator]		varchar(50)  NULL,
+    [Item Category]			varchar(50)  NULL,
+    [Return Reason]			varchar(50)  NULL,
+    [Return Reason Text]	varchar(150)  NULL,
+    [Inspection Code]		varchar(50)  NULL,
+    [Inspection Text]		varchar(50)  NULL,
+    [Item Internal Notes]	varchar(255) NULL,
+    [Inspection Comment]	varchar(50)  NULL,
+    [Sales Document Type]	varchar(50)  NULL,
+    [Scheduled Return Date]	datetime	 NULL,
+    [Material Number]		varchar(50)  NULL,
+    [Material Description]	varchar(250)  NULL,
+    [Order Quantity]		float	     NULL,
+    [WBS Element]			varchar(50)  NULL,
+    [Plant]					varchar(50)  NULL,
+    [Sloc]					varchar(50)  NULL,
+    [Net Price]				float		 NULL,
+    [Fault Description]		varchar(500) NULL,
+    [Serial Number]			varchar(50)  NULL,
+    [Sold to party]			varchar(50)  NULL,
+    [Sold to name]			varchar(50)  NULL,
+    [Final Ext Customer]	varchar(50)  NULL,
+    [Final Ext Customer Name]	varchar(50)  NULL,
+    [Refund Type]			varchar(50)  NULL,
+    [Order Reason]			varchar(50)  NULL,
+    [Reason for Rejection]	varchar(50)  NULL,
+    [Reason for Rej Text]	varchar(50)  NULL,
+    [Cancellation Status]	varchar(50)  NULL,
+    [Cancellation Date]		datetime	 NULL,
+    [Created/Changed By]	varchar(50)  NULL,
+    [Delivery Block]		varchar(50)  NULL,
+    [Approval Block]		varchar(50)  NULL,
+    [Delivery]				varchar(50)  NULL,
+    [Delivery Status]		varchar(50)  NULL,
+    [Replacement SO]		varchar(50)  NULL,
+    [Credit Memo]			varchar(50)  NULL,
+    [Goods Receipt]			varchar(50)  NULL,
+    [GR Date]				datetime	 NULL,
+    [SO Stock Indicator]	varchar(50)  NULL,
+    [SO Stock Qty]			float		 NULL,
+    [Follow up Activity Code]	varchar(50)  NULL,
+    [Follow up Activity]	varchar(50)  NULL,
+    [RMA Request ID]		varchar(50)  NULL,
+    [RMA Item]				varchar(50)  NULL,
+    [Vendor RMA Number]		varchar(50)  NULL,
+    [Vendor ID]				varchar(50)  NULL,
+    [Vendor Name]			varchar(50)  NULL,
+    [RMA Status]			varchar(50)  NULL,
+    [Org PO]				varchar(50)  NULL,
+    [PO Number]				varchar(50)  NULL,
+    [PO Vendor]				varchar(50)  NULL,
+    [PO Vendor Name]		varchar(50)  NULL,
+    [RTV PO GR]				varchar(50)  NULL,
+    [RTV PO IR]				varchar(50)  NULL,
+    [Smart Returns]			varchar(50)  NULL,
+    [AWB Number]			varchar(50)  NULL,
+    [RMA RfR]				varchar(50)  NULL,
+    [RMA Number]			varchar(50)  NULL,
+    [Material R-State]		varchar(50)  NULL,
+    [Order Reason Text]		varchar(50)  NULL,
+    [Cancellation Flag]		varchar(50)  NULL,
+    [Cancellation Time]		varchar(50)  NULL,
+    [Shipment Number]		varchar(50)  NULL,
+    [Shipment Status]		varchar(50)  NULL,
+    [Shipment Date]			datetime	 NULL,
+    [Next Plant]			varchar(50)  NULL,
+    [Material Received]		varchar(50)  NULL,
+    [Locked]				varchar(50)  NULL,
+    [Document]				varchar(50)  NULL,
+    [Item]					varchar(50)  NULL,
+    [Item Cat]				varchar(50)  NULL,
+    [Product]				varchar(50)  NULL,
+    [Quantity]				float		 NULL,
+    [Unit]					varchar(50)  NULL,
+    [GRD (Act)]				varchar(50)  NULL,
+    [GRT (Act)]				varchar(50)  NULL,
+    [Putaway A]				varchar(50)  NULL,
+    [PutwTm A]				varchar(50)  NULL,
+    [Putaway]				varchar(50)  NULL,
+    [Goods Rcpt]			varchar(50)  NULL,
+    [Prod Ord]				varchar(50)  NULL,
+    [UnlDtAct]				datetime	 NULL,
+    [UnlTm A]				varchar(50)  NULL,
+    [S&A Status]			varchar(50)  NULL,
+    [PackStatus]			varchar(50)  NULL,
+    [ERP Error]				varchar(50)  NULL,
+    [Doc Cat]				varchar(50)  NULL,
+    [Origin]				varchar(50)  NULL,
+    [PO]					varchar(50)  NULL,
+    [PO Item]				varchar(50)  NULL,
+    [Item Type]				varchar(50)  NULL,
+    [Item Type Description]	varchar(50)  NULL,
+    [Item Cat Description]	varchar(50)  NULL,
+    [Warehouse]				varchar(50)  NULL,
+    [CSR Requestor Name]	varchar(201) NULL,
+    [Standard price]		float		 NULL,
+    [Sales Org]				varchar(50)  NULL,		 --added 2016/05/11
+    [Material Group]		varchar(50)  NULL,		 --added 2016/05/11
+		[UPS Reference Number]		varchar(255) NULL,		 --added 2016/05/11
+		[UPS Status]				varchar(50)	 NULL,		 --added 2016/05/11
+		[UPS Ship To City]			varchar(50)	 NULL,		 --added 2016/05/11
+		[UPS Ship to State]			varchar(50)	 NULL,		 --added 2016/05/11
+		[UPS Ship To Country]		varchar(50)	 NULL,		 --added 2016/05/11
+		[UPS Service]				varchar(255)	 NULL,		 --added 2016/05/11
+		[UPS Scheduled Delivery]	datetime	 NULL,		 --added 2016/05/11
+		[UPS Date Delivered]		datetime	 NULL,		 --added 2016/05/11
+		[UPS Delivery Time]			varchar(50)	 NULL,		 --added 2016/05/11
+		[Customer]				varchar(50)	 Null,		 --added 2016/05/16
+		[UoM]					varchar(50)	 Null,		 --added 2016/06/14
+		[State]					varchar(50)	 Null,		 --added 2016/06/14
+		[City]					varchar(100)	 Null,		 --added 2016/06/14
+		[Zip]					varchar(50)	 Null,		 --added 2016/06/14
+		[NRO Region]			varchar(50)	 Null,		 --added 2016/06/14
+		[GM Date]				varchar(50)	 Null,		 --added 2016/06/14
+		[GM Time]				varchar(50)	 Null,		 --added 2016/06/14
+		[Distribution status]	varchar(50)	 Null,		 --added 2016/06/14
+		[ASP Information]				varchar(255)	Null,		 --added 2016/10/10
+		[CRM Serial Number]				varchar(100)		Null,		 --added 2016/10/10	
+		[Disposition]					varchar(100)	Null,		 --added 2016/10/10	
+		[GR Quantity]					float			Null,		 --added 2016/10/10
+		[SO Stock Quantity]				float			Null,		 --added 2016/10/10
+		[CRM Note]						varchar(255)	Null,		 --added 2016/10/10	
+    [RTV PO/STO Date]				datetime		Null,		 --added 2016/10/10
+    [LC->BU Text]					varchar(255)	Null,		 --added 2016/10/10
+    [Last Changed On]				datetime		Null,		 --added 2016/10/10
+    [Information from DCM]			varchar(255)	Null,		 --added 2016/10/10
+    [LPS Pro Number]				varchar(100)	Null,		 --added 2016/11/30
+		[LPS Status]					varchar(50)		Null,		 --added 2016/11/30
+		[LPS Carrier Name]				varchar(100)	Null,		 --added 2016/11/30
+		[LPS Delivery ETA]				datetime		Null,		 --added 2016/11/30
+		[LPS Delivery Date]				datetime		Null,		 --added 2016/11/30
+		[RTV Delivery Created On]				datetime		Null,		 --added 2016/11/30
+		[RTV Shipment]							varchar(50)		Null,		 --added 2016/11/30
+		[RTV Freight Doc Text]					varchar(100)	Null,		 --added 2016/11/30
+		[RTV Act loading end]					datetime		Null,		 --added 2016/11/30
+		[RTV Act Shipment Complete Date]		datetime		Null,		 --added 2016/11/30
+		[RTV Actual Check in date]				datetime		Null,		 --added 2016/11/30
+		[RTV Actual GM Date]					datetime		Null,		 --added 2016/11/30
+		[RTV Actual Packing Date]				datetime		Null,		 --added 2016/11/30
+		[RTV Actual Shipment End]				datetime		Null,		 --added 2016/11/30
+		[RTV Curr loading start]				datetime		Null,		 --added 2016/11/30
+		[RTV Curr Shipment Start]				datetime		Null,		 --added 2016/11/30
+		[RTV Delivery Date]						datetime		Null,		 --added 2016/11/30
+		[RTV Loading Date]						datetime		Null,		 --added 2016/11/30
+		[RTV Picking Date]						datetime		Null,		 --added 2016/11/30
+		[RTV Planned load end]					datetime		Null,		 --added 2016/11/30
+		[RTV Planned shipment end]				datetime		Null,		 --added 2016/11/30
+		[RTV Planned Shipment Start]			datetime		Null,		 --added 2016/11/30
+		[RTV Shipment Created On]				datetime		Null,		 --added 2016/11/30
+		[RTV Transp Plan Date]					datetime		Null,		 --added 2016/11/30
+		[Contact Person]						varchar(50)		Null,		 --added 2016/12/12
+		[Commodity LV1]							varchar(250)	Null,		 --added 2017/02/19
+		[Company Region]						varchar(50)		Null,        --added 2017/02/28
+		[Hub]									varchar(50)		Null,        --added 2017/02/28
+		[Project Name]							varchar(50)		Null,        --added 2017/04/28
+		Primary Key				([SO], [SO item])
+	)	;
+
+
+	INSERT INTO #RETURNS_TEMP
+
+		SELECT
+		
+		ZOMRETM.[SO],
+		ZOMRETM.[SO Item],	
+		ZVBAP.[CREATED ON] AS [SO CREATE DATE],
+		ZVBAP.[CREATED ON TIME] AS [SO CREATE TIME],
+		ZOMRETM.[Customer PO],
+		ZOMRETM.[Overdue Indicator],
+		ZOMRETM.[Item Category],
+		ZOMRETM.[Return Reason],
+		ZOMRETM.[Return Reason Text],
+		ZOMRETM.[Inspection Code],
+		ZOMRETM.[Inspection Text],
+		ZOMRETM.[Item Internal Notes],
+		ZOMRETM.[Inspection Comment],
+		ZOMRETM.[Sales Document Type],
+		ZOMRETM.[Scheduled Return Date],
+		ZOMRETM.[Material Number],
+		ZOMRETM.[Material Description],
+		ZOMRETM.[Order Quantity],
+		ZOMRETM.[WBS Element],
+		ZOMRETM.[Plant],
+		ZOMRETM.[Sloc],
+		ZOMRETM.[Net Price],
+		ZOMRETM.[Fault Description],
+		ZOMRETM.[Serial Number],
+		ZOMRETM.[Sold to party],
+		ZOMRETM.[Sold to name],
+		ZOMRETM.[Final Ext Customer],
+		ZOMRETM.[Final Ext Customer Name],
+		ZOMRETM.[Refund Type],
+		ZOMRETM.[Order Reason],
+		ZOMRETM.[Reason for Rejection],
+		ZOMRETM.[Reason for Rej Text],
+		ZOMRETM.[Cancellation Status],
+		ZOMRETM.[Cancellation Date],
+		ZOMRETM.[Created/Changed By],
+		ZOMRETM.[Delivery Block],
+		ZOMRETM.[Approval Block],
+		ZOMRETM.[Delivery],
+		ZOMRETM.[Delivery Status],
+		ZOMRETM.[Replacement SO],
+		ZOMRETM.[Credit Memo],
+		ZOMRETM.[Goods Receipt],
+		ZOMRETM.[GR Date],
+		ZOMRETM.[SO Stock Indicator],
+		ZOMRETM.[SO Stock Qty],
+		ZOMRETM.[Follow up Activity Code],
+		ZOMRETM.[Follow up Activity],
+		ZOMRETM.[RMA Request ID],
+		ZOMRETM.[RMA Item],
+		ZOMRETM.[Vendor RMA Number],
+		ZOMRETM.[Vendor ID],
+		ZOMRETM.[Vendor Name],
+		ZOMRETM.[RMA Status],
+		ZOMRETM.[Org PO],
+		ZOMRETM.[PO Number],
+		ZOMRETM.[PO Vendor],
+		ZOMRETM.[PO Vendor Name],
+		ZOMRETM.[RTV PO GR],
+		ZOMRETM.[RTV PO IR],
+		ZOMRETM.[Smart Returns],
+		ZOMRETM.[AWB Number],
+		ZOMRETM.[RMA RfR],
+		ZOMRETM.[RMA Number],
+		ZOMRETM.[Material R-State],
+		ZOMRETM.[Order Reason Text],
+		ZOMRETM.[Cancellation Flag],
+		ZOMRETM.[Cancellation Time],
+		ZOMRETM.[Shipment Number],
+		ZOMRETM.[Shipment Status],
+		ZOMRETM.[Shipment Date],
+		ZOMRETM.[Next Plant],
+		ZOMRETM.[Material Received],
+		ITEM.[Locked],
+		ITEM.[Document],
+		ITEM.[Item],
+		ITEM.[Item Cat],
+		ITEM.[Product],
+		ITEM.[Quantity],
+		ITEM.[Unit],
+		ITEM.[GRD (Act)],
+		ITEM.[GRT (Act)],
+		ITEM.[Putaway A],
+		ITEM.[PutwTm A],
+		ITEM.[Putaway],
+		ITEM.[Goods Rcpt],
+		ITEM.[Prod Ord],
+		ITEM.[UnlDtAct],
+		ITEM.[UnlTm A],
+		ITEM.[S&A Status],
+		ITEM.[PackStatus],
+		ITEM.[ERP Error],
+		ITEM.[Doc Cat],
+		ITEM.[Origin],
+		ITEM.[PO],
+		ITEM.[PO Item],
+		ITEM.[Item Type],
+		ITEM.[Item Type Description],
+		ITEM.[Item Cat Description],
+		ITEM.[Warehouse],
+		ARM.[Initial Ericsson Employee-First]+' '+ARM.[Initial Ericsson Employee-Last] AS [CSR Requestor Name],
+		MBEW.[Standard price],
+		ZVBAK.[Sales Org], --added 2016/05/11
+		PMASTER.[Material Group Description] AS [Material Group], --changed 2017/12/06
+		UPS.[Reference Number] AS [UPS Reference Number], --added 2016/05/11
+		UPS.[Status] AS [UPS Status], --added 2016/05/11
+		UPS.[Ship to City] AS [UPS Ship to City], --added 2016/05/11
+		UPS.[Ship to State] AS [UPS Ship to State], --added 2016/05/11
+		UPS.[Ship To Country] AS [UPS Ship to Country], --added 2016/05/11
+		UPS.[Service] AS [UPS Service], --added 2016/05/11
+		UPS.[Scheduled Delivery] AS [UPS Scheduled Delivery], --added 2016/05/11
+		UPS.[Date Delivered] AS [UPS Date Delivered], --added 2016/05/11
+		UPS.[Delivery Time] AS [UPS Delivery Time], --added 2016/05/11
+		CASE 
+			WHEN CU.[Customer Unit] IS NOT NULL THEN CU.[Customer Unit]
+			WHEN ZVBAK.[Customer PO] LIKE '%ICRRB%' THEN 'INTERNAL' 
+			ELSE SOFFICE.[Sales Office Description]
+		END AS [Customer], --added 2016/05/16
+		ZVBAP.[UoM], --added 2016/06/14
+		COALESCE(CUSTMON.[Region],ARM.[Pick-up Region]) AS [State], --added 2016/06/14 --updated 2017/04/24
+		COALESCE(CUSTMON.[Ship to City],ARM.[Pick-up City]) AS [City], --added 2016/06/14 --updated 2017/04/24
+		COALESCE(CUSTMON.[Ship to Zip],ARM.[Pick-up Postal Code]) AS [Zip], --added 2016/06/14 --updated 2017/04/24
+		COALESCE(CUSTMON.[NRO Region],ARM_NRO.[NRO Region]), --added 2016/06/14 --updated 2017/04/24
+		DELMON.[ActualGMDate] AS [GM Date], --added 2016/06/14
+		DELMON.[ActualGMtime] AS [GM Time], --added 2016/06/14
+		DELMON.[Distribution status], --added 2016/06/14
+		ZOMRET1.[ASP Information], --added 2016/10/10
+		ZOMRET1.[CRM Serial Number], --added 2016/10/10
+		ZOMRET1.[Disposition], --added 2016/10/10
+		ZOMRET1.[GR Quantity], --added 2016/10/10
+		ZOMRET1.[SO Stock Qty] AS [SO Stock Quantity], --added 2016/10/10
+		ZOMRET1.[CRM Note], --added 2016/10/10
+		ZOMRET1.[RTV PO/STO Date], --added 2016/10/10
+		ZOMRET1.[LC->BU Text], --added 2016/10/10
+		ZVBAP.[Last Changed On], --added 2016/10/10
+		CASE 
+			WHEN ZOMRETM.[Reason for Rejection] IS NOT NULL AND ITEM.[GRD (Act)] IS NULL THEN NULL
+			ELSE ZOMVIS1.[Information from DCM]
+		END AS [Informantion from DCM], --added 2016/10/10
+		LPS.[Pro Number] AS [LPS Pro Number], --added 2016/11/30
+		LPS.[Status] AS [LPS Status], --added 2016/11/30
+		LPS.[Carrier Name] AS [LPS Carrier Name], --added 2016/11/30
+		MAX_LPS_DELIVERY.[Delivery ETA] AS [LPS Delivery ETA],														-- added - 11/9/2018
+		LPS.[Delivery Date] AS [LPS Delivery Date], --added 2016/11/30
+		BI_DELMON.[Delivery Created On] AS [RTV Delivery Created On], --added 2016/11/30
+		BI_DELMON.[Shipment] AS [RTV Shipment], --added 2016/11/30
+		BI_DELMON.[Frieght doc text] AS [RTV Freight Doc Text], --added 2016/11/30
+		BI_DELMON.[Act loading end] AS [RTV Act loading end], --added 2016/11/30
+		BI_DELMON.[Act Shipment Complete Date] AS [RTV Act Shipment Complete Date], --added 2016/11/30
+		BI_DELMON.[Actual Check in date] AS [RTV Actual Check in date], --added 2016/11/30
+		BI_DELMON.[Actual GM Date] AS [RTV Actual GM Date], --added 2016/11/30
+		BI_DELMON.[Actual Packing Date] AS [RTV Actual Packing Date], --added 2016/11/30
+		BI_DELMON.[Actual Shipment End] AS [RTV Actual Shipment End], --added 2016/11/30
+		BI_DELMON.[Curr loading start] AS [RTV Curr loading start], --added 2016/11/30
+		BI_DELMON.[Curr Shipment Start] AS [RTV Curr Shipment Start], --added 2016/11/30
+		BI_DELMON.[Delivery Date] AS [RTV Delivery Date], --added 2016/11/30
+		BI_DELMON.[Loading Date] AS [RTV Loading Date], --added 2016/11/30
+		BI_DELMON.[Picking Date] AS [RTV Picking Date], --added 2016/11/30
+		BI_DELMON.[Planned load end] AS [RTV Planned load end], --added 2016/11/30
+		BI_DELMON.[Planned shipment end] AS [RTV Planned shipment end], --added 2016/11/30
+		BI_DELMON.[Planned Shipment Start] AS [RTV Planned Shipment Start], --added 2016/11/30
+		BI_DELMON.[Shipment Created On] AS [RTV Shipment Created On], --added 2016/11/30
+		BI_DELMON.[Transp Plan Date] AS [RTV Transp Plan Date], --added 2016/11/30
+		ARM.[Contact Person], --added 2016/12/12
+		PMASTER.[Commodity LV1], --added 2017/02/19
+		REF.[Company Region], --added 2017/02/28
+		REF.[Hub], --added 2017/02/28
+		COALESCE(ARM2.[Project Name],ARM.[Project Name]) AS [Project Name] --added 2017/04/28
+
+		
+		FROM SAP_ZOMRETM AS ZOMRETM
+
+		INNER JOIN
+		(	SELECT [SO],[SO Item],[Reason for Rejection],[CREATED ON],[CREATED ON TIME],[UoM],[Last Changed On]
+			FROM SAP_ZVBAP) AS ZVBAP
+			ON ZOMRETM.[SO]=ZVBAP.[SO] AND ZOMRETM.[SO Item]=ZVBAP.[SO Item]
+			
+		LEFT OUTER JOIN --updated 2017/01/11
+		(	SELECT MAX([GRD (Act)]+[GRT (Act)]) AS [Max GR Date],[RMA Number]
+			FROM EWM_RETURN_DELIVERY_ITEM
+			WHERE [Quantity] <> 0 --added 2017/01/17
+			GROUP BY [RMA Number]) AS MAX_ITEM
+			ON ((ZOMRETM.[RMA Number]=MAX_ITEM.[RMA Number])
+				OR
+				(MAX_ITEM.[RMA Number] like '%'+ZOMRETM.[SO]+'%' AND RIGHT(MAX_ITEM.[RMA Number],6)=ZOMRETM.[SO Item]))
+
+		LEFT OUTER JOIN --updated 2017/01/11
+		(	SELECT [RMA Number],[ERP Doc],[Locked],[Document],[Item],[Item Cat],[Product],[Quantity],[Unit],[GRD (Act)],[GRT (Act)],[Putaway A],
+			[PutwTm A],[Putaway],[Goods Rcpt],[Prod Ord],[UnlDtAct],[UnlTm A],[S&A Status],[PackStatus],[ERP Error],
+			[Doc Cat],[Origin],[PO],[PO Item],[Item Type],[Item Type Description],[Item Cat Description],[Warehouse]
+			FROM EWM_RETURN_DELIVERY_ITEM) AS ITEM
+			ON MAX_ITEM.[RMA Number]=ITEM.[RMA Number] AND MAX_ITEM.[Max GR Date]=(ITEM.[GRD (Act)]+ITEM.[GRT (Act)])
+
+		LEFT OUTER JOIN
+		(	SELECT DISTINCT [CSR Number],[Initial Ericsson Employee-Last],[Initial Ericsson Employee-First],[Contact Person],[Pick-up City],[Pick-up Region],[Pick-up Postal Code],MAX([Project Name]) AS [Project Name]
+			FROM EBW_ARM_ORDERS
+			GROUP BY [CSR Number],[Initial Ericsson Employee-Last],[Initial Ericsson Employee-First],[Contact Person],[Pick-up City],[Pick-up Region],[Pick-up Postal Code]) AS ARM
+			ON ZOMRETM.[Customer PO]=ARM.[CSR Number]
+		
+		LEFT OUTER JOIN
+		(	SELECT DISTINCT [CSR Number],[CSR Item],[Project Name]
+			FROM EBW_ARM_ORDERS) AS ARM2
+			ON ZOMRETM.[Customer PO]=ARM2.[CSR Number] AND ZOMRETM.[SO Item]=ARM2.[CSR Item]
+
+		INNER JOIN
+		(	SELECT [Material],[Plnt],[Standard price] 
+			FROM SAP_MBEW) AS MBEW
+			ON ZOMRETM.[Material Number]=MBEW.[Material] AND ZOMRETM.[Plant]=MBEW.[Plnt]
+			
+		LEFT OUTER JOIN
+		(	SELECT [SO],[Sales Org],[Customer PO],[Sold-to Party], [Sales Office] 
+			FROM SAP_ZVBAK) AS ZVBAK
+			ON ZOMRETM.[SO]=ZVBAK.[SO]
+			
+		LEFT OUTER JOIN
+		(	SELECT [Material], [Plant], [Material Group Description],[Commodity LV1]						-- 12/5/2017 - eshanme
+			FROM BI_MATERIAL_PLANT_SUMMARY) AS PMASTER
+			ON ZOMRETM.[Material Number]=PMASTER.[Material] AND ZOMRETM.[Plant] = PMASTER.[Plant]
+		
+		LEFT OUTER JOIN
+		(	SELECT MAX([Date Delivered]) AS [Max Delivery Date],MAX(RIGHT([Tracking Number],5)) AS [Max Tracking Number], Right([Reference Number],8) AS SO 
+			FROM UPS_POD_TRACKING 
+			WHERE [Status]='Delivered' AND [Ship To City]<>'DALLAS'
+			GROUP BY RIGHT([Reference Number],8)) MAX_UPS_DELIVERY
+			ON ZOMRETM.[SO]=MAX_UPS_DELIVERY.[SO]
+		
+		LEFT OUTER JOIN
+		(	SELECT DISTINCT [Reference Number],MAX(RIGHT([Tracking Number],5)) AS [Max Tracking Number],[Manifest Date],[Status],([Ship To City]),
+			[Ship to State],[Ship To Country],[Service],[Scheduled Delivery],[Date Delivered],[Delivery Time],Right([Reference Number],8) AS SO
+			FROM UPS_POD_TRACKING 
+			WHERE [Status]='Delivered' AND [Ship To City]<>'DALLAS'
+			GROUP BY [Reference Number],[Manifest Date],[Status],([Ship To City]),
+			[Ship to State],[Ship To Country],[Service],[Scheduled Delivery],[Date Delivered],[Delivery Time],Right([Reference Number],8)) AS UPS	
+			ON MAX_UPS_DELIVERY.[SO]=UPS.[SO] AND MAX_UPS_DELIVERY.[Max Delivery Date]=UPS.[Date Delivered] AND MAX_UPS_DELIVERY.[Max Tracking Number]=UPS.[Max Tracking Number]
+
+		LEFT OUTER JOIN
+		(	SELECT [Customer Unit],[Sold to]
+			FROM REF_CU_ASSIGNMENT) AS CU
+			ON ZVBAK.[Sold-to Party]=CU.[Sold to]
+			
+		LEFT OUTER JOIN
+		(	SELECT [Sales Office Description],[Sales Office]
+			FROM REF_SALES_OFFICE) AS SOFFICE
+			ON ZVBAK.[Sales Office]=SOFFICE.[Sales Office]
+			
+		LEFT OUTER JOIN
+		(	SELECT [SO],[SO Item],MAX([Region]) AS REGION,MAX([Ship to City]) AS [Ship to City],MAX([Ship to Zip]) AS [Ship to Zip],MAX([NRO Region]) AS [NRO Region]
+			FROM BI_CUSTMON GROUP BY [SO],[SO Item]) AS CUSTMON
+			ON ZOMRETM.[SO]=CUSTMON.[SO] AND ZOMRETM.[SO Item]=CUSTMON.[SO Item]
+			
+		LEFT OUTER JOIN
+		(	SELECT [Delivery],[ActualGMDate],[ActualGMtime],[Distribution status]
+			FROM SAP_ZZDELMON_HEADER_OUTBOUND) AS DELMON
+			ON ZOMRETM.[Delivery]=DELMON.[Delivery]
+
+		LEFT OUTER JOIN
+		(	SELECT [Sales Order],[SO Item],[PO],[Delivery Created On],[Shipment],[Act loading end],[Act Shipment Complete Date],[Actual Check in date],
+			[Actual GM Date],[Actual Packing Date],[Actual Shipment End],[Curr loading start],
+			[Curr Shipment Start],[Delivery Date],[Loading Date],[Picking Date],[Planned load end],[Planned shipment end],
+			[Planned Shipment Start],[Shipment Created On],[Transp Plan Date],[Material],[Frieght doc text]
+			FROM BI_ZZDELMON_OUTBOUND
+			WHERE [PO] like '771%' AND [Shipment] IS NOT NULL AND [Frieght doc text] IS NOT NULL
+			GROUP BY [Sales Order],[SO Item],[PO],[Delivery Created On],[Shipment],[Act loading end],[Act Shipment Complete Date],[Actual Check in date],
+			[Actual GM Date],[Actual Packing Date],[Actual Shipment End],[Curr loading start],
+			[Curr Shipment Start],[Delivery Date],[Loading Date],[Picking Date],[Planned load end],[Planned shipment end],
+			[Planned Shipment Start],[Shipment Created On],[Transp Plan Date],[Material],[Frieght doc text]) AS BI_DELMON
+			ON ZOMRETM.[SO]=BI_DELMON.[Sales Order] AND ZOMRETM.[SO Item]=BI_DELMON.[SO Item] AND ZOMRETM.[Material Number]=BI_DELMON.[Material]
+			
+		LEFT OUTER JOIN
+		(	SELECT [SO],[SO Item],[ASP Information],[CRM Serial Number],[Disposition],[GR Quantity],[SO Stock Qty],[CRM Note],[RTV PO/STO Date],[LC->BU Text]
+			FROM SAP_ZOMRET1) AS ZOMRET1
+			ON ZOMRETM.[SO]=ZOMRET1.[SO] AND ZOMRETM.[SO Item]=ZOMRET1.[SO Item]
+			
+		LEFT OUTER JOIN
+		(	SELECT [SO],[Information from DCM]
+			FROM SAP_ZOMVIS1_HEADER) AS ZOMVIS1
+			ON ZOMRETM.[SO]=ZOMVIS1.[SO]
+			
+		LEFT OUTER JOIN
+		(	SELECT MAX([Delivery Date]) AS [Max Delivery Date], MAX([Delivery ETA]) AS [Delivery ETA], [CSR Number]
+			FROM BI_CRST_LPS_SHIPMENTS_CSR
+			WHERE [Freight Direction] IN ('Inbound', 'Third Party')														-- 11/9/2018 - eshanme - Added 'Third Party'
+			GROUP BY [CSR Number]) AS MAX_LPS_DELIVERY
+			ON ZOMRETM.[Customer PO]=MAX_LPS_DELIVERY.[CSR Number]
+			
+		LEFT OUTER JOIN
+		(	SELECT DISTINCT [Pro Number],[CSR Number],[Status],[Delivery Date],[Destination City],[Carrier Name],[Freight Direction]
+			FROM BI_CRST_LPS_SHIPMENTS_CSR
+			WHERE [Freight Direction] IN ('Inbound', 'Third Party')														-- 11/9/2018 - eshanme - Added 'Third Party'
+			GROUP BY [Pro Number],[CSR Number],[Status],[Destination City],[Carrier Name],
+			[Freight Direction],[CSR Number],[Delivery Date],[Delivery ETA]) AS LPS
+			ON MAX_LPS_DELIVERY.[CSR Number]=LPS.[CSR Number] AND MAX_LPS_DELIVERY.[Max Delivery Date]=LPS.[Delivery Date]
+			
+		LEFT OUTER JOIN
+		(	SELECT [Plant],[Company Region],[Hub]
+			FROM REF_PLANTS) AS REF
+			ON ZOMRETM.[Plant]=REF.[Plant]
+		
+		LEFT OUTER JOIN REF_NRO_REGIONS AS ARM_NRO ON ARM.[Pick-up Region]=ARM_NRO.[State]
+			
+		WHERE ZOMRETM.[Sales Document Type] = 'ZRE2'
+	
+	REVOKE SELECT ON [BI_RETURNS_E2E] to "RNAM_USER";
+
+		
+		--TABLE_STATUS - Truncating
+	EXEC UpdateTableStatus 426,'Truncating','';
+
+	TRUNCATE TABLE [BI_RETURNS_E2E]
+
+	--TABLE_STATUS - Updating
+	EXEC UpdateTableStatus 426,'Updating','';	
+	
+	INSERT INTO [BI_RETURNS_E2E]
+
+	SELECT *
+		
+	FROM #RETURNS_TEMP
+
+	--Drop temp table                      
+	DROP TABLE #RETURNS_TEMP;
+
+	
+	GRANT SELECT ON [BI_RETURNS_E2E] to "RNAM_USER";
+	
+
+	--TABLE_STATUS - Success
+	EXEC UpdateTableStatus 426,'Success','End','bcamdb.dbo.BI_RETURNS_E2E','bcamdb.dbo.BI_RETURNS_E2E';	
+
+  END TRY
+  BEGIN CATCH
+    -- Execute the error retrieval routine.
+	     EXEC UpdateTableStatus 426,'Failed';
+
+		 GRANT SELECT ON [BI_RETURNS_E2E] to "RNAM_USER";
+
+  END CATCH;
+   	
+END
+```
+</div>
+</div>
+
+# Block 2
+
+<div class = "row">
+<div class="col-md-6">
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Mattis aliquam faucibus purus in massa. Aliquet nec ullamcorper sit amet risus. Lectus urna duis convallis convallis tellus. Nibh mauris cursus mattis molestie a iaculis. Turpis egestas pretium aenean pharetra magna ac. Dis parturient montes nascetur ridiculus mus mauris. Eget sit amet tellus cras. Commodo odio aenean sed adipiscing diam donec adipiscing tristique risus. Viverra aliquet eget sit amet tellus.
+</div>
+<div class="col-md-6">
+```{sql block2, eval = FALSE, results='markup'}
+```
+</div>
+</div>
+
+# Block 3
+
+<div class = "row">
+<div class="col-md-6">
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Mattis aliquam faucibus purus in massa. Aliquet nec ullamcorper sit amet risus. Lectus urna duis convallis convallis tellus. Nibh mauris cursus mattis molestie a iaculis. Turpis egestas pretium aenean pharetra magna ac. Dis parturient montes nascetur ridiculus mus mauris. Eget sit amet tellus cras. Commodo odio aenean sed adipiscing diam donec adipiscing tristique risus. Viverra aliquet eget sit amet tellus.
+</div>
+<div class="col-md-6">
+```{sql block3, eval = FALSE, results='markup'}
+```
+</div>
+</div>
+
+# Final Stored Procedure
+
+```{r showblock1, ref.label=c('block1','block2','block3'), eval=FALSE}
+```
+
+

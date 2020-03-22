@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Shantanu Mendhekar" />
+
+<meta name="date" content="2018-11-27" />
+
+<title>Claims Dashboard</title>
+
+<script src="libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="libs/navigation-1.1/tabsets.js"></script>
+<script src="libs/navigation-1.1/codefolding.js"></script>
+<script src="libs/navigation-1.1/sourceembed.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; background-color: #f8f8f8; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+pre, code { background-color: #f8f8f8; }
+code > span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code > span.dt { color: #204a87; } /* DataType */
+code > span.dv { color: #0000cf; } /* DecVal */
+code > span.bn { color: #0000cf; } /* BaseN */
+code > span.fl { color: #0000cf; } /* Float */
+code > span.ch { color: #4e9a06; } /* Char */
+code > span.st { color: #4e9a06; } /* String */
+code > span.co { color: #8f5902; font-style: italic; } /* Comment */
+code > span.ot { color: #8f5902; } /* Other */
+code > span.al { color: #ef2929; } /* Alert */
+code > span.fu { color: #000000; } /* Function */
+code > span.er { color: #a40000; font-weight: bold; } /* Error */
+code > span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #000000; } /* Constant */
+code > span.sc { color: #000000; } /* SpecialChar */
+code > span.vs { color: #4e9a06; } /* VerbatimString */
+code > span.ss { color: #4e9a06; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #000000; } /* Variable */
+code > span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code > span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code > span.ex { } /* Extension */
+code > span.at { color: #c4a000; } /* Attribute */
+code > span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code > span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+div.sourceCode {
+  overflow-x: visible;
+}
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+<link rel="stylesheet" href="libs\style.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("116_Claims_Dashboard.rmd");
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3 col-lg-2">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9 col-lg-10">
+
+
+
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Claims Dashboard</h1>
+<h4 class="author"><em>Shantanu Mendhekar</em></h4>
+<h4 class="date"><em>November 27, 2018</em></h4>
+
+</div>
+
+
+<script src="libs/locationhash.js"></script>
+<div id="claims-replacement-pulse" class="section level1">
+<h1>Claims Replacement Pulse</h1>
+<p>The Claims Replacement Pulse is a one stop shop to review the overall Claims data. The sheets have actionable filters that will guide you to other sheets if the user wants to further drill down.</p>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Mattis aliquam faucibus purus in massa. Aliquet nec ullamcorper sit amet risus. Lectus urna duis convallis convallis tellus. Nibh mauris cursus mattis molestie a iaculis. Turpis egestas pretium aenean pharetra magna ac. Dis parturient montes nascetur ridiculus mus mauris. Eget sit amet tellus cras. Commodo odio aenean sed adipiscing diam donec adipiscing tristique risus. Viverra aliquet eget sit amet tellus.</p>
+<div id="total-header-volume" class="section level2">
+<h2>Total Header Volume</h2>
+<div class = "row">
+<div class="col-md-6">
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Mattis aliquam faucibus purus in massa. Aliquet nec ullamcorper sit amet risus. Lectus urna duis convallis convallis tellus. Nibh mauris cursus mattis molestie a iaculis. Turpis egestas pretium aenean pharetra magna ac. Dis parturient montes nascetur ridiculus mus mauris. Eget sit amet tellus cras. Commodo odio aenean sed adipiscing diam donec adipiscing tristique risus. Viverra aliquet eget sit amet tellus.</p>
+</div>
+<div class="col-md-6">
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
+
+<span class="kw">ggplot</span>(mpg, <span class="kw">aes</span>(displ, hwy, <span class="dt">colour =</span> class)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>()</code></pre></div>
+<p><img src="116_Claims_Dashboard_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+</div>
+</div>
+<div id="claim-type" class="section level2">
+<h2>Claim Type</h2>
+<div class="row">
+<div class="col-md-6">
+<p><br><br>Since R Markdown use the <a href="https://getbootstrap.com/docs/4.0/layout/grid/">bootstrap framework</a> under the hood. It is possible to benefit its powerful grid system. Basically, you can consider that your row is divided in 12 subunits of same width. You can then choose to use only a few of this subunits.</p>
+</div>
+<div class="col-md-6">
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">IF <span class="kw">CONTAINS</span>([CSR Number Description], <span class="st">&quot;FCO&quot;</span>) AND <span class="kw">CONTAINS</span>([Reason Code], <span class="st">&quot;VENDOR&quot;</span>) THEN <span class="st">&quot;FCO&quot;</span>
+ELSEIF <span class="kw">CONTAINS</span>([Reason Code],<span class="st">&quot;VENDOR&quot;</span>) THEN <span class="st">&quot;Special Projects&quot;</span>
+ELSEIF [Product Family] =<span class="st"> &quot;Sprint Site Cleanup&quot;</span> OR [Product Family] =<span class="st"> &quot;TMO Hybrid Replc&quot;</span> THEN <span class="st">&quot;Special Projects&quot;</span>
+ELSEIF <span class="kw">CONTAINS</span>([Project Name],<span class="st">&quot;Sprint&quot;</span>) AND <span class="kw">CONTAINS</span>([Project Name],<span class="st">&quot;Clean&quot;</span>) OR <span class="kw">CONTAINS</span>([Project Name],<span class="st">&quot;SNV&quot;</span>) AND <span class="kw">CONTAINS</span>([Project Name],<span class="st">&quot;Clean&quot;</span>) OR <span class="kw">CONTAINS</span>([Project Name],<span class="st">&quot;TMO&quot;</span>) AND <span class="kw">CONTAINS</span>([Project Name],<span class="st">&quot;Hybrid&quot;</span>) OR <span class="kw">CONTAINS</span>([Project Name],<span class="st">&quot;TMO&quot;</span>) AND <span class="kw">CONTAINS</span>([Project Name],<span class="st">&quot;Clean&quot;</span>) OR <span class="kw">CONTAINS</span>([Project Name],<span class="st">&quot;FCO&quot;</span>) THEN <span class="st">&quot;Special Projects&quot;</span>
+ELSEIF <span class="kw">CONTAINS</span>([CSR Number Description],<span class="st">&quot;Clean&quot;</span>) THEN <span class="st">&quot;Special Projects&quot;</span>
+ELSEIF [Order Type] =<span class="st"> &quot;Non-Valuated&quot;</span> THEN <span class="st">&quot;Non-Valuated Claims&quot;</span>
+ELSE <span class="st">&quot;Standard Claims&quot;</span>
+END</code></pre></div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIkNsYWltcyBEYXNoYm9hcmQiDQphdXRob3I6ICJTaGFudGFudSBNZW5kaGVrYXIiDQpkYXRlOiAiTm92ZW1iZXIgMjcsIDIwMTgiDQpvdXRwdXQ6DQogIGh0bWxfZG9jdW1lbnQ6DQogICAgdGhlbWU6IGx1bWVuDQogICAgaGlnaGxpZ2h0OiB0YW5nbw0KICAgIHRvYzogdHJ1ZQ0KICAgIHRvY19mbG9hdDogdHJ1ZQ0KICAgIGNvZGVfZG93bmxvYWQ6IHRydWUNCiAgICBjb2RlX2ZvbGRpbmc6IHNob3cNCiAgICBzZWxmX2NvbnRhaW5lZDogZmFsc2UNCiAgICBsaWJfZGlyOiAibGlicyINCiAgICBjc3M6ICJsaWJzL3N0eWxlLmNzcyINCi0tLQ0KDQo8c2NyaXB0IHNyYz0ibGlicy9sb2NhdGlvbmhhc2guanMiPjwvc2NyaXB0Pg0KDQojIENsYWltcyBSZXBsYWNlbWVudCBQdWxzZQ0KDQpUaGUgQ2xhaW1zIFJlcGxhY2VtZW50IFB1bHNlIGlzIGEgb25lIHN0b3Agc2hvcCB0byByZXZpZXcgdGhlIG92ZXJhbGwgQ2xhaW1zIGRhdGEuIFRoZSBzaGVldHMgaGF2ZSBhY3Rpb25hYmxlIGZpbHRlcnMgdGhhdCB3aWxsIGd1aWRlIHlvdSB0byBvdGhlciBzaGVldHMgaWYgdGhlIHVzZXIgd2FudHMgdG8gZnVydGhlciBkcmlsbCBkb3duLg0KDQpMb3JlbSBpcHN1bSBkb2xvciBzaXQgYW1ldCwgY29uc2VjdGV0dXIgYWRpcGlzY2luZyBlbGl0LCBzZWQgZG8gZWl1c21vZCB0ZW1wb3IgaW5jaWRpZHVudCB1dCBsYWJvcmUgZXQgZG9sb3JlIG1hZ25hIGFsaXF1YS4gTmF0b3F1ZSBwZW5hdGlidXMgZXQgbWFnbmlzIGRpcyBwYXJ0dXJpZW50IG1vbnRlcyBuYXNjZXR1ciByaWRpY3VsdXMuIE1hdHRpcyBhbGlxdWFtIGZhdWNpYnVzIHB1cnVzIGluIG1hc3NhLiBBbGlxdWV0IG5lYyB1bGxhbWNvcnBlciBzaXQgYW1ldCByaXN1cy4gTGVjdHVzIHVybmEgZHVpcyBjb252YWxsaXMgY29udmFsbGlzIHRlbGx1cy4gTmliaCBtYXVyaXMgY3Vyc3VzIG1hdHRpcyBtb2xlc3RpZSBhIGlhY3VsaXMuIFR1cnBpcyBlZ2VzdGFzIHByZXRpdW0gYWVuZWFuIHBoYXJldHJhIG1hZ25hIGFjLiBEaXMgcGFydHVyaWVudCBtb250ZXMgbmFzY2V0dXIgcmlkaWN1bHVzIG11cyBtYXVyaXMuIEVnZXQgc2l0IGFtZXQgdGVsbHVzIGNyYXMuIENvbW1vZG8gb2RpbyBhZW5lYW4gc2VkIGFkaXBpc2NpbmcgZGlhbSBkb25lYyBhZGlwaXNjaW5nIHRyaXN0aXF1ZSByaXN1cy4gVml2ZXJyYSBhbGlxdWV0IGVnZXQgc2l0IGFtZXQgdGVsbHVzLg0KDQoNCiMjIFRvdGFsIEhlYWRlciBWb2x1bWUNCg0KPGRpdiBjbGFzcyA9ICJyb3ciPg0KPGRpdiBjbGFzcz0iY29sLW1kLTYiPg0KTG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdCwgc2VkIGRvIGVpdXNtb2QgdGVtcG9yIGluY2lkaWR1bnQgdXQgbGFib3JlIGV0IGRvbG9yZSBtYWduYSBhbGlxdWEuIE5hdG9xdWUgcGVuYXRpYnVzIGV0IG1hZ25pcyBkaXMgcGFydHVyaWVudCBtb250ZXMgbmFzY2V0dXIgcmlkaWN1bHVzLiBNYXR0aXMgYWxpcXVhbSBmYXVjaWJ1cyBwdXJ1cyBpbiBtYXNzYS4gQWxpcXVldCBuZWMgdWxsYW1jb3JwZXIgc2l0IGFtZXQgcmlzdXMuIExlY3R1cyB1cm5hIGR1aXMgY29udmFsbGlzIGNvbnZhbGxpcyB0ZWxsdXMuIE5pYmggbWF1cmlzIGN1cnN1cyBtYXR0aXMgbW9sZXN0aWUgYSBpYWN1bGlzLiBUdXJwaXMgZWdlc3RhcyBwcmV0aXVtIGFlbmVhbiBwaGFyZXRyYSBtYWduYSBhYy4gRGlzIHBhcnR1cmllbnQgbW9udGVzIG5hc2NldHVyIHJpZGljdWx1cyBtdXMgbWF1cmlzLiBFZ2V0IHNpdCBhbWV0IHRlbGx1cyBjcmFzLiBDb21tb2RvIG9kaW8gYWVuZWFuIHNlZCBhZGlwaXNjaW5nIGRpYW0gZG9uZWMgYWRpcGlzY2luZyB0cmlzdGlxdWUgcmlzdXMuIFZpdmVycmEgYWxpcXVldCBlZ2V0IHNpdCBhbWV0IHRlbGx1cy4NCjwvZGl2Pg0KPGRpdiBjbGFzcz0iY29sLW1kLTYiPg0KYGBge3J9DQpsaWJyYXJ5KGdncGxvdDIpDQoNCmdncGxvdChtcGcsIGFlcyhkaXNwbCwgaHd5LCBjb2xvdXIgPSBjbGFzcykpICsgDQogIGdlb21fcG9pbnQoKQ0KYGBgDQo8L2Rpdj4NCg0KIyMgQ2xhaW0gVHlwZQ0KDQo8ZGl2IGNsYXNzID0gInJvdyI+DQogIA0KPGRpdiBjbGFzcyA9ICJjb2wtbWQtNiI+DQo8YnI+PGJyPlNpbmNlIFIgTWFya2Rvd24gdXNlIHRoZSBbYm9vdHN0cmFwIGZyYW1ld29ya10oaHR0cHM6Ly9nZXRib290c3RyYXAuY29tL2RvY3MvNC4wL2xheW91dC9ncmlkLykgdW5kZXIgdGhlIGhvb2QuIEl0IGlzIHBvc3NpYmxlIHRvIGJlbmVmaXQgaXRzIHBvd2VyZnVsIGdyaWQgc3lzdGVtLiBCYXNpY2FsbHksIHlvdSBjYW4gY29uc2lkZXIgdGhhdCB5b3VyIHJvdyBpcyBkaXZpZGVkIGluIDEyIHN1YnVuaXRzIG9mIHNhbWUgd2lkdGguIFlvdSBjYW4gdGhlbiBjaG9vc2UgdG8gdXNlIG9ubHkgYSBmZXcgb2YgdGhpcyBzdWJ1bml0cy4NCjwvZGl2Pg0KICANCjxkaXYgY2xhc3MgPSAiY29sLW1kLTYiPg0KYGBge3IsIGV2YWw9RkFMU0V9DQpJRiBDT05UQUlOUyhbQ1NSIE51bWJlciBEZXNjcmlwdGlvbl0sICJGQ08iKSBBTkQgQ09OVEFJTlMoW1JlYXNvbiBDb2RlXSwgIlZFTkRPUiIpIFRIRU4gIkZDTyINCkVMU0VJRiBDT05UQUlOUyhbUmVhc29uIENvZGVdLCJWRU5ET1IiKSBUSEVOICJTcGVjaWFsIFByb2plY3RzIg0KRUxTRUlGIFtQcm9kdWN0IEZhbWlseV0gPSAiU3ByaW50IFNpdGUgQ2xlYW51cCIgT1IgW1Byb2R1Y3QgRmFtaWx5XSA9ICJUTU8gSHlicmlkIFJlcGxjIiBUSEVOICJTcGVjaWFsIFByb2plY3RzIg0KRUxTRUlGIENPTlRBSU5TKFtQcm9qZWN0IE5hbWVdLCJTcHJpbnQiKSBBTkQgQ09OVEFJTlMoW1Byb2plY3QgTmFtZV0sIkNsZWFuIikgT1IgQ09OVEFJTlMoW1Byb2plY3QgTmFtZV0sIlNOViIpIEFORCBDT05UQUlOUyhbUHJvamVjdCBOYW1lXSwiQ2xlYW4iKSBPUiBDT05UQUlOUyhbUHJvamVjdCBOYW1lXSwiVE1PIikgQU5EIENPTlRBSU5TKFtQcm9qZWN0IE5hbWVdLCJIeWJyaWQiKSBPUiBDT05UQUlOUyhbUHJvamVjdCBOYW1lXSwiVE1PIikgQU5EIENPTlRBSU5TKFtQcm9qZWN0IE5hbWVdLCJDbGVhbiIpIE9SIENPTlRBSU5TKFtQcm9qZWN0IE5hbWVdLCJGQ08iKSBUSEVOICJTcGVjaWFsIFByb2plY3RzIg0KRUxTRUlGIENPTlRBSU5TKFtDU1IgTnVtYmVyIERlc2NyaXB0aW9uXSwiQ2xlYW4iKSBUSEVOICJTcGVjaWFsIFByb2plY3RzIg0KRUxTRUlGIFtPcmRlciBUeXBlXSA9ICJOb24tVmFsdWF0ZWQiIFRIRU4gIk5vbi1WYWx1YXRlZCBDbGFpbXMiDQpFTFNFICJTdGFuZGFyZCBDbGFpbXMiDQpFTkQNCmBgYA0KPC9kaXY+DQo8L2Rpdj4NCg==</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

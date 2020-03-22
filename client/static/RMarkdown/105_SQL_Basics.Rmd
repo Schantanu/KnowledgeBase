@@ -1,0 +1,250 @@
+---
+title: "SQL Basics"
+author: 
+- "Author - [Shantanu Mendhekar](mailto:shantanu.mendhekar@ericsson.com)"
+date:
+- "Update Date - `r format(Sys.time(), '%d %B, %Y %H:%M %p')`"
+params:
+  outputDir: "Projects/Inbound"
+  updateFrequency: "Daily" # "Monthly" "Weekly"
+  updateDay: ""
+---
+
+<script src="libs/locationhash.js"></script>
+
+# What is SQL?
+SQL (pronounced "sequel" or "S-Q-L") stands for Structured Query Language. It is one of the basic languages to communicate with a Database for accessing and manipulating data.
+
+SQL can be used to do the following -
+```{html}
+* Execute queries against a database
+* Retrieve data from a database
+* Insert records in a database
+* Update records in a database
+* Delete records from a database
+* Create new database
+* Create new tables in a database
+* Create Stored Procedures in a database
+* Create views in a database
+* Set permissions on tables, procedures, and views
+```
+
+RDMS stands for Relational Database Management System. RDBMS is the basis for SQL, and for all modern database systems such as MS SQL Server, IBM DB2, Oracle, MySQL, and Microsoft Access. The data in RDBMS is stored in database objects called tables. A table is a collection of related data entries and it consists of columns and rows.
+
+For example, the following rows from the BI_MATERIAL_PLANT_SUMMARY table -
+
+```{r eval = TRUE, echo = TRUE, warning = FALSE, message = FALSE}
+library(RODBC)
+library(dplyr)
+library(magrittr)
+library(kableExtra)
+library(knitr)
+
+connection <- odbcConnect("REPORTINGDBDEV")
+query <- "
+
+SELECT TOP 5
+[Material]
+,[Material Description]
+,[Commodity LV1]
+,[Plant]
+,[Company Region]
+FROM BI_MATERIAL_PLANT_SUMMARY
+WHERE [Commodity LV1] LIKE '%Radios%'
+
+"
+data <- sqlQuery(connection, query)
+
+odbcCloseAll()
+
+data %>%
+kable("html") %>%
+kable_styling(bootstrap_options = c("striped", "hover"))
+```
+
+# What is a SQL Query?
+A query is an inquiry into the database using the SELECT statement. A query is used to extract data from the database in a readable format according to the user's request.
+
+For instance, if you have an employee table, you might issue a SQL statement that returns the employee who has made the most sales. This request to the database for usable employee information is a typical query that can be performed in a relational database.
+
+# How to write a SQL Query?
+
+The 3 basic terms for writing a basic SQL Query are
+```
+SELECT - How do we show it?
+FROM - Where do we get the data from?
+WHERE - What data should we filter to show?
+```
+Imagine the database against which you are writing a query as an Excel sheet, and the query is just selecting specific data from that sheet. Let's convert the 3 basics of the SQL Query into something relateable to the Excel sheet.
+
+![](SQL_Basics/sql_query_excel.png)
+
+__SELECT__ - The SELECT will be selecting the columns from the above sheet. Let's say we select columns 'SO', 'Plant' and 'Quantity'
+
+__FROM__ - The FROM will be the database we want to see these columns from. The outer dotted line represents the entire SQL Table from where we want to get that data. For our example, let's take the database 'BI_CUSTMON'.
+
+__WHERE__ - The WHERE will be the filters that we want to put on each of these columns to show only the rows we want. Let's say we want to view the only the plants '2266' and '2509'.
+
+Now, let's convert the above requirements into a basic SQL Query.
+
+```{html}
+SELECT [SO], [Plant], [Quantity]
+FROM BI_CUSTMON
+WHERE [Plant] IN ('2266','2509')
+```
+
+When you run the above query, it will select the columns from the database you specified and will filter it according to the plants stated. The result of the query can be seen below.
+
+![](SQL_Basics/sql_query_result.png)
+
+# Connect to SQL
+
+## Basic Output
+
+```{r}
+library(DBI)
+
+# odbc <- dbConnect(odbc::odbc(), Driver = "SQL Server", Server = "REPORTINGDB")
+
+con <- DBI::dbConnect(odbc::odbc(), 
+                      Driver = "SQL Server", 
+                      Server = "EUSAAMW0656\\REPORTINGDB", 
+                      Database = "BCAMDB", 
+                      Trusted_Connection = "True")
+```
+
+```{sql, connection = con}
+SELECT TOP 5 * FROM REF_MRP_CONTROLLER
+```
+
+## Kable Output
+
+```{sql connection = con, select_1, output.var="select_1_result", cache=TRUE}
+SELECT TOP 5 * FROM REF_MRP_CONTROLLER
+```
+
+```{r print_result,  error=TRUE}
+knitr::kable(select_1_result)
+```
+
+# SQL Syntax
+
+## SQL Select
+To select everything in the columns
+
+```{html}
+SELECT *
+FROM BI_MATERIAL_PLANT_SUMMARY
+```
+
+To show top 10 rows for a SQL Table
+
+```{html}
+SELECT TOP 10 *
+FROM BI_MATERIAL_PLANT_SUMMARY
+```
+
+To select distinct values in the tabl
+
+```{html}
+SELECT DISTINCT [Plant]
+FROM BI_MATERIAL_PLANT_SUMMARY
+```
+
+## SQL Count
+
+To find a count of rows in the table
+
+```{html}
+SELECT COUNT(*)
+FROM BI_MATERIAL_PLANT_SUMMARY
+```
+
+To find a count of rows of a distinct values in a column
+
+```{html}
+SELECT COUNT(DISTINCT [Plant])
+FROM BI_MATERIAL_PLANT_SUMMARY
+```
+
+## SQL Alias
+
+SQL aliases are used to give a database table, or a column in a table, a temporary name.
+
+To give a column an Alias
+
+```{html}
+SELECT DISTINCT [Plant] AS [SCOP Plants]
+FROM BI_MATERIAL_PLANT_SUMMARY
+WHERE [Plant] IN ('2685','2666')
+```
+
+To give a table an Alias
+
+```{html}
+SELECT DISTINCT MPS.[Plant]
+FROM BI_MATERIAL_PLANT_SUMMARY MPS
+```
+
+## SQL Where
+
+The WHERE Clause is used to extract only those records that fulfill a specified criterion.
+
+To display all columns in the table for only one part.
+
+```{html}
+SELECT *
+FROM BI_MATERIAL_PLANT_SUMMARY
+WHERE [Material] = 'RPM2531611/200M'
+```
+
+To display all columns in the table for multiple parts.
+
+```{html}
+SELECT *
+FROM BI_MATERIAL_PLANT_SUMMARY
+WHERE [Material] IN ('RPM2531611/200M','KRC161382/1')
+```
+
+To display specific columns for a part, select the columns and write it next to the SELECT statement.
+
+```{html}
+SELECT [Material], [Commodity LV1], [Material Description]
+FROM BI_MATERIAL_PLANT_SUMMARY
+WHERE [Material] = 'RPM2531611/200M'
+```
+
+To display a part using Wildcard entry
+
+```{html}
+SELECT *
+FROM BI_MATERIAL_PLANT_SUMMARY
+WHERE [Material] LIKE 'RPM%'
+```
+
+AND Operator
+
+```{html}
+SELECT *
+FROM BI_MATERIAL_PLANT_SUMMARY
+WHERE [Material] = 'RPM2531611/200M'
+AND [Hub] = 'LEV'
+```
+
+OR Operator
+
+```{html}
+SELECT *
+FROM BI_MATERIAL_PLANT_SUMMARY
+WHERE [Material] = 'RPM2531611/200M'
+OR [Material] = 'Unicorn'
+```
+
+AND & OR Operator
+
+```{html}
+SELECT *
+FROM BI_MATERIAL_PLANT_SUMMARY
+WHERE [Company Region] = 'RNAM'
+AND ([Material] = 'RPM2531611/200M' OR [Material] = 'Unicorn')
+```

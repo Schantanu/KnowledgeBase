@@ -1,0 +1,88 @@
+@import url('https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,500,600,700');
+@import url('https://fonts.googleapis.com/css?family=IBM+Plex+Serif:700');
+
+$serif_family: 'IBM Plex Serif', serif;
+$sans_family: 'IBM Plex Sans', sans;
+
+body {
+  font-family: $sans_family;
+  font-size: 14px;
+  background-color: $gray2;
+}
+
+input, textarea, select {
+  font-family: inherit !important;
+  font-size: 14px !important;
+}
+
+.button {
+  font-size: 14px;
+}
+
+.is-size-6 {
+  font-size: 14px !important;
+}
+
+td {
+  font-size: 13.5px !important;
+}
+
+.b-table .table {
+  border-collapse: collapse;
+}
+
+.pagination {
+  font-size: 13.5px;
+}
+
+.title {
+  font-family: $sans_family;
+  font-weight: 700;
+}
+
+.subtitle {
+  font-family: $sans_family;
+  // font-weight: 700;
+}
+
+.navbar {
+  font-family: $sans_family;
+}
+
+.card {
+  background-color: white;
+}
+
+.card-title {
+  font-family: $sans_family;
+  font-size: 16px;
+}
+
+.modal-card-foot {
+  justify-content: flex-end
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: $sans_family;
+  font-weight: 700;
+}
+
+th {
+  background-color: $gray4;
+  font-weight: 700 !important;
+  font-size: 15px;
+}
+
+.modal-card-title {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.label {
+  font-weight: 500;
+  font-size: 15px;
+}
+
+.button {
+  font-family: $sans_family;
+}

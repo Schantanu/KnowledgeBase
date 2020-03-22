@@ -1,0 +1,1417 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Shantanu Mendhekar" />
+
+
+<title>BI_RETURNS_E2E</title>
+
+<script src="libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="libs/navigation-1.1/tabsets.js"></script>
+<script src="libs/navigation-1.1/codefolding.js"></script>
+<script src="libs/navigation-1.1/sourceembed.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; background-color: #f8f8f8; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+pre, code { background-color: #f8f8f8; }
+code > span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code > span.dt { color: #204a87; } /* DataType */
+code > span.dv { color: #0000cf; } /* DecVal */
+code > span.bn { color: #0000cf; } /* BaseN */
+code > span.fl { color: #0000cf; } /* Float */
+code > span.ch { color: #4e9a06; } /* Char */
+code > span.st { color: #4e9a06; } /* String */
+code > span.co { color: #8f5902; font-style: italic; } /* Comment */
+code > span.ot { color: #8f5902; } /* Other */
+code > span.al { color: #ef2929; } /* Alert */
+code > span.fu { color: #000000; } /* Function */
+code > span.er { color: #a40000; font-weight: bold; } /* Error */
+code > span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #000000; } /* Constant */
+code > span.sc { color: #000000; } /* SpecialChar */
+code > span.vs { color: #4e9a06; } /* VerbatimString */
+code > span.ss { color: #4e9a06; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #000000; } /* Variable */
+code > span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code > span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code > span.ex { } /* Extension */
+code > span.at { color: #c4a000; } /* Attribute */
+code > span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code > span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+div.sourceCode {
+  overflow-x: visible;
+}
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+<link rel="stylesheet" href="libs\style.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("117_BI_RETURNS_E2E.rmd");
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3 col-lg-2">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9 col-lg-10">
+
+
+
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">BI_RETURNS_E2E</h1>
+<h4 class="author"><em>Shantanu Mendhekar</em></h4>
+<h4 class="date"><em>December 6, 2018</em></h4>
+
+</div>
+
+
+<script src="libs/locationhash.js"></script>
+<div id="summary" class="section level1">
+<h1>Summary</h1>
+<p>Here you will learn all the information about Stored Procedure for TABLE_ABC, and at the bottom you can get the final Stored Procedure. We will go along and explain all the information for each line as we go along.</p>
+</div>
+<div id="block-1" class="section level1">
+<h1>Block 1</h1>
+<div class="row">
+<div class="col-md-6">
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Mattis aliquam faucibus purus in massa. Aliquet nec ullamcorper sit amet risus. Lectus urna duis convallis convallis tellus. Nibh mauris cursus mattis molestie a iaculis. Turpis egestas pretium aenean pharetra magna ac. Dis parturient montes nascetur ridiculus mus mauris. Eget sit amet tellus cras. Commodo odio aenean sed adipiscing diam donec adipiscing tristique risus. Viverra aliquet eget sit amet tellus.</p>
+</div>
+<div class="col-md-6">
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">USE</span> [BCAMDB]
+GO
+<span class="co">/****** Object:  StoredProcedure [dbo].[SP_BI_RETURNS_E2E]    Script Date: 12/06/2018 09:08:48 ******/</span>
+<span class="kw">SET</span> ANSI_NULLS <span class="kw">ON</span>
+GO
+<span class="kw">SET</span> QUOTED_IDENTIFIER <span class="kw">ON</span>
+GO
+
+<span class="kw">ALTER</span> <span class="kw">PROCEDURE</span> [dbo].[SP_BI_RETURNS_E2E] <span class="kw">AS</span> 
+<span class="kw">BEGIN</span>
+    <span class="kw">SET</span> NOCOUNT <span class="kw">ON</span>;
+    
+    
+  <span class="kw">BEGIN</span> TRY
+    
+    <span class="co">--TABLE_STATUS - Querying</span>
+    <span class="kw">EXEC</span> UpdateTableStatus <span class="dv">426</span>,<span class="st">&#39;Querying&#39;</span>,<span class="st">&#39;&#39;</span>;
+
+    <span class="co">--Drop temp table if it exists</span>
+    <span class="kw">IF</span> OBJECT_ID(<span class="st">&#39;tempdb..#RETURNS_TEMP&#39;</span>) <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">DROP</span> <span class="kw">TABLE</span> #RETURNS_TEMP;
+    
+    <span class="co">--Create temp table</span>
+    
+    <span class="co">--INSERT QUERY HERE</span>
+    <span class="kw">CREATE</span> <span class="kw">TABLE</span> #RETURNS_TEMP
+    (
+        [SO]                    <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NOT</span> <span class="kw">NULL</span>,
+    [SO Item]               <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NOT</span> <span class="kw">NULL</span>,
+      [SO <span class="kw">CREATE</span> <span class="dt">DATE</span>]      datetime     <span class="kw">NULL</span>,
+        [SO <span class="kw">CREATE</span> <span class="dt">TIME</span>]        <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+        [Customer PO]           <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [Overdue <span class="kw">Indicator</span>]     <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [Item <span class="kw">Category</span>]         <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [<span class="kw">Return</span> Reason]         <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [<span class="kw">Return</span> Reason Text]    <span class="dt">varchar</span>(<span class="dv">150</span>)  <span class="kw">NULL</span>,
+    [Inspection Code]       <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [Inspection Text]       <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [Item Internal Notes]   <span class="dt">varchar</span>(<span class="dv">255</span>) <span class="kw">NULL</span>,
+    [Inspection <span class="kw">Comment</span>]    <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [Sales Document <span class="kw">Type</span>]   <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [Scheduled <span class="kw">Return</span> <span class="dt">Date</span>] datetime     <span class="kw">NULL</span>,
+    [Material <span class="dt">Number</span>]       <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [Material Description]  <span class="dt">varchar</span>(<span class="dv">250</span>)  <span class="kw">NULL</span>,
+    [<span class="kw">Order</span> Quantity]        <span class="dt">float</span>        <span class="kw">NULL</span>,
+    [WBS Element]           <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [Plant]                 <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [Sloc]                  <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [Net Price]             <span class="dt">float</span>        <span class="kw">NULL</span>,
+    [Fault Description]     <span class="dt">varchar</span>(<span class="dv">500</span>) <span class="kw">NULL</span>,
+    [Serial <span class="dt">Number</span>]         <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [Sold <span class="kw">to</span> party]         <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [Sold <span class="kw">to</span> name]          <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [Final Ext Customer]    <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [Final Ext Customer Name]   <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [Refund <span class="kw">Type</span>]           <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [<span class="kw">Order</span> Reason]          <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [Reason <span class="kw">for</span> Rejection]  <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [Reason <span class="kw">for</span> Rej Text]   <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [Cancellation Status]   <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [Cancellation <span class="dt">Date</span>]     datetime     <span class="kw">NULL</span>,
+    [Created/Changed <span class="kw">By</span>]    <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [Delivery <span class="kw">Block</span>]        <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [Approval <span class="kw">Block</span>]        <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [Delivery]              <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [Delivery Status]       <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [Replacement SO]        <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [Credit Memo]           <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [Goods Receipt]         <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [GR <span class="dt">Date</span>]               datetime     <span class="kw">NULL</span>,
+    [SO Stock <span class="kw">Indicator</span>]    <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [SO Stock Qty]          <span class="dt">float</span>        <span class="kw">NULL</span>,
+    [Follow up Activity Code]   <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [Follow up Activity]    <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [RMA Request <span class="kw">ID</span>]        <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [RMA Item]              <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [Vendor RMA <span class="dt">Number</span>]     <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [Vendor <span class="kw">ID</span>]             <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [Vendor Name]           <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [RMA Status]            <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [Org PO]                <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [PO <span class="dt">Number</span>]             <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [PO Vendor]             <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [PO Vendor Name]        <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [RTV PO GR]             <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [RTV PO IR]             <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [Smart Returns]         <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [AWB <span class="dt">Number</span>]            <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [RMA RfR]               <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [RMA <span class="dt">Number</span>]            <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [Material R-State]      <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [<span class="kw">Order</span> Reason Text]     <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [Cancellation Flag]     <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [Cancellation <span class="dt">Time</span>]     <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [Shipment <span class="dt">Number</span>]       <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [Shipment Status]       <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [Shipment <span class="dt">Date</span>]         datetime     <span class="kw">NULL</span>,
+    [<span class="kw">Next</span> Plant]            <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [Material Received]     <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [<span class="kw">Locked</span>]                <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [Document]              <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [Item]                  <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [Item Cat]              <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [Product]               <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [Quantity]              <span class="dt">float</span>        <span class="kw">NULL</span>,
+    [Unit]                  <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [GRD (Act)]             <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [GRT (Act)]             <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [Putaway A]             <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [PutwTm A]              <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [Putaway]               <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [Goods Rcpt]            <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [Prod Ord]              <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [UnlDtAct]              datetime     <span class="kw">NULL</span>,
+    [UnlTm A]               <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [S<span class="ch">&amp;A</span> Status]            <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [PackStatus]            <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [ERP Error]             <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [Doc Cat]               <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [Origin]                <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [PO]                    <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [PO Item]               <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [Item <span class="kw">Type</span>]             <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [Item <span class="kw">Type</span> Description] <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [Item Cat Description]  <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [Warehouse]             <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,
+    [CSR Requestor Name]    <span class="dt">varchar</span>(<span class="dv">201</span>) <span class="kw">NULL</span>,
+    [Standard price]        <span class="dt">float</span>        <span class="kw">NULL</span>,
+    [Sales Org]             <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,       <span class="co">--added 2016/05/11</span>
+    [Material <span class="kw">Group</span>]        <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,       <span class="co">--added 2016/05/11</span>
+        [UPS Reference <span class="dt">Number</span>]      <span class="dt">varchar</span>(<span class="dv">255</span>) <span class="kw">NULL</span>,       <span class="co">--added 2016/05/11</span>
+        [UPS Status]                <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,       <span class="co">--added 2016/05/11</span>
+        [UPS Ship <span class="kw">To</span> City]          <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,       <span class="co">--added 2016/05/11</span>
+        [UPS Ship <span class="kw">to</span> State]         <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,       <span class="co">--added 2016/05/11</span>
+        [UPS Ship <span class="kw">To</span> Country]       <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,       <span class="co">--added 2016/05/11</span>
+        [UPS Service]               <span class="dt">varchar</span>(<span class="dv">255</span>)     <span class="kw">NULL</span>,       <span class="co">--added 2016/05/11</span>
+        [UPS Scheduled Delivery]    datetime     <span class="kw">NULL</span>,       <span class="co">--added 2016/05/11</span>
+        [UPS <span class="dt">Date</span> Delivered]        datetime     <span class="kw">NULL</span>,       <span class="co">--added 2016/05/11</span>
+        [UPS Delivery <span class="dt">Time</span>]         <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">NULL</span>,       <span class="co">--added 2016/05/11</span>
+        [Customer]              <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">Null</span>,       <span class="co">--added 2016/05/16</span>
+        [UoM]                   <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">Null</span>,       <span class="co">--added 2016/06/14</span>
+        [State]                 <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">Null</span>,       <span class="co">--added 2016/06/14</span>
+        [City]                  <span class="dt">varchar</span>(<span class="dv">100</span>)     <span class="kw">Null</span>,       <span class="co">--added 2016/06/14</span>
+        [Zip]                   <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">Null</span>,       <span class="co">--added 2016/06/14</span>
+        [NRO Region]            <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">Null</span>,       <span class="co">--added 2016/06/14</span>
+        [GM <span class="dt">Date</span>]               <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">Null</span>,       <span class="co">--added 2016/06/14</span>
+        [GM <span class="dt">Time</span>]               <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">Null</span>,       <span class="co">--added 2016/06/14</span>
+        [Distribution status]   <span class="dt">varchar</span>(<span class="dv">50</span>)  <span class="kw">Null</span>,       <span class="co">--added 2016/06/14</span>
+        [ASP Information]               <span class="dt">varchar</span>(<span class="dv">255</span>)    <span class="kw">Null</span>,        <span class="co">--added 2016/10/10</span>
+        [CRM Serial <span class="dt">Number</span>]             <span class="dt">varchar</span>(<span class="dv">100</span>)        <span class="kw">Null</span>,        <span class="co">--added 2016/10/10 </span>
+        [Disposition]                   <span class="dt">varchar</span>(<span class="dv">100</span>)    <span class="kw">Null</span>,        <span class="co">--added 2016/10/10 </span>
+        [GR Quantity]                   <span class="dt">float</span>           <span class="kw">Null</span>,        <span class="co">--added 2016/10/10</span>
+        [SO Stock Quantity]             <span class="dt">float</span>           <span class="kw">Null</span>,        <span class="co">--added 2016/10/10</span>
+        [CRM Note]                      <span class="dt">varchar</span>(<span class="dv">255</span>)    <span class="kw">Null</span>,        <span class="co">--added 2016/10/10 </span>
+    [RTV PO/STO <span class="dt">Date</span>]               datetime        <span class="kw">Null</span>,        <span class="co">--added 2016/10/10</span>
+    [LC-&gt;BU Text]                   <span class="dt">varchar</span>(<span class="dv">255</span>)    <span class="kw">Null</span>,        <span class="co">--added 2016/10/10</span>
+    [<span class="fu">Last</span> Changed <span class="kw">On</span>]               datetime        <span class="kw">Null</span>,        <span class="co">--added 2016/10/10</span>
+    [Information <span class="kw">from</span> DCM]          <span class="dt">varchar</span>(<span class="dv">255</span>)    <span class="kw">Null</span>,        <span class="co">--added 2016/10/10</span>
+    [LPS Pro <span class="dt">Number</span>]                <span class="dt">varchar</span>(<span class="dv">100</span>)    <span class="kw">Null</span>,        <span class="co">--added 2016/11/30</span>
+        [LPS Status]                    <span class="dt">varchar</span>(<span class="dv">50</span>)     <span class="kw">Null</span>,        <span class="co">--added 2016/11/30</span>
+        [LPS Carrier Name]              <span class="dt">varchar</span>(<span class="dv">100</span>)    <span class="kw">Null</span>,        <span class="co">--added 2016/11/30</span>
+        [LPS Delivery ETA]              datetime        <span class="kw">Null</span>,        <span class="co">--added 2016/11/30</span>
+        [LPS Delivery <span class="dt">Date</span>]             datetime        <span class="kw">Null</span>,        <span class="co">--added 2016/11/30</span>
+        [RTV Delivery Created <span class="kw">On</span>]               datetime        <span class="kw">Null</span>,        <span class="co">--added 2016/11/30</span>
+        [RTV Shipment]                          <span class="dt">varchar</span>(<span class="dv">50</span>)     <span class="kw">Null</span>,        <span class="co">--added 2016/11/30</span>
+        [RTV Freight Doc Text]                  <span class="dt">varchar</span>(<span class="dv">100</span>)    <span class="kw">Null</span>,        <span class="co">--added 2016/11/30</span>
+        [RTV Act loading <span class="kw">end</span>]                   datetime        <span class="kw">Null</span>,        <span class="co">--added 2016/11/30</span>
+        [RTV Act Shipment <span class="kw">Complete</span> <span class="dt">Date</span>]        datetime        <span class="kw">Null</span>,        <span class="co">--added 2016/11/30</span>
+        [RTV Actual <span class="kw">Check</span> <span class="kw">in</span> <span class="dt">date</span>]              datetime        <span class="kw">Null</span>,        <span class="co">--added 2016/11/30</span>
+        [RTV Actual GM <span class="dt">Date</span>]                    datetime        <span class="kw">Null</span>,        <span class="co">--added 2016/11/30</span>
+        [RTV Actual Packing <span class="dt">Date</span>]               datetime        <span class="kw">Null</span>,        <span class="co">--added 2016/11/30</span>
+        [RTV Actual Shipment <span class="kw">End</span>]               datetime        <span class="kw">Null</span>,        <span class="co">--added 2016/11/30</span>
+        [RTV Curr loading <span class="kw">start</span>]                datetime        <span class="kw">Null</span>,        <span class="co">--added 2016/11/30</span>
+        [RTV Curr Shipment <span class="kw">Start</span>]               datetime        <span class="kw">Null</span>,        <span class="co">--added 2016/11/30</span>
+        [RTV Delivery <span class="dt">Date</span>]                     datetime        <span class="kw">Null</span>,        <span class="co">--added 2016/11/30</span>
+        [RTV Loading <span class="dt">Date</span>]                      datetime        <span class="kw">Null</span>,        <span class="co">--added 2016/11/30</span>
+        [RTV Picking <span class="dt">Date</span>]                      datetime        <span class="kw">Null</span>,        <span class="co">--added 2016/11/30</span>
+        [RTV Planned load <span class="kw">end</span>]                  datetime        <span class="kw">Null</span>,        <span class="co">--added 2016/11/30</span>
+        [RTV Planned shipment <span class="kw">end</span>]              datetime        <span class="kw">Null</span>,        <span class="co">--added 2016/11/30</span>
+        [RTV Planned Shipment <span class="kw">Start</span>]            datetime        <span class="kw">Null</span>,        <span class="co">--added 2016/11/30</span>
+        [RTV Shipment Created <span class="kw">On</span>]               datetime        <span class="kw">Null</span>,        <span class="co">--added 2016/11/30</span>
+        [RTV Transp <span class="kw">Plan</span> <span class="dt">Date</span>]                  datetime        <span class="kw">Null</span>,        <span class="co">--added 2016/11/30</span>
+        [Contact Person]                        <span class="dt">varchar</span>(<span class="dv">50</span>)     <span class="kw">Null</span>,        <span class="co">--added 2016/12/12</span>
+        [Commodity LV1]                         <span class="dt">varchar</span>(<span class="dv">250</span>)    <span class="kw">Null</span>,        <span class="co">--added 2017/02/19</span>
+        [Company Region]                        <span class="dt">varchar</span>(<span class="dv">50</span>)     <span class="kw">Null</span>,        <span class="co">--added 2017/02/28</span>
+        [Hub]                                   <span class="dt">varchar</span>(<span class="dv">50</span>)     <span class="kw">Null</span>,        <span class="co">--added 2017/02/28</span>
+        [Project Name]                          <span class="dt">varchar</span>(<span class="dv">50</span>)     <span class="kw">Null</span>,        <span class="co">--added 2017/04/28</span>
+        <span class="kw">Primary</span> <span class="kw">Key</span>             ([SO], [SO item])
+    )   ;
+
+
+    <span class="kw">INSERT</span> <span class="kw">INTO</span> #RETURNS_TEMP
+
+        <span class="kw">SELECT</span>
+        
+        ZOMRETM.[SO],
+        ZOMRETM.[SO Item],  
+        ZVBAP.[CREATED <span class="kw">ON</span>] <span class="kw">AS</span> [SO <span class="kw">CREATE</span> <span class="dt">DATE</span>],
+        ZVBAP.[CREATED <span class="kw">ON</span> <span class="dt">TIME</span>] <span class="kw">AS</span> [SO <span class="kw">CREATE</span> <span class="dt">TIME</span>],
+        ZOMRETM.[Customer PO],
+        ZOMRETM.[Overdue <span class="kw">Indicator</span>],
+        ZOMRETM.[Item <span class="kw">Category</span>],
+        ZOMRETM.[<span class="kw">Return</span> Reason],
+        ZOMRETM.[<span class="kw">Return</span> Reason Text],
+        ZOMRETM.[Inspection Code],
+        ZOMRETM.[Inspection Text],
+        ZOMRETM.[Item Internal Notes],
+        ZOMRETM.[Inspection <span class="kw">Comment</span>],
+        ZOMRETM.[Sales Document <span class="kw">Type</span>],
+        ZOMRETM.[Scheduled <span class="kw">Return</span> <span class="dt">Date</span>],
+        ZOMRETM.[Material <span class="dt">Number</span>],
+        ZOMRETM.[Material Description],
+        ZOMRETM.[<span class="kw">Order</span> Quantity],
+        ZOMRETM.[WBS Element],
+        ZOMRETM.[Plant],
+        ZOMRETM.[Sloc],
+        ZOMRETM.[Net Price],
+        ZOMRETM.[Fault Description],
+        ZOMRETM.[Serial <span class="dt">Number</span>],
+        ZOMRETM.[Sold <span class="kw">to</span> party],
+        ZOMRETM.[Sold <span class="kw">to</span> name],
+        ZOMRETM.[Final Ext Customer],
+        ZOMRETM.[Final Ext Customer Name],
+        ZOMRETM.[Refund <span class="kw">Type</span>],
+        ZOMRETM.[<span class="kw">Order</span> Reason],
+        ZOMRETM.[Reason <span class="kw">for</span> Rejection],
+        ZOMRETM.[Reason <span class="kw">for</span> Rej Text],
+        ZOMRETM.[Cancellation Status],
+        ZOMRETM.[Cancellation <span class="dt">Date</span>],
+        ZOMRETM.[Created/Changed <span class="kw">By</span>],
+        ZOMRETM.[Delivery <span class="kw">Block</span>],
+        ZOMRETM.[Approval <span class="kw">Block</span>],
+        ZOMRETM.[Delivery],
+        ZOMRETM.[Delivery Status],
+        ZOMRETM.[Replacement SO],
+        ZOMRETM.[Credit Memo],
+        ZOMRETM.[Goods Receipt],
+        ZOMRETM.[GR <span class="dt">Date</span>],
+        ZOMRETM.[SO Stock <span class="kw">Indicator</span>],
+        ZOMRETM.[SO Stock Qty],
+        ZOMRETM.[Follow up Activity Code],
+        ZOMRETM.[Follow up Activity],
+        ZOMRETM.[RMA Request <span class="kw">ID</span>],
+        ZOMRETM.[RMA Item],
+        ZOMRETM.[Vendor RMA <span class="dt">Number</span>],
+        ZOMRETM.[Vendor <span class="kw">ID</span>],
+        ZOMRETM.[Vendor Name],
+        ZOMRETM.[RMA Status],
+        ZOMRETM.[Org PO],
+        ZOMRETM.[PO <span class="dt">Number</span>],
+        ZOMRETM.[PO Vendor],
+        ZOMRETM.[PO Vendor Name],
+        ZOMRETM.[RTV PO GR],
+        ZOMRETM.[RTV PO IR],
+        ZOMRETM.[Smart Returns],
+        ZOMRETM.[AWB <span class="dt">Number</span>],
+        ZOMRETM.[RMA RfR],
+        ZOMRETM.[RMA <span class="dt">Number</span>],
+        ZOMRETM.[Material R-State],
+        ZOMRETM.[<span class="kw">Order</span> Reason Text],
+        ZOMRETM.[Cancellation Flag],
+        ZOMRETM.[Cancellation <span class="dt">Time</span>],
+        ZOMRETM.[Shipment <span class="dt">Number</span>],
+        ZOMRETM.[Shipment Status],
+        ZOMRETM.[Shipment <span class="dt">Date</span>],
+        ZOMRETM.[<span class="kw">Next</span> Plant],
+        ZOMRETM.[Material Received],
+        ITEM.[<span class="kw">Locked</span>],
+        ITEM.[Document],
+        ITEM.[Item],
+        ITEM.[Item Cat],
+        ITEM.[Product],
+        ITEM.[Quantity],
+        ITEM.[Unit],
+        ITEM.[GRD (Act)],
+        ITEM.[GRT (Act)],
+        ITEM.[Putaway A],
+        ITEM.[PutwTm A],
+        ITEM.[Putaway],
+        ITEM.[Goods Rcpt],
+        ITEM.[Prod Ord],
+        ITEM.[UnlDtAct],
+        ITEM.[UnlTm A],
+        ITEM.[S<span class="ch">&amp;A</span> Status],
+        ITEM.[PackStatus],
+        ITEM.[ERP Error],
+        ITEM.[Doc Cat],
+        ITEM.[Origin],
+        ITEM.[PO],
+        ITEM.[PO Item],
+        ITEM.[Item <span class="kw">Type</span>],
+        ITEM.[Item <span class="kw">Type</span> Description],
+        ITEM.[Item Cat Description],
+        ITEM.[Warehouse],
+        ARM.[<span class="kw">Initial</span> Ericsson Employee-First]+<span class="st">&#39; &#39;</span>+ARM.[<span class="kw">Initial</span> Ericsson Employee-Last] <span class="kw">AS</span> [CSR Requestor Name],
+        MBEW.[Standard price],
+        ZVBAK.[Sales Org], <span class="co">--added 2016/05/11</span>
+        PMASTER.[Material <span class="kw">Group</span> Description] <span class="kw">AS</span> [Material <span class="kw">Group</span>], <span class="co">--changed 2017/12/06</span>
+        UPS.[Reference <span class="dt">Number</span>] <span class="kw">AS</span> [UPS Reference <span class="dt">Number</span>], <span class="co">--added 2016/05/11</span>
+        UPS.[Status] <span class="kw">AS</span> [UPS Status], <span class="co">--added 2016/05/11</span>
+        UPS.[Ship <span class="kw">to</span> City] <span class="kw">AS</span> [UPS Ship <span class="kw">to</span> City], <span class="co">--added 2016/05/11</span>
+        UPS.[Ship <span class="kw">to</span> State] <span class="kw">AS</span> [UPS Ship <span class="kw">to</span> State], <span class="co">--added 2016/05/11</span>
+        UPS.[Ship <span class="kw">To</span> Country] <span class="kw">AS</span> [UPS Ship <span class="kw">to</span> Country], <span class="co">--added 2016/05/11</span>
+        UPS.[Service] <span class="kw">AS</span> [UPS Service], <span class="co">--added 2016/05/11</span>
+        UPS.[Scheduled Delivery] <span class="kw">AS</span> [UPS Scheduled Delivery], <span class="co">--added 2016/05/11</span>
+        UPS.[<span class="dt">Date</span> Delivered] <span class="kw">AS</span> [UPS <span class="dt">Date</span> Delivered], <span class="co">--added 2016/05/11</span>
+        UPS.[Delivery <span class="dt">Time</span>] <span class="kw">AS</span> [UPS Delivery <span class="dt">Time</span>], <span class="co">--added 2016/05/11</span>
+        <span class="kw">CASE</span> 
+            <span class="kw">WHEN</span> CU.[Customer Unit] <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">THEN</span> CU.[Customer Unit]
+            <span class="kw">WHEN</span> ZVBAK.[Customer PO] <span class="kw">LIKE</span> <span class="st">&#39;%ICRRB%&#39;</span> <span class="kw">THEN</span> <span class="st">&#39;INTERNAL&#39;</span> 
+            <span class="kw">ELSE</span> SOFFICE.[Sales Office Description]
+        <span class="kw">END</span> <span class="kw">AS</span> [Customer], <span class="co">--added 2016/05/16</span>
+        ZVBAP.[UoM], <span class="co">--added 2016/06/14</span>
+        <span class="kw">COALESCE</span>(CUSTMON.[Region],ARM.[Pick-up Region]) <span class="kw">AS</span> [State], <span class="co">--added 2016/06/14 --updated 2017/04/24</span>
+        <span class="kw">COALESCE</span>(CUSTMON.[Ship <span class="kw">to</span> City],ARM.[Pick-up City]) <span class="kw">AS</span> [City], <span class="co">--added 2016/06/14 --updated 2017/04/24</span>
+        <span class="kw">COALESCE</span>(CUSTMON.[Ship <span class="kw">to</span> Zip],ARM.[Pick-up Postal Code]) <span class="kw">AS</span> [Zip], <span class="co">--added 2016/06/14 --updated 2017/04/24</span>
+        <span class="kw">COALESCE</span>(CUSTMON.[NRO Region],ARM_NRO.[NRO Region]), <span class="co">--added 2016/06/14 --updated 2017/04/24</span>
+        DELMON.[ActualGMDate] <span class="kw">AS</span> [GM <span class="dt">Date</span>], <span class="co">--added 2016/06/14</span>
+        DELMON.[ActualGMtime] <span class="kw">AS</span> [GM <span class="dt">Time</span>], <span class="co">--added 2016/06/14</span>
+        DELMON.[Distribution status], <span class="co">--added 2016/06/14</span>
+        ZOMRET1.[ASP Information], <span class="co">--added 2016/10/10</span>
+        ZOMRET1.[CRM Serial <span class="dt">Number</span>], <span class="co">--added 2016/10/10</span>
+        ZOMRET1.[Disposition], <span class="co">--added 2016/10/10</span>
+        ZOMRET1.[GR Quantity], <span class="co">--added 2016/10/10</span>
+        ZOMRET1.[SO Stock Qty] <span class="kw">AS</span> [SO Stock Quantity], <span class="co">--added 2016/10/10</span>
+        ZOMRET1.[CRM Note], <span class="co">--added 2016/10/10</span>
+        ZOMRET1.[RTV PO/STO <span class="dt">Date</span>], <span class="co">--added 2016/10/10</span>
+        ZOMRET1.[LC-&gt;BU Text], <span class="co">--added 2016/10/10</span>
+        ZVBAP.[<span class="fu">Last</span> Changed <span class="kw">On</span>], <span class="co">--added 2016/10/10</span>
+        <span class="kw">CASE</span> 
+            <span class="kw">WHEN</span> ZOMRETM.[Reason <span class="kw">for</span> Rejection] <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">AND</span> ITEM.[GRD (Act)] <span class="kw">IS</span> <span class="kw">NULL</span> <span class="kw">THEN</span> <span class="kw">NULL</span>
+            <span class="kw">ELSE</span> ZOMVIS1.[Information <span class="kw">from</span> DCM]
+        <span class="kw">END</span> <span class="kw">AS</span> [Informantion <span class="kw">from</span> DCM], <span class="co">--added 2016/10/10</span>
+        LPS.[Pro <span class="dt">Number</span>] <span class="kw">AS</span> [LPS Pro <span class="dt">Number</span>], <span class="co">--added 2016/11/30</span>
+        LPS.[Status] <span class="kw">AS</span> [LPS Status], <span class="co">--added 2016/11/30</span>
+        LPS.[Carrier Name] <span class="kw">AS</span> [LPS Carrier Name], <span class="co">--added 2016/11/30</span>
+        MAX_LPS_DELIVERY.[Delivery ETA] <span class="kw">AS</span> [LPS Delivery ETA],                                                      <span class="co">-- added - 11/9/2018</span>
+        LPS.[Delivery <span class="dt">Date</span>] <span class="kw">AS</span> [LPS Delivery <span class="dt">Date</span>], <span class="co">--added 2016/11/30</span>
+        BI_DELMON.[Delivery Created <span class="kw">On</span>] <span class="kw">AS</span> [RTV Delivery Created <span class="kw">On</span>], <span class="co">--added 2016/11/30</span>
+        BI_DELMON.[Shipment] <span class="kw">AS</span> [RTV Shipment], <span class="co">--added 2016/11/30</span>
+        BI_DELMON.[Frieght doc text] <span class="kw">AS</span> [RTV Freight Doc Text], <span class="co">--added 2016/11/30</span>
+        BI_DELMON.[Act loading <span class="kw">end</span>] <span class="kw">AS</span> [RTV Act loading <span class="kw">end</span>], <span class="co">--added 2016/11/30</span>
+        BI_DELMON.[Act Shipment <span class="kw">Complete</span> <span class="dt">Date</span>] <span class="kw">AS</span> [RTV Act Shipment <span class="kw">Complete</span> <span class="dt">Date</span>], <span class="co">--added 2016/11/30</span>
+        BI_DELMON.[Actual <span class="kw">Check</span> <span class="kw">in</span> <span class="dt">date</span>] <span class="kw">AS</span> [RTV Actual <span class="kw">Check</span> <span class="kw">in</span> <span class="dt">date</span>], <span class="co">--added 2016/11/30</span>
+        BI_DELMON.[Actual GM <span class="dt">Date</span>] <span class="kw">AS</span> [RTV Actual GM <span class="dt">Date</span>], <span class="co">--added 2016/11/30</span>
+        BI_DELMON.[Actual Packing <span class="dt">Date</span>] <span class="kw">AS</span> [RTV Actual Packing <span class="dt">Date</span>], <span class="co">--added 2016/11/30</span>
+        BI_DELMON.[Actual Shipment <span class="kw">End</span>] <span class="kw">AS</span> [RTV Actual Shipment <span class="kw">End</span>], <span class="co">--added 2016/11/30</span>
+        BI_DELMON.[Curr loading <span class="kw">start</span>] <span class="kw">AS</span> [RTV Curr loading <span class="kw">start</span>], <span class="co">--added 2016/11/30</span>
+        BI_DELMON.[Curr Shipment <span class="kw">Start</span>] <span class="kw">AS</span> [RTV Curr Shipment <span class="kw">Start</span>], <span class="co">--added 2016/11/30</span>
+        BI_DELMON.[Delivery <span class="dt">Date</span>] <span class="kw">AS</span> [RTV Delivery <span class="dt">Date</span>], <span class="co">--added 2016/11/30</span>
+        BI_DELMON.[Loading <span class="dt">Date</span>] <span class="kw">AS</span> [RTV Loading <span class="dt">Date</span>], <span class="co">--added 2016/11/30</span>
+        BI_DELMON.[Picking <span class="dt">Date</span>] <span class="kw">AS</span> [RTV Picking <span class="dt">Date</span>], <span class="co">--added 2016/11/30</span>
+        BI_DELMON.[Planned load <span class="kw">end</span>] <span class="kw">AS</span> [RTV Planned load <span class="kw">end</span>], <span class="co">--added 2016/11/30</span>
+        BI_DELMON.[Planned shipment <span class="kw">end</span>] <span class="kw">AS</span> [RTV Planned shipment <span class="kw">end</span>], <span class="co">--added 2016/11/30</span>
+        BI_DELMON.[Planned Shipment <span class="kw">Start</span>] <span class="kw">AS</span> [RTV Planned Shipment <span class="kw">Start</span>], <span class="co">--added 2016/11/30</span>
+        BI_DELMON.[Shipment Created <span class="kw">On</span>] <span class="kw">AS</span> [RTV Shipment Created <span class="kw">On</span>], <span class="co">--added 2016/11/30</span>
+        BI_DELMON.[Transp <span class="kw">Plan</span> <span class="dt">Date</span>] <span class="kw">AS</span> [RTV Transp <span class="kw">Plan</span> <span class="dt">Date</span>], <span class="co">--added 2016/11/30</span>
+        ARM.[Contact Person], <span class="co">--added 2016/12/12</span>
+        PMASTER.[Commodity LV1], <span class="co">--added 2017/02/19</span>
+        REF.[Company Region], <span class="co">--added 2017/02/28</span>
+        REF.[Hub], <span class="co">--added 2017/02/28</span>
+        <span class="kw">COALESCE</span>(ARM2.[Project Name],ARM.[Project Name]) <span class="kw">AS</span> [Project Name] <span class="co">--added 2017/04/28</span>
+
+        
+        <span class="kw">FROM</span> SAP_ZOMRETM <span class="kw">AS</span> ZOMRETM
+
+        <span class="kw">INNER</span> <span class="kw">JOIN</span>
+        (   <span class="kw">SELECT</span> [SO],[SO Item],[Reason <span class="kw">for</span> Rejection],[CREATED <span class="kw">ON</span>],[CREATED <span class="kw">ON</span> <span class="dt">TIME</span>],[UoM],[<span class="fu">Last</span> Changed <span class="kw">On</span>]
+            <span class="kw">FROM</span> SAP_ZVBAP) <span class="kw">AS</span> ZVBAP
+            <span class="kw">ON</span> ZOMRETM.[SO]=ZVBAP.[SO] <span class="kw">AND</span> ZOMRETM.[SO Item]=ZVBAP.[SO Item]
+            
+        <span class="kw">LEFT</span> <span class="kw">OUTER</span> <span class="kw">JOIN</span> <span class="co">--updated 2017/01/11</span>
+        (   <span class="kw">SELECT</span> <span class="fu">MAX</span>([GRD (Act)]+[GRT (Act)]) <span class="kw">AS</span> [<span class="fu">Max</span> GR <span class="dt">Date</span>],[RMA <span class="dt">Number</span>]
+            <span class="kw">FROM</span> EWM_RETURN_DELIVERY_ITEM
+            <span class="kw">WHERE</span> [Quantity] &lt;&gt; <span class="dv">0</span> <span class="co">--added 2017/01/17</span>
+            <span class="kw">GROUP</span> <span class="kw">BY</span> [RMA <span class="dt">Number</span>]) <span class="kw">AS</span> MAX_ITEM
+            <span class="kw">ON</span> ((ZOMRETM.[RMA <span class="dt">Number</span>]=MAX_ITEM.[RMA <span class="dt">Number</span>])
+                <span class="kw">OR</span>
+                (MAX_ITEM.[RMA <span class="dt">Number</span>] <span class="kw">like</span> <span class="st">&#39;%&#39;</span>+ZOMRETM.[SO]+<span class="st">&#39;%&#39;</span> <span class="kw">AND</span> <span class="kw">RIGHT</span>(MAX_ITEM.[RMA <span class="dt">Number</span>],<span class="dv">6</span>)=ZOMRETM.[SO Item]))
+
+        <span class="kw">LEFT</span> <span class="kw">OUTER</span> <span class="kw">JOIN</span> <span class="co">--updated 2017/01/11</span>
+        (   <span class="kw">SELECT</span> [RMA <span class="dt">Number</span>],[ERP Doc],[<span class="kw">Locked</span>],[Document],[Item],[Item Cat],[Product],[Quantity],[Unit],[GRD (Act)],[GRT (Act)],[Putaway A],
+            [PutwTm A],[Putaway],[Goods Rcpt],[Prod Ord],[UnlDtAct],[UnlTm A],[S<span class="ch">&amp;A</span> Status],[PackStatus],[ERP Error],
+            [Doc Cat],[Origin],[PO],[PO Item],[Item <span class="kw">Type</span>],[Item <span class="kw">Type</span> Description],[Item Cat Description],[Warehouse]
+            <span class="kw">FROM</span> EWM_RETURN_DELIVERY_ITEM) <span class="kw">AS</span> ITEM
+            <span class="kw">ON</span> MAX_ITEM.[RMA <span class="dt">Number</span>]=ITEM.[RMA <span class="dt">Number</span>] <span class="kw">AND</span> MAX_ITEM.[<span class="fu">Max</span> GR <span class="dt">Date</span>]=(ITEM.[GRD (Act)]+ITEM.[GRT (Act)])
+
+        <span class="kw">LEFT</span> <span class="kw">OUTER</span> <span class="kw">JOIN</span>
+        (   <span class="kw">SELECT</span> <span class="kw">DISTINCT</span> [CSR <span class="dt">Number</span>],[<span class="kw">Initial</span> Ericsson Employee-Last],[<span class="kw">Initial</span> Ericsson Employee-First],[Contact Person],[Pick-up City],[Pick-up Region],[Pick-up Postal Code],<span class="fu">MAX</span>([Project Name]) <span class="kw">AS</span> [Project Name]
+            <span class="kw">FROM</span> EBW_ARM_ORDERS
+            <span class="kw">GROUP</span> <span class="kw">BY</span> [CSR <span class="dt">Number</span>],[<span class="kw">Initial</span> Ericsson Employee-Last],[<span class="kw">Initial</span> Ericsson Employee-First],[Contact Person],[Pick-up City],[Pick-up Region],[Pick-up Postal Code]) <span class="kw">AS</span> ARM
+            <span class="kw">ON</span> ZOMRETM.[Customer PO]=ARM.[CSR <span class="dt">Number</span>]
+        
+        <span class="kw">LEFT</span> <span class="kw">OUTER</span> <span class="kw">JOIN</span>
+        (   <span class="kw">SELECT</span> <span class="kw">DISTINCT</span> [CSR <span class="dt">Number</span>],[CSR Item],[Project Name]
+            <span class="kw">FROM</span> EBW_ARM_ORDERS) <span class="kw">AS</span> ARM2
+            <span class="kw">ON</span> ZOMRETM.[Customer PO]=ARM2.[CSR <span class="dt">Number</span>] <span class="kw">AND</span> ZOMRETM.[SO Item]=ARM2.[CSR Item]
+
+        <span class="kw">INNER</span> <span class="kw">JOIN</span>
+        (   <span class="kw">SELECT</span> [Material],[Plnt],[Standard price] 
+            <span class="kw">FROM</span> SAP_MBEW) <span class="kw">AS</span> MBEW
+            <span class="kw">ON</span> ZOMRETM.[Material <span class="dt">Number</span>]=MBEW.[Material] <span class="kw">AND</span> ZOMRETM.[Plant]=MBEW.[Plnt]
+            
+        <span class="kw">LEFT</span> <span class="kw">OUTER</span> <span class="kw">JOIN</span>
+        (   <span class="kw">SELECT</span> [SO],[Sales Org],[Customer PO],[Sold-to Party], [Sales Office] 
+            <span class="kw">FROM</span> SAP_ZVBAK) <span class="kw">AS</span> ZVBAK
+            <span class="kw">ON</span> ZOMRETM.[SO]=ZVBAK.[SO]
+            
+        <span class="kw">LEFT</span> <span class="kw">OUTER</span> <span class="kw">JOIN</span>
+        (   <span class="kw">SELECT</span> [Material], [Plant], [Material <span class="kw">Group</span> Description],[Commodity LV1]                        <span class="co">-- 12/5/2017 - eshanme</span>
+            <span class="kw">FROM</span> BI_MATERIAL_PLANT_SUMMARY) <span class="kw">AS</span> PMASTER
+            <span class="kw">ON</span> ZOMRETM.[Material <span class="dt">Number</span>]=PMASTER.[Material] <span class="kw">AND</span> ZOMRETM.[Plant] = PMASTER.[Plant]
+        
+        <span class="kw">LEFT</span> <span class="kw">OUTER</span> <span class="kw">JOIN</span>
+        (   <span class="kw">SELECT</span> <span class="fu">MAX</span>([<span class="dt">Date</span> Delivered]) <span class="kw">AS</span> [<span class="fu">Max</span> Delivery <span class="dt">Date</span>],<span class="fu">MAX</span>(<span class="kw">RIGHT</span>([Tracking <span class="dt">Number</span>],<span class="dv">5</span>)) <span class="kw">AS</span> [<span class="fu">Max</span> Tracking <span class="dt">Number</span>], <span class="kw">Right</span>([Reference <span class="dt">Number</span>],<span class="dv">8</span>) <span class="kw">AS</span> SO 
+            <span class="kw">FROM</span> UPS_POD_TRACKING 
+            <span class="kw">WHERE</span> [Status]=<span class="st">&#39;Delivered&#39;</span> <span class="kw">AND</span> [Ship <span class="kw">To</span> City]&lt;&gt;<span class="st">&#39;DALLAS&#39;</span>
+            <span class="kw">GROUP</span> <span class="kw">BY</span> <span class="kw">RIGHT</span>([Reference <span class="dt">Number</span>],<span class="dv">8</span>)) MAX_UPS_DELIVERY
+            <span class="kw">ON</span> ZOMRETM.[SO]=MAX_UPS_DELIVERY.[SO]
+        
+        <span class="kw">LEFT</span> <span class="kw">OUTER</span> <span class="kw">JOIN</span>
+        (   <span class="kw">SELECT</span> <span class="kw">DISTINCT</span> [Reference <span class="dt">Number</span>],<span class="fu">MAX</span>(<span class="kw">RIGHT</span>([Tracking <span class="dt">Number</span>],<span class="dv">5</span>)) <span class="kw">AS</span> [<span class="fu">Max</span> Tracking <span class="dt">Number</span>],[Manifest <span class="dt">Date</span>],[Status],([Ship <span class="kw">To</span> City]),
+            [Ship <span class="kw">to</span> State],[Ship <span class="kw">To</span> Country],[Service],[Scheduled Delivery],[<span class="dt">Date</span> Delivered],[Delivery <span class="dt">Time</span>],<span class="kw">Right</span>([Reference <span class="dt">Number</span>],<span class="dv">8</span>) <span class="kw">AS</span> SO
+            <span class="kw">FROM</span> UPS_POD_TRACKING 
+            <span class="kw">WHERE</span> [Status]=<span class="st">&#39;Delivered&#39;</span> <span class="kw">AND</span> [Ship <span class="kw">To</span> City]&lt;&gt;<span class="st">&#39;DALLAS&#39;</span>
+            <span class="kw">GROUP</span> <span class="kw">BY</span> [Reference <span class="dt">Number</span>],[Manifest <span class="dt">Date</span>],[Status],([Ship <span class="kw">To</span> City]),
+            [Ship <span class="kw">to</span> State],[Ship <span class="kw">To</span> Country],[Service],[Scheduled Delivery],[<span class="dt">Date</span> Delivered],[Delivery <span class="dt">Time</span>],<span class="kw">Right</span>([Reference <span class="dt">Number</span>],<span class="dv">8</span>)) <span class="kw">AS</span> UPS   
+            <span class="kw">ON</span> MAX_UPS_DELIVERY.[SO]=UPS.[SO] <span class="kw">AND</span> MAX_UPS_DELIVERY.[<span class="fu">Max</span> Delivery <span class="dt">Date</span>]=UPS.[<span class="dt">Date</span> Delivered] <span class="kw">AND</span> MAX_UPS_DELIVERY.[<span class="fu">Max</span> Tracking <span class="dt">Number</span>]=UPS.[<span class="fu">Max</span> Tracking <span class="dt">Number</span>]
+
+        <span class="kw">LEFT</span> <span class="kw">OUTER</span> <span class="kw">JOIN</span>
+        (   <span class="kw">SELECT</span> [Customer Unit],[Sold <span class="kw">to</span>]
+            <span class="kw">FROM</span> REF_CU_ASSIGNMENT) <span class="kw">AS</span> CU
+            <span class="kw">ON</span> ZVBAK.[Sold-to Party]=CU.[Sold <span class="kw">to</span>]
+            
+        <span class="kw">LEFT</span> <span class="kw">OUTER</span> <span class="kw">JOIN</span>
+        (   <span class="kw">SELECT</span> [Sales Office Description],[Sales Office]
+            <span class="kw">FROM</span> REF_SALES_OFFICE) <span class="kw">AS</span> SOFFICE
+            <span class="kw">ON</span> ZVBAK.[Sales Office]=SOFFICE.[Sales Office]
+            
+        <span class="kw">LEFT</span> <span class="kw">OUTER</span> <span class="kw">JOIN</span>
+        (   <span class="kw">SELECT</span> [SO],[SO Item],<span class="fu">MAX</span>([Region]) <span class="kw">AS</span> REGION,<span class="fu">MAX</span>([Ship <span class="kw">to</span> City]) <span class="kw">AS</span> [Ship <span class="kw">to</span> City],<span class="fu">MAX</span>([Ship <span class="kw">to</span> Zip]) <span class="kw">AS</span> [Ship <span class="kw">to</span> Zip],<span class="fu">MAX</span>([NRO Region]) <span class="kw">AS</span> [NRO Region]
+            <span class="kw">FROM</span> BI_CUSTMON <span class="kw">GROUP</span> <span class="kw">BY</span> [SO],[SO Item]) <span class="kw">AS</span> CUSTMON
+            <span class="kw">ON</span> ZOMRETM.[SO]=CUSTMON.[SO] <span class="kw">AND</span> ZOMRETM.[SO Item]=CUSTMON.[SO Item]
+            
+        <span class="kw">LEFT</span> <span class="kw">OUTER</span> <span class="kw">JOIN</span>
+        (   <span class="kw">SELECT</span> [Delivery],[ActualGMDate],[ActualGMtime],[Distribution status]
+            <span class="kw">FROM</span> SAP_ZZDELMON_HEADER_OUTBOUND) <span class="kw">AS</span> DELMON
+            <span class="kw">ON</span> ZOMRETM.[Delivery]=DELMON.[Delivery]
+
+        <span class="kw">LEFT</span> <span class="kw">OUTER</span> <span class="kw">JOIN</span>
+        (   <span class="kw">SELECT</span> [Sales <span class="kw">Order</span>],[SO Item],[PO],[Delivery Created <span class="kw">On</span>],[Shipment],[Act loading <span class="kw">end</span>],[Act Shipment <span class="kw">Complete</span> <span class="dt">Date</span>],[Actual <span class="kw">Check</span> <span class="kw">in</span> <span class="dt">date</span>],
+            [Actual GM <span class="dt">Date</span>],[Actual Packing <span class="dt">Date</span>],[Actual Shipment <span class="kw">End</span>],[Curr loading <span class="kw">start</span>],
+            [Curr Shipment <span class="kw">Start</span>],[Delivery <span class="dt">Date</span>],[Loading <span class="dt">Date</span>],[Picking <span class="dt">Date</span>],[Planned load <span class="kw">end</span>],[Planned shipment <span class="kw">end</span>],
+            [Planned Shipment <span class="kw">Start</span>],[Shipment Created <span class="kw">On</span>],[Transp <span class="kw">Plan</span> <span class="dt">Date</span>],[Material],[Frieght doc text]
+            <span class="kw">FROM</span> BI_ZZDELMON_OUTBOUND
+            <span class="kw">WHERE</span> [PO] <span class="kw">like</span> <span class="st">&#39;771%&#39;</span> <span class="kw">AND</span> [Shipment] <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">AND</span> [Frieght doc text] <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span>
+            <span class="kw">GROUP</span> <span class="kw">BY</span> [Sales <span class="kw">Order</span>],[SO Item],[PO],[Delivery Created <span class="kw">On</span>],[Shipment],[Act loading <span class="kw">end</span>],[Act Shipment <span class="kw">Complete</span> <span class="dt">Date</span>],[Actual <span class="kw">Check</span> <span class="kw">in</span> <span class="dt">date</span>],
+            [Actual GM <span class="dt">Date</span>],[Actual Packing <span class="dt">Date</span>],[Actual Shipment <span class="kw">End</span>],[Curr loading <span class="kw">start</span>],
+            [Curr Shipment <span class="kw">Start</span>],[Delivery <span class="dt">Date</span>],[Loading <span class="dt">Date</span>],[Picking <span class="dt">Date</span>],[Planned load <span class="kw">end</span>],[Planned shipment <span class="kw">end</span>],
+            [Planned Shipment <span class="kw">Start</span>],[Shipment Created <span class="kw">On</span>],[Transp <span class="kw">Plan</span> <span class="dt">Date</span>],[Material],[Frieght doc text]) <span class="kw">AS</span> BI_DELMON
+            <span class="kw">ON</span> ZOMRETM.[SO]=BI_DELMON.[Sales <span class="kw">Order</span>] <span class="kw">AND</span> ZOMRETM.[SO Item]=BI_DELMON.[SO Item] <span class="kw">AND</span> ZOMRETM.[Material <span class="dt">Number</span>]=BI_DELMON.[Material]
+            
+        <span class="kw">LEFT</span> <span class="kw">OUTER</span> <span class="kw">JOIN</span>
+        (   <span class="kw">SELECT</span> [SO],[SO Item],[ASP Information],[CRM Serial <span class="dt">Number</span>],[Disposition],[GR Quantity],[SO Stock Qty],[CRM Note],[RTV PO/STO <span class="dt">Date</span>],[LC-&gt;BU Text]
+            <span class="kw">FROM</span> SAP_ZOMRET1) <span class="kw">AS</span> ZOMRET1
+            <span class="kw">ON</span> ZOMRETM.[SO]=ZOMRET1.[SO] <span class="kw">AND</span> ZOMRETM.[SO Item]=ZOMRET1.[SO Item]
+            
+        <span class="kw">LEFT</span> <span class="kw">OUTER</span> <span class="kw">JOIN</span>
+        (   <span class="kw">SELECT</span> [SO],[Information <span class="kw">from</span> DCM]
+            <span class="kw">FROM</span> SAP_ZOMVIS1_HEADER) <span class="kw">AS</span> ZOMVIS1
+            <span class="kw">ON</span> ZOMRETM.[SO]=ZOMVIS1.[SO]
+            
+        <span class="kw">LEFT</span> <span class="kw">OUTER</span> <span class="kw">JOIN</span>
+        (   <span class="kw">SELECT</span> <span class="fu">MAX</span>([Delivery <span class="dt">Date</span>]) <span class="kw">AS</span> [<span class="fu">Max</span> Delivery <span class="dt">Date</span>], <span class="fu">MAX</span>([Delivery ETA]) <span class="kw">AS</span> [Delivery ETA], [CSR <span class="dt">Number</span>]
+            <span class="kw">FROM</span> BI_CRST_LPS_SHIPMENTS_CSR
+            <span class="kw">WHERE</span> [Freight Direction] <span class="kw">IN</span> (<span class="st">&#39;Inbound&#39;</span>, <span class="st">&#39;Third Party&#39;</span>)                                                     <span class="co">-- 11/9/2018 - eshanme - Added &#39;Third Party&#39;</span>
+            <span class="kw">GROUP</span> <span class="kw">BY</span> [CSR <span class="dt">Number</span>]) <span class="kw">AS</span> MAX_LPS_DELIVERY
+            <span class="kw">ON</span> ZOMRETM.[Customer PO]=MAX_LPS_DELIVERY.[CSR <span class="dt">Number</span>]
+            
+        <span class="kw">LEFT</span> <span class="kw">OUTER</span> <span class="kw">JOIN</span>
+        (   <span class="kw">SELECT</span> <span class="kw">DISTINCT</span> [Pro <span class="dt">Number</span>],[CSR <span class="dt">Number</span>],[Status],[Delivery <span class="dt">Date</span>],[Destination City],[Carrier Name],[Freight Direction]
+            <span class="kw">FROM</span> BI_CRST_LPS_SHIPMENTS_CSR
+            <span class="kw">WHERE</span> [Freight Direction] <span class="kw">IN</span> (<span class="st">&#39;Inbound&#39;</span>, <span class="st">&#39;Third Party&#39;</span>)                                                     <span class="co">-- 11/9/2018 - eshanme - Added &#39;Third Party&#39;</span>
+            <span class="kw">GROUP</span> <span class="kw">BY</span> [Pro <span class="dt">Number</span>],[CSR <span class="dt">Number</span>],[Status],[Destination City],[Carrier Name],
+            [Freight Direction],[CSR <span class="dt">Number</span>],[Delivery <span class="dt">Date</span>],[Delivery ETA]) <span class="kw">AS</span> LPS
+            <span class="kw">ON</span> MAX_LPS_DELIVERY.[CSR <span class="dt">Number</span>]=LPS.[CSR <span class="dt">Number</span>] <span class="kw">AND</span> MAX_LPS_DELIVERY.[<span class="fu">Max</span> Delivery <span class="dt">Date</span>]=LPS.[Delivery <span class="dt">Date</span>]
+            
+        <span class="kw">LEFT</span> <span class="kw">OUTER</span> <span class="kw">JOIN</span>
+        (   <span class="kw">SELECT</span> [Plant],[Company Region],[Hub]
+            <span class="kw">FROM</span> REF_PLANTS) <span class="kw">AS</span> <span class="fu">REF</span>
+            <span class="kw">ON</span> ZOMRETM.[Plant]=REF.[Plant]
+        
+        <span class="kw">LEFT</span> <span class="kw">OUTER</span> <span class="kw">JOIN</span> REF_NRO_REGIONS <span class="kw">AS</span> ARM_NRO <span class="kw">ON</span> ARM.[Pick-up Region]=ARM_NRO.[State]
+            
+        <span class="kw">WHERE</span> ZOMRETM.[Sales Document <span class="kw">Type</span>] = <span class="st">&#39;ZRE2&#39;</span>
+    
+    <span class="kw">REVOKE</span> <span class="kw">SELECT</span> <span class="kw">ON</span> [BI_RETURNS_E2E] <span class="kw">to</span> <span class="ot">&quot;RNAM_USER&quot;</span>;
+
+        
+        <span class="co">--TABLE_STATUS - Truncating</span>
+    <span class="kw">EXEC</span> UpdateTableStatus <span class="dv">426</span>,<span class="st">&#39;Truncating&#39;</span>,<span class="st">&#39;&#39;</span>;
+
+    <span class="kw">TRUNCATE</span> <span class="kw">TABLE</span> [BI_RETURNS_E2E]
+
+    <span class="co">--TABLE_STATUS - Updating</span>
+    <span class="kw">EXEC</span> UpdateTableStatus <span class="dv">426</span>,<span class="st">&#39;Updating&#39;</span>,<span class="st">&#39;&#39;</span>;   
+    
+    <span class="kw">INSERT</span> <span class="kw">INTO</span> [BI_RETURNS_E2E]
+
+    <span class="kw">SELECT</span> *
+        
+    <span class="kw">FROM</span> #RETURNS_TEMP
+
+    <span class="co">--Drop temp table                      </span>
+    <span class="kw">DROP</span> <span class="kw">TABLE</span> #RETURNS_TEMP;
+
+    
+    <span class="kw">GRANT</span> <span class="kw">SELECT</span> <span class="kw">ON</span> [BI_RETURNS_E2E] <span class="kw">to</span> <span class="ot">&quot;RNAM_USER&quot;</span>;
+    
+
+    <span class="co">--TABLE_STATUS - Success</span>
+    <span class="kw">EXEC</span> UpdateTableStatus <span class="dv">426</span>,<span class="st">&#39;Success&#39;</span>,<span class="st">&#39;End&#39;</span>,<span class="st">&#39;bcamdb.dbo.BI_RETURNS_E2E&#39;</span>,<span class="st">&#39;bcamdb.dbo.BI_RETURNS_E2E&#39;</span>; 
+
+  <span class="kw">END</span> TRY
+  <span class="kw">BEGIN</span> CATCH
+    <span class="co">-- Execute the error retrieval routine.</span>
+         <span class="kw">EXEC</span> UpdateTableStatus <span class="dv">426</span>,<span class="st">&#39;Failed&#39;</span>;
+
+         <span class="kw">GRANT</span> <span class="kw">SELECT</span> <span class="kw">ON</span> [BI_RETURNS_E2E] <span class="kw">to</span> <span class="ot">&quot;RNAM_USER&quot;</span>;
+
+  <span class="kw">END</span> CATCH;
+    
+<span class="kw">END</span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="block-2" class="section level1">
+<h1>Block 2</h1>
+<div class="row">
+<div class="col-md-6">
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Mattis aliquam faucibus purus in massa. Aliquet nec ullamcorper sit amet risus. Lectus urna duis convallis convallis tellus. Nibh mauris cursus mattis molestie a iaculis. Turpis egestas pretium aenean pharetra magna ac. Dis parturient montes nascetur ridiculus mus mauris. Eget sit amet tellus cras. Commodo odio aenean sed adipiscing diam donec adipiscing tristique risus. Viverra aliquet eget sit amet tellus.</p>
+</div>
+<div class="col-md-6">
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"></code></pre></div>
+</div>
+</div>
+</div>
+<div id="block-3" class="section level1">
+<h1>Block 3</h1>
+<div class="row">
+<div class="col-md-6">
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Mattis aliquam faucibus purus in massa. Aliquet nec ullamcorper sit amet risus. Lectus urna duis convallis convallis tellus. Nibh mauris cursus mattis molestie a iaculis. Turpis egestas pretium aenean pharetra magna ac. Dis parturient montes nascetur ridiculus mus mauris. Eget sit amet tellus cras. Commodo odio aenean sed adipiscing diam donec adipiscing tristique risus. Viverra aliquet eget sit amet tellus.</p>
+</div>
+<div class="col-md-6">
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"></code></pre></div>
+</div>
+</div>
+</div>
+<div id="final-stored-procedure" class="section level1">
+<h1>Final Stored Procedure</h1>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">USE [BCAMDB]
+GO
+<span class="op">/</span><span class="er">******</span><span class="st"> </span>Object<span class="op">:</span><span class="st">  </span>StoredProcedure [dbo].[SP_BI_RETURNS_E2E]    Script Date<span class="op">:</span><span class="st"> </span><span class="dv">12</span><span class="op">/</span><span class="dv">06</span><span class="op">/</span><span class="dv">2018</span> <span class="dv">09</span><span class="op">:</span><span class="dv">08</span><span class="op">:</span><span class="dv">48</span> <span class="op">**</span><span class="er">****/</span>
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+ALTER PROCEDURE [dbo].[SP_BI_RETURNS_E2E] AS 
+BEGIN
+    SET NOCOUNT ON;
+    
+    
+  BEGIN TRY
+    
+    <span class="op">--</span>TABLE_STATUS <span class="op">-</span><span class="st"> </span>Querying
+    EXEC UpdateTableStatus <span class="dv">426</span>,<span class="st">&#39;Querying&#39;</span>,<span class="st">&#39;&#39;</span>;
+
+    <span class="op">--</span>Drop temp table <span class="cf">if</span> it exists
+    IF <span class="kw">OBJECT_ID</span>(<span class="st">&#39;tempdb..#RETURNS_TEMP&#39;</span>) IS NOT <span class="ot">NULL</span> DROP TABLE <span class="co">#RETURNS_TEMP;</span>
+    
+    <span class="op">--</span>Create temp table
+    
+    <span class="op">--</span>INSERT QUERY HERE
+    CREATE TABLE <span class="co">#RETURNS_TEMP</span>
+    (
+        [SO]                    <span class="kw">varchar</span>(<span class="dv">50</span>)  NOT <span class="ot">NULL</span>,
+    [SO Item]               <span class="kw">varchar</span>(<span class="dv">50</span>)  NOT <span class="ot">NULL</span>,
+      [SO CREATE DATE]      datetime     <span class="ot">NULL</span>,
+        [SO CREATE TIME]        <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+        [Customer PO]           <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Overdue Indicator]     <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Item Category]         <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Return Reason]         <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Return Reason Text]    <span class="kw">varchar</span>(<span class="dv">150</span>)  <span class="ot">NULL</span>,
+    [Inspection Code]       <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Inspection Text]       <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Item Internal Notes]   <span class="kw">varchar</span>(<span class="dv">255</span>) <span class="ot">NULL</span>,
+    [Inspection Comment]    <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Sales Document Type]   <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Scheduled Return Date] datetime     <span class="ot">NULL</span>,
+    [Material Number]       <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Material Description]  <span class="kw">varchar</span>(<span class="dv">250</span>)  <span class="ot">NULL</span>,
+    [Order Quantity]        float        <span class="ot">NULL</span>,
+    [WBS Element]           <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Plant]                 <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Sloc]                  <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Net Price]             float        <span class="ot">NULL</span>,
+    [Fault Description]     <span class="kw">varchar</span>(<span class="dv">500</span>) <span class="ot">NULL</span>,
+    [Serial Number]         <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Sold to party]         <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Sold to name]          <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Final Ext Customer]    <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Final Ext Customer Name]   <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Refund Type]           <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Order Reason]          <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Reason <span class="cf">for</span> Rejection]  <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Reason <span class="cf">for</span> Rej Text]   <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Cancellation Status]   <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Cancellation Date]     datetime     <span class="ot">NULL</span>,
+    [Created<span class="op">/</span>Changed By]    <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Delivery Block]        <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Approval Block]        <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Delivery]              <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Delivery Status]       <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Replacement SO]        <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Credit Memo]           <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Goods Receipt]         <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [GR Date]               datetime     <span class="ot">NULL</span>,
+    [SO Stock Indicator]    <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [SO Stock Qty]          float        <span class="ot">NULL</span>,
+    [Follow up Activity Code]   <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Follow up Activity]    <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [RMA Request ID]        <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [RMA Item]              <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Vendor RMA Number]     <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Vendor ID]             <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Vendor Name]           <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [RMA Status]            <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Org PO]                <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [PO Number]             <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [PO Vendor]             <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [PO Vendor Name]        <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [RTV PO GR]             <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [RTV PO IR]             <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Smart Returns]         <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [AWB Number]            <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [RMA RfR]               <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [RMA Number]            <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Material R<span class="op">-</span>State]      <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Order Reason Text]     <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Cancellation Flag]     <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Cancellation Time]     <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Shipment Number]       <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Shipment Status]       <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Shipment Date]         datetime     <span class="ot">NULL</span>,
+    [Next Plant]            <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Material Received]     <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Locked]                <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Document]              <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Item]                  <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Item Cat]              <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Product]               <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Quantity]              float        <span class="ot">NULL</span>,
+    [Unit]                  <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [<span class="kw">GRD</span> (Act)]             <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [<span class="kw">GRT</span> (Act)]             <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Putaway A]             <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [PutwTm A]              <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Putaway]               <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Goods Rcpt]            <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Prod Ord]              <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [UnlDtAct]              datetime     <span class="ot">NULL</span>,
+    [UnlTm A]               <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [S<span class="op">&amp;</span>A Status]            <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [PackStatus]            <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [ERP Error]             <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Doc Cat]               <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Origin]                <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [PO]                    <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [PO Item]               <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Item Type]             <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Item Type Description] <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Item Cat Description]  <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [Warehouse]             <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,
+    [CSR Requestor Name]    <span class="kw">varchar</span>(<span class="dv">201</span>) <span class="ot">NULL</span>,
+    [Standard price]        float        <span class="ot">NULL</span>,
+    [Sales Org]             <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,       <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">05</span><span class="op">/</span><span class="dv">11</span>
+    [Material Group]        <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,       <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">05</span><span class="op">/</span><span class="dv">11</span>
+        [UPS Reference Number]      <span class="kw">varchar</span>(<span class="dv">255</span>) <span class="ot">NULL</span>,       <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">05</span><span class="op">/</span><span class="dv">11</span>
+        [UPS Status]                <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,       <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">05</span><span class="op">/</span><span class="dv">11</span>
+        [UPS Ship To City]          <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,       <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">05</span><span class="op">/</span><span class="dv">11</span>
+        [UPS Ship to State]         <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,       <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">05</span><span class="op">/</span><span class="dv">11</span>
+        [UPS Ship To Country]       <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,       <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">05</span><span class="op">/</span><span class="dv">11</span>
+        [UPS Service]               <span class="kw">varchar</span>(<span class="dv">255</span>)     <span class="ot">NULL</span>,       <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">05</span><span class="op">/</span><span class="dv">11</span>
+        [UPS Scheduled Delivery]    datetime     <span class="ot">NULL</span>,       <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">05</span><span class="op">/</span><span class="dv">11</span>
+        [UPS Date Delivered]        datetime     <span class="ot">NULL</span>,       <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">05</span><span class="op">/</span><span class="dv">11</span>
+        [UPS Delivery Time]         <span class="kw">varchar</span>(<span class="dv">50</span>)  <span class="ot">NULL</span>,       <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">05</span><span class="op">/</span><span class="dv">11</span>
+        [Customer]              <span class="kw">varchar</span>(<span class="dv">50</span>)  Null,       <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">05</span><span class="op">/</span><span class="dv">16</span>
+        [UoM]                   <span class="kw">varchar</span>(<span class="dv">50</span>)  Null,       <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">06</span><span class="op">/</span><span class="dv">14</span>
+        [State]                 <span class="kw">varchar</span>(<span class="dv">50</span>)  Null,       <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">06</span><span class="op">/</span><span class="dv">14</span>
+        [City]                  <span class="kw">varchar</span>(<span class="dv">100</span>)     Null,       <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">06</span><span class="op">/</span><span class="dv">14</span>
+        [Zip]                   <span class="kw">varchar</span>(<span class="dv">50</span>)  Null,       <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">06</span><span class="op">/</span><span class="dv">14</span>
+        [NRO Region]            <span class="kw">varchar</span>(<span class="dv">50</span>)  Null,       <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">06</span><span class="op">/</span><span class="dv">14</span>
+        [GM Date]               <span class="kw">varchar</span>(<span class="dv">50</span>)  Null,       <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">06</span><span class="op">/</span><span class="dv">14</span>
+        [GM Time]               <span class="kw">varchar</span>(<span class="dv">50</span>)  Null,       <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">06</span><span class="op">/</span><span class="dv">14</span>
+        [Distribution status]   <span class="kw">varchar</span>(<span class="dv">50</span>)  Null,       <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">06</span><span class="op">/</span><span class="dv">14</span>
+        [ASP Information]               <span class="kw">varchar</span>(<span class="dv">255</span>)    Null,        <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">10</span><span class="op">/</span><span class="dv">10</span>
+        [CRM Serial Number]             <span class="kw">varchar</span>(<span class="dv">100</span>)        Null,        <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">10</span><span class="op">/</span><span class="dv">10</span> 
+        [Disposition]                   <span class="kw">varchar</span>(<span class="dv">100</span>)    Null,        <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">10</span><span class="op">/</span><span class="dv">10</span> 
+        [GR Quantity]                   float           Null,        <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">10</span><span class="op">/</span><span class="dv">10</span>
+        [SO Stock Quantity]             float           Null,        <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">10</span><span class="op">/</span><span class="dv">10</span>
+        [CRM Note]                      <span class="kw">varchar</span>(<span class="dv">255</span>)    Null,        <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">10</span><span class="op">/</span><span class="dv">10</span> 
+    [RTV PO<span class="op">/</span>STO Date]               datetime        Null,        <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">10</span><span class="op">/</span><span class="dv">10</span>
+    [LC-&gt;BU Text]                   <span class="kw">varchar</span>(<span class="dv">255</span>)    Null,        <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">10</span><span class="op">/</span><span class="dv">10</span>
+    [Last Changed On]               datetime        Null,        <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">10</span><span class="op">/</span><span class="dv">10</span>
+    [Information from DCM]          <span class="kw">varchar</span>(<span class="dv">255</span>)    Null,        <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">10</span><span class="op">/</span><span class="dv">10</span>
+    [LPS Pro Number]                <span class="kw">varchar</span>(<span class="dv">100</span>)    Null,        <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">11</span><span class="op">/</span><span class="dv">30</span>
+        [LPS Status]                    <span class="kw">varchar</span>(<span class="dv">50</span>)     Null,        <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">11</span><span class="op">/</span><span class="dv">30</span>
+        [LPS Carrier Name]              <span class="kw">varchar</span>(<span class="dv">100</span>)    Null,        <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">11</span><span class="op">/</span><span class="dv">30</span>
+        [LPS Delivery ETA]              datetime        Null,        <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">11</span><span class="op">/</span><span class="dv">30</span>
+        [LPS Delivery Date]             datetime        Null,        <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">11</span><span class="op">/</span><span class="dv">30</span>
+        [RTV Delivery Created On]               datetime        Null,        <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">11</span><span class="op">/</span><span class="dv">30</span>
+        [RTV Shipment]                          <span class="kw">varchar</span>(<span class="dv">50</span>)     Null,        <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">11</span><span class="op">/</span><span class="dv">30</span>
+        [RTV Freight Doc Text]                  <span class="kw">varchar</span>(<span class="dv">100</span>)    Null,        <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">11</span><span class="op">/</span><span class="dv">30</span>
+        [RTV Act loading end]                   datetime        Null,        <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">11</span><span class="op">/</span><span class="dv">30</span>
+        [RTV Act Shipment Complete Date]        datetime        Null,        <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">11</span><span class="op">/</span><span class="dv">30</span>
+        [RTV Actual Check <span class="cf">in</span> date]              datetime        Null,        <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">11</span><span class="op">/</span><span class="dv">30</span>
+        [RTV Actual GM Date]                    datetime        Null,        <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">11</span><span class="op">/</span><span class="dv">30</span>
+        [RTV Actual Packing Date]               datetime        Null,        <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">11</span><span class="op">/</span><span class="dv">30</span>
+        [RTV Actual Shipment End]               datetime        Null,        <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">11</span><span class="op">/</span><span class="dv">30</span>
+        [RTV Curr loading start]                datetime        Null,        <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">11</span><span class="op">/</span><span class="dv">30</span>
+        [RTV Curr Shipment Start]               datetime        Null,        <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">11</span><span class="op">/</span><span class="dv">30</span>
+        [RTV Delivery Date]                     datetime        Null,        <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">11</span><span class="op">/</span><span class="dv">30</span>
+        [RTV Loading Date]                      datetime        Null,        <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">11</span><span class="op">/</span><span class="dv">30</span>
+        [RTV Picking Date]                      datetime        Null,        <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">11</span><span class="op">/</span><span class="dv">30</span>
+        [RTV Planned load end]                  datetime        Null,        <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">11</span><span class="op">/</span><span class="dv">30</span>
+        [RTV Planned shipment end]              datetime        Null,        <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">11</span><span class="op">/</span><span class="dv">30</span>
+        [RTV Planned Shipment Start]            datetime        Null,        <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">11</span><span class="op">/</span><span class="dv">30</span>
+        [RTV Shipment Created On]               datetime        Null,        <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">11</span><span class="op">/</span><span class="dv">30</span>
+        [RTV Transp Plan Date]                  datetime        Null,        <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">11</span><span class="op">/</span><span class="dv">30</span>
+        [Contact Person]                        <span class="kw">varchar</span>(<span class="dv">50</span>)     Null,        <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">12</span><span class="op">/</span><span class="dv">12</span>
+        [Commodity LV1]                         <span class="kw">varchar</span>(<span class="dv">250</span>)    Null,        <span class="op">--</span>added <span class="dv">2017</span><span class="op">/</span><span class="dv">02</span><span class="op">/</span><span class="dv">19</span>
+        [Company Region]                        <span class="kw">varchar</span>(<span class="dv">50</span>)     Null,        <span class="op">--</span>added <span class="dv">2017</span><span class="op">/</span><span class="dv">02</span><span class="op">/</span><span class="dv">28</span>
+        [Hub]                                   <span class="kw">varchar</span>(<span class="dv">50</span>)     Null,        <span class="op">--</span>added <span class="dv">2017</span><span class="op">/</span><span class="dv">02</span><span class="op">/</span><span class="dv">28</span>
+        [Project Name]                          <span class="kw">varchar</span>(<span class="dv">50</span>)     Null,        <span class="op">--</span>added <span class="dv">2017</span><span class="op">/</span><span class="dv">04</span><span class="op">/</span><span class="dv">28</span>
+        Primary <span class="kw">Key</span>             ([SO], [SO item])
+    )   ;
+
+
+    INSERT INTO <span class="co">#RETURNS_TEMP</span>
+
+        SELECT
+        
+        ZOMRETM.[SO],
+        ZOMRETM.[SO Item],  
+        ZVBAP.[CREATED ON] AS [SO CREATE DATE],
+        ZVBAP.[CREATED ON TIME] AS [SO CREATE TIME],
+        ZOMRETM.[Customer PO],
+        ZOMRETM.[Overdue Indicator],
+        ZOMRETM.[Item Category],
+        ZOMRETM.[Return Reason],
+        ZOMRETM.[Return Reason Text],
+        ZOMRETM.[Inspection Code],
+        ZOMRETM.[Inspection Text],
+        ZOMRETM.[Item Internal Notes],
+        ZOMRETM.[Inspection Comment],
+        ZOMRETM.[Sales Document Type],
+        ZOMRETM.[Scheduled Return Date],
+        ZOMRETM.[Material Number],
+        ZOMRETM.[Material Description],
+        ZOMRETM.[Order Quantity],
+        ZOMRETM.[WBS Element],
+        ZOMRETM.[Plant],
+        ZOMRETM.[Sloc],
+        ZOMRETM.[Net Price],
+        ZOMRETM.[Fault Description],
+        ZOMRETM.[Serial Number],
+        ZOMRETM.[Sold to party],
+        ZOMRETM.[Sold to name],
+        ZOMRETM.[Final Ext Customer],
+        ZOMRETM.[Final Ext Customer Name],
+        ZOMRETM.[Refund Type],
+        ZOMRETM.[Order Reason],
+        ZOMRETM.[Reason <span class="cf">for</span> Rejection],
+        ZOMRETM.[Reason <span class="cf">for</span> Rej Text],
+        ZOMRETM.[Cancellation Status],
+        ZOMRETM.[Cancellation Date],
+        ZOMRETM.[Created<span class="op">/</span>Changed By],
+        ZOMRETM.[Delivery Block],
+        ZOMRETM.[Approval Block],
+        ZOMRETM.[Delivery],
+        ZOMRETM.[Delivery Status],
+        ZOMRETM.[Replacement SO],
+        ZOMRETM.[Credit Memo],
+        ZOMRETM.[Goods Receipt],
+        ZOMRETM.[GR Date],
+        ZOMRETM.[SO Stock Indicator],
+        ZOMRETM.[SO Stock Qty],
+        ZOMRETM.[Follow up Activity Code],
+        ZOMRETM.[Follow up Activity],
+        ZOMRETM.[RMA Request ID],
+        ZOMRETM.[RMA Item],
+        ZOMRETM.[Vendor RMA Number],
+        ZOMRETM.[Vendor ID],
+        ZOMRETM.[Vendor Name],
+        ZOMRETM.[RMA Status],
+        ZOMRETM.[Org PO],
+        ZOMRETM.[PO Number],
+        ZOMRETM.[PO Vendor],
+        ZOMRETM.[PO Vendor Name],
+        ZOMRETM.[RTV PO GR],
+        ZOMRETM.[RTV PO IR],
+        ZOMRETM.[Smart Returns],
+        ZOMRETM.[AWB Number],
+        ZOMRETM.[RMA RfR],
+        ZOMRETM.[RMA Number],
+        ZOMRETM.[Material R<span class="op">-</span>State],
+        ZOMRETM.[Order Reason Text],
+        ZOMRETM.[Cancellation Flag],
+        ZOMRETM.[Cancellation Time],
+        ZOMRETM.[Shipment Number],
+        ZOMRETM.[Shipment Status],
+        ZOMRETM.[Shipment Date],
+        ZOMRETM.[Next Plant],
+        ZOMRETM.[Material Received],
+        ITEM.[Locked],
+        ITEM.[Document],
+        ITEM.[Item],
+        ITEM.[Item Cat],
+        ITEM.[Product],
+        ITEM.[Quantity],
+        ITEM.[Unit],
+        ITEM.[<span class="kw">GRD</span> (Act)],
+        ITEM.[<span class="kw">GRT</span> (Act)],
+        ITEM.[Putaway A],
+        ITEM.[PutwTm A],
+        ITEM.[Putaway],
+        ITEM.[Goods Rcpt],
+        ITEM.[Prod Ord],
+        ITEM.[UnlDtAct],
+        ITEM.[UnlTm A],
+        ITEM.[S<span class="op">&amp;</span>A Status],
+        ITEM.[PackStatus],
+        ITEM.[ERP Error],
+        ITEM.[Doc Cat],
+        ITEM.[Origin],
+        ITEM.[PO],
+        ITEM.[PO Item],
+        ITEM.[Item Type],
+        ITEM.[Item Type Description],
+        ITEM.[Item Cat Description],
+        ITEM.[Warehouse],
+        ARM.[Initial Ericsson Employee<span class="op">-</span>First]<span class="op">+</span><span class="st">&#39; &#39;</span><span class="op">+</span>ARM.[Initial Ericsson Employee<span class="op">-</span>Last] AS [CSR Requestor Name],
+        MBEW.[Standard price],
+        ZVBAK.[Sales Org], <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">05</span><span class="op">/</span><span class="dv">11</span>
+        PMASTER.[Material Group Description] AS [Material Group], <span class="op">--</span>changed <span class="dv">2017</span><span class="op">/</span><span class="dv">12</span><span class="op">/</span><span class="dv">06</span>
+        UPS.[Reference Number] AS [UPS Reference Number], <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">05</span><span class="op">/</span><span class="dv">11</span>
+        UPS.[Status] AS [UPS Status], <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">05</span><span class="op">/</span><span class="dv">11</span>
+        UPS.[Ship to City] AS [UPS Ship to City], <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">05</span><span class="op">/</span><span class="dv">11</span>
+        UPS.[Ship to State] AS [UPS Ship to State], <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">05</span><span class="op">/</span><span class="dv">11</span>
+        UPS.[Ship To Country] AS [UPS Ship to Country], <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">05</span><span class="op">/</span><span class="dv">11</span>
+        UPS.[Service] AS [UPS Service], <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">05</span><span class="op">/</span><span class="dv">11</span>
+        UPS.[Scheduled Delivery] AS [UPS Scheduled Delivery], <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">05</span><span class="op">/</span><span class="dv">11</span>
+        UPS.[Date Delivered] AS [UPS Date Delivered], <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">05</span><span class="op">/</span><span class="dv">11</span>
+        UPS.[Delivery Time] AS [UPS Delivery Time], <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">05</span><span class="op">/</span><span class="dv">11</span>
+        CASE 
+            WHEN CU.[Customer Unit] IS NOT <span class="ot">NULL</span> THEN CU.[Customer Unit]
+            WHEN ZVBAK.[Customer PO] LIKE <span class="st">&#39;%ICRRB%&#39;</span> THEN <span class="st">&#39;INTERNAL&#39;</span> 
+            ELSE SOFFICE.[Sales Office Description]
+        END AS [Customer], <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">05</span><span class="op">/</span><span class="dv">16</span>
+        ZVBAP.[UoM], <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">06</span><span class="op">/</span><span class="dv">14</span>
+        <span class="kw">COALESCE</span>(CUSTMON.[Region],ARM.[Pick<span class="op">-</span>up Region]) AS [State], <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">06</span><span class="op">/</span><span class="dv">14</span> <span class="op">--</span>updated <span class="dv">2017</span><span class="op">/</span><span class="dv">04</span><span class="op">/</span><span class="dv">24</span>
+        <span class="kw">COALESCE</span>(CUSTMON.[Ship to City],ARM.[Pick<span class="op">-</span>up City]) AS [City], <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">06</span><span class="op">/</span><span class="dv">14</span> <span class="op">--</span>updated <span class="dv">2017</span><span class="op">/</span><span class="dv">04</span><span class="op">/</span><span class="dv">24</span>
+        <span class="kw">COALESCE</span>(CUSTMON.[Ship to Zip],ARM.[Pick<span class="op">-</span>up Postal Code]) AS [Zip], <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">06</span><span class="op">/</span><span class="dv">14</span> <span class="op">--</span>updated <span class="dv">2017</span><span class="op">/</span><span class="dv">04</span><span class="op">/</span><span class="dv">24</span>
+        <span class="kw">COALESCE</span>(CUSTMON.[NRO Region],ARM_NRO.[NRO Region]), <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">06</span><span class="op">/</span><span class="dv">14</span> <span class="op">--</span>updated <span class="dv">2017</span><span class="op">/</span><span class="dv">04</span><span class="op">/</span><span class="dv">24</span>
+        DELMON.[ActualGMDate] AS [GM Date], <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">06</span><span class="op">/</span><span class="dv">14</span>
+        DELMON.[ActualGMtime] AS [GM Time], <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">06</span><span class="op">/</span><span class="dv">14</span>
+        DELMON.[Distribution status], <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">06</span><span class="op">/</span><span class="dv">14</span>
+        ZOMRET1.[ASP Information], <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">10</span><span class="op">/</span><span class="dv">10</span>
+        ZOMRET1.[CRM Serial Number], <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">10</span><span class="op">/</span><span class="dv">10</span>
+        ZOMRET1.[Disposition], <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">10</span><span class="op">/</span><span class="dv">10</span>
+        ZOMRET1.[GR Quantity], <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">10</span><span class="op">/</span><span class="dv">10</span>
+        ZOMRET1.[SO Stock Qty] AS [SO Stock Quantity], <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">10</span><span class="op">/</span><span class="dv">10</span>
+        ZOMRET1.[CRM Note], <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">10</span><span class="op">/</span><span class="dv">10</span>
+        ZOMRET1.[RTV PO<span class="op">/</span>STO Date], <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">10</span><span class="op">/</span><span class="dv">10</span>
+        ZOMRET1.[LC-&gt;BU Text], <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">10</span><span class="op">/</span><span class="dv">10</span>
+        ZVBAP.[Last Changed On], <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">10</span><span class="op">/</span><span class="dv">10</span>
+        CASE 
+            WHEN ZOMRETM.[Reason <span class="cf">for</span> Rejection] IS NOT <span class="ot">NULL</span> AND ITEM.[<span class="kw">GRD</span> (Act)] IS <span class="ot">NULL</span> THEN <span class="ot">NULL</span>
+            ELSE ZOMVIS1.[Information from DCM]
+        END AS [Informantion from DCM], <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">10</span><span class="op">/</span><span class="dv">10</span>
+        LPS.[Pro Number] AS [LPS Pro Number], <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">11</span><span class="op">/</span><span class="dv">30</span>
+        LPS.[Status] AS [LPS Status], <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">11</span><span class="op">/</span><span class="dv">30</span>
+        LPS.[Carrier Name] AS [LPS Carrier Name], <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">11</span><span class="op">/</span><span class="dv">30</span>
+        MAX_LPS_DELIVERY.[Delivery ETA] AS [LPS Delivery ETA],                                                      <span class="op">--</span><span class="st"> </span>added <span class="op">-</span><span class="st"> </span><span class="dv">11</span><span class="op">/</span><span class="dv">9</span><span class="op">/</span><span class="dv">2018</span>
+        LPS.[Delivery Date] AS [LPS Delivery Date], <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">11</span><span class="op">/</span><span class="dv">30</span>
+        BI_DELMON.[Delivery Created On] AS [RTV Delivery Created On], <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">11</span><span class="op">/</span><span class="dv">30</span>
+        BI_DELMON.[Shipment] AS [RTV Shipment], <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">11</span><span class="op">/</span><span class="dv">30</span>
+        BI_DELMON.[Frieght doc text] AS [RTV Freight Doc Text], <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">11</span><span class="op">/</span><span class="dv">30</span>
+        BI_DELMON.[Act loading end] AS [RTV Act loading end], <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">11</span><span class="op">/</span><span class="dv">30</span>
+        BI_DELMON.[Act Shipment Complete Date] AS [RTV Act Shipment Complete Date], <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">11</span><span class="op">/</span><span class="dv">30</span>
+        BI_DELMON.[Actual Check <span class="cf">in</span> date] AS [RTV Actual Check <span class="cf">in</span> date], <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">11</span><span class="op">/</span><span class="dv">30</span>
+        BI_DELMON.[Actual GM Date] AS [RTV Actual GM Date], <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">11</span><span class="op">/</span><span class="dv">30</span>
+        BI_DELMON.[Actual Packing Date] AS [RTV Actual Packing Date], <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">11</span><span class="op">/</span><span class="dv">30</span>
+        BI_DELMON.[Actual Shipment End] AS [RTV Actual Shipment End], <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">11</span><span class="op">/</span><span class="dv">30</span>
+        BI_DELMON.[Curr loading start] AS [RTV Curr loading start], <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">11</span><span class="op">/</span><span class="dv">30</span>
+        BI_DELMON.[Curr Shipment Start] AS [RTV Curr Shipment Start], <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">11</span><span class="op">/</span><span class="dv">30</span>
+        BI_DELMON.[Delivery Date] AS [RTV Delivery Date], <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">11</span><span class="op">/</span><span class="dv">30</span>
+        BI_DELMON.[Loading Date] AS [RTV Loading Date], <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">11</span><span class="op">/</span><span class="dv">30</span>
+        BI_DELMON.[Picking Date] AS [RTV Picking Date], <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">11</span><span class="op">/</span><span class="dv">30</span>
+        BI_DELMON.[Planned load end] AS [RTV Planned load end], <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">11</span><span class="op">/</span><span class="dv">30</span>
+        BI_DELMON.[Planned shipment end] AS [RTV Planned shipment end], <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">11</span><span class="op">/</span><span class="dv">30</span>
+        BI_DELMON.[Planned Shipment Start] AS [RTV Planned Shipment Start], <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">11</span><span class="op">/</span><span class="dv">30</span>
+        BI_DELMON.[Shipment Created On] AS [RTV Shipment Created On], <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">11</span><span class="op">/</span><span class="dv">30</span>
+        BI_DELMON.[Transp Plan Date] AS [RTV Transp Plan Date], <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">11</span><span class="op">/</span><span class="dv">30</span>
+        ARM.[Contact Person], <span class="op">--</span>added <span class="dv">2016</span><span class="op">/</span><span class="dv">12</span><span class="op">/</span><span class="dv">12</span>
+        PMASTER.[Commodity LV1], <span class="op">--</span>added <span class="dv">2017</span><span class="op">/</span><span class="dv">02</span><span class="op">/</span><span class="dv">19</span>
+        REF.[Company Region], <span class="op">--</span>added <span class="dv">2017</span><span class="op">/</span><span class="dv">02</span><span class="op">/</span><span class="dv">28</span>
+        REF.[Hub], <span class="op">--</span>added <span class="dv">2017</span><span class="op">/</span><span class="dv">02</span><span class="op">/</span><span class="dv">28</span>
+        <span class="kw">COALESCE</span>(ARM2.[Project Name],ARM.[Project Name]) AS [Project Name] <span class="op">--</span>added <span class="dv">2017</span><span class="op">/</span><span class="dv">04</span><span class="op">/</span><span class="dv">28</span>
+
+        
+        FROM SAP_ZOMRETM AS ZOMRETM
+
+        INNER JOIN
+        (   SELECT [SO],[SO Item],[Reason <span class="cf">for</span> Rejection],[CREATED ON],[CREATED ON TIME],[UoM],[Last Changed On]
+            FROM SAP_ZVBAP) AS ZVBAP
+            ON ZOMRETM.[SO]=ZVBAP.[SO] AND ZOMRETM.[SO Item]=ZVBAP.[SO Item]
+            
+        LEFT OUTER JOIN <span class="op">--</span>updated <span class="dv">2017</span><span class="op">/</span><span class="dv">01</span><span class="op">/</span><span class="dv">11</span>
+        (   SELECT <span class="kw">MAX</span>([<span class="kw">GRD</span> (Act)]<span class="op">+</span>[<span class="kw">GRT</span> (Act)]) AS [Max GR Date],[RMA Number]
+            FROM EWM_RETURN_DELIVERY_ITEM
+            WHERE [Quantity] <span class="op">&lt;</span><span class="er">&gt;</span><span class="st"> </span><span class="dv">0</span> <span class="op">--</span>added <span class="dv">2017</span><span class="op">/</span><span class="dv">01</span><span class="op">/</span><span class="dv">17</span>
+            GROUP BY [RMA Number]) AS MAX_ITEM
+            <span class="kw">ON</span> ((ZOMRETM.[RMA Number]=MAX_ITEM.[RMA Number])
+                OR
+                (MAX_ITEM.[RMA Number] like <span class="st">&#39;%&#39;</span><span class="op">+</span>ZOMRETM.[SO]<span class="op">+</span><span class="st">&#39;%&#39;</span> AND <span class="kw">RIGHT</span>(MAX_ITEM.[RMA Number],<span class="dv">6</span>)=ZOMRETM.[SO Item]))
+
+        LEFT OUTER JOIN <span class="op">--</span>updated <span class="dv">2017</span><span class="op">/</span><span class="dv">01</span><span class="op">/</span><span class="dv">11</span>
+        (   SELECT [RMA Number],[ERP Doc],[Locked],[Document],[Item],[Item Cat],[Product],[Quantity],[Unit],[<span class="kw">GRD</span> (Act)],[<span class="kw">GRT</span> (Act)],[Putaway A],
+            [PutwTm A],[Putaway],[Goods Rcpt],[Prod Ord],[UnlDtAct],[UnlTm A],[S<span class="op">&amp;</span>A Status],[PackStatus],[ERP Error],
+            [Doc Cat],[Origin],[PO],[PO Item],[Item Type],[Item Type Description],[Item Cat Description],[Warehouse]
+            FROM EWM_RETURN_DELIVERY_ITEM) AS ITEM
+            ON MAX_ITEM.[RMA Number]=ITEM.[RMA Number] AND MAX_ITEM.[Max GR Date]=(ITEM.[<span class="kw">GRD</span> (Act)]<span class="op">+</span>ITEM.[<span class="kw">GRT</span> (Act)])
+
+        LEFT OUTER JOIN
+        (   SELECT DISTINCT [CSR Number],[Initial Ericsson Employee<span class="op">-</span>Last],[Initial Ericsson Employee<span class="op">-</span>First],[Contact Person],[Pick<span class="op">-</span>up City],[Pick<span class="op">-</span>up Region],[Pick<span class="op">-</span>up Postal Code],<span class="kw">MAX</span>([Project Name]) AS [Project Name]
+            FROM EBW_ARM_ORDERS
+            GROUP BY [CSR Number],[Initial Ericsson Employee<span class="op">-</span>Last],[Initial Ericsson Employee<span class="op">-</span>First],[Contact Person],[Pick<span class="op">-</span>up City],[Pick<span class="op">-</span>up Region],[Pick<span class="op">-</span>up Postal Code]) AS ARM
+            ON ZOMRETM.[Customer PO]=ARM.[CSR Number]
+        
+        LEFT OUTER JOIN
+        (   SELECT DISTINCT [CSR Number],[CSR Item],[Project Name]
+            FROM EBW_ARM_ORDERS) AS ARM2
+            ON ZOMRETM.[Customer PO]=ARM2.[CSR Number] AND ZOMRETM.[SO Item]=ARM2.[CSR Item]
+
+        INNER JOIN
+        (   SELECT [Material],[Plnt],[Standard price] 
+            FROM SAP_MBEW) AS MBEW
+            ON ZOMRETM.[Material Number]=MBEW.[Material] AND ZOMRETM.[Plant]=MBEW.[Plnt]
+            
+        LEFT OUTER JOIN
+        (   SELECT [SO],[Sales Org],[Customer PO],[Sold<span class="op">-</span>to Party], [Sales Office] 
+            FROM SAP_ZVBAK) AS ZVBAK
+            ON ZOMRETM.[SO]=ZVBAK.[SO]
+            
+        LEFT OUTER JOIN
+        (   SELECT [Material], [Plant], [Material Group Description],[Commodity LV1]                        <span class="op">--</span><span class="st"> </span><span class="dv">12</span><span class="op">/</span><span class="dv">5</span><span class="op">/</span><span class="dv">2017</span> <span class="op">-</span><span class="st"> </span>eshanme
+            FROM BI_MATERIAL_PLANT_SUMMARY) AS PMASTER
+            ON ZOMRETM.[Material Number]=PMASTER.[Material] AND ZOMRETM.[Plant] =<span class="st"> </span>PMASTER.[Plant]
+        
+        LEFT OUTER JOIN
+        (   SELECT <span class="kw">MAX</span>([Date Delivered]) AS [Max Delivery Date],<span class="kw">MAX</span>(<span class="kw">RIGHT</span>([Tracking Number],<span class="dv">5</span>)) AS [Max Tracking Number], <span class="kw">Right</span>([Reference Number],<span class="dv">8</span>) AS SO 
+            FROM UPS_POD_TRACKING 
+            WHERE [Status]=<span class="st">&#39;Delivered&#39;</span> AND [Ship To City]<span class="op">&lt;</span><span class="er">&gt;</span><span class="st">&#39;DALLAS&#39;</span>
+            GROUP BY <span class="kw">RIGHT</span>([Reference Number],<span class="dv">8</span>)) MAX_UPS_DELIVERY
+            ON ZOMRETM.[SO]=MAX_UPS_DELIVERY.[SO]
+        
+        LEFT OUTER JOIN
+        (   SELECT DISTINCT [Reference Number],<span class="kw">MAX</span>(<span class="kw">RIGHT</span>([Tracking Number],<span class="dv">5</span>)) AS [Max Tracking Number],[Manifest Date],[Status],([Ship To City]),
+            [Ship to State],[Ship To Country],[Service],[Scheduled Delivery],[Date Delivered],[Delivery Time],<span class="kw">Right</span>([Reference Number],<span class="dv">8</span>) AS SO
+            FROM UPS_POD_TRACKING 
+            WHERE [Status]=<span class="st">&#39;Delivered&#39;</span> AND [Ship To City]<span class="op">&lt;</span><span class="er">&gt;</span><span class="st">&#39;DALLAS&#39;</span>
+            GROUP BY [Reference Number],[Manifest Date],[Status],([Ship To City]),
+            [Ship to State],[Ship To Country],[Service],[Scheduled Delivery],[Date Delivered],[Delivery Time],<span class="kw">Right</span>([Reference Number],<span class="dv">8</span>)) AS UPS   
+            ON MAX_UPS_DELIVERY.[SO]=UPS.[SO] AND MAX_UPS_DELIVERY.[Max Delivery Date]=UPS.[Date Delivered] AND MAX_UPS_DELIVERY.[Max Tracking Number]=UPS.[Max Tracking Number]
+
+        LEFT OUTER JOIN
+        (   SELECT [Customer Unit],[Sold to]
+            FROM REF_CU_ASSIGNMENT) AS CU
+            ON ZVBAK.[Sold<span class="op">-</span>to Party]=CU.[Sold to]
+            
+        LEFT OUTER JOIN
+        (   SELECT [Sales Office Description],[Sales Office]
+            FROM REF_SALES_OFFICE) AS SOFFICE
+            ON ZVBAK.[Sales Office]=SOFFICE.[Sales Office]
+            
+        LEFT OUTER JOIN
+        (   SELECT [SO],[SO Item],<span class="kw">MAX</span>([Region]) AS REGION,<span class="kw">MAX</span>([Ship to City]) AS [Ship to City],<span class="kw">MAX</span>([Ship to Zip]) AS [Ship to Zip],<span class="kw">MAX</span>([NRO Region]) AS [NRO Region]
+            FROM BI_CUSTMON GROUP BY [SO],[SO Item]) AS CUSTMON
+            ON ZOMRETM.[SO]=CUSTMON.[SO] AND ZOMRETM.[SO Item]=CUSTMON.[SO Item]
+            
+        LEFT OUTER JOIN
+        (   SELECT [Delivery],[ActualGMDate],[ActualGMtime],[Distribution status]
+            FROM SAP_ZZDELMON_HEADER_OUTBOUND) AS DELMON
+            ON ZOMRETM.[Delivery]=DELMON.[Delivery]
+
+        LEFT OUTER JOIN
+        (   SELECT [Sales Order],[SO Item],[PO],[Delivery Created On],[Shipment],[Act loading end],[Act Shipment Complete Date],[Actual Check <span class="cf">in</span> date],
+            [Actual GM Date],[Actual Packing Date],[Actual Shipment End],[Curr loading start],
+            [Curr Shipment Start],[Delivery Date],[Loading Date],[Picking Date],[Planned load end],[Planned shipment end],
+            [Planned Shipment Start],[Shipment Created On],[Transp Plan Date],[Material],[Frieght doc text]
+            FROM BI_ZZDELMON_OUTBOUND
+            WHERE [PO] like <span class="st">&#39;771%&#39;</span> AND [Shipment] IS NOT <span class="ot">NULL</span> AND [Frieght doc text] IS NOT <span class="ot">NULL</span>
+            GROUP BY [Sales Order],[SO Item],[PO],[Delivery Created On],[Shipment],[Act loading end],[Act Shipment Complete Date],[Actual Check <span class="cf">in</span> date],
+            [Actual GM Date],[Actual Packing Date],[Actual Shipment End],[Curr loading start],
+            [Curr Shipment Start],[Delivery Date],[Loading Date],[Picking Date],[Planned load end],[Planned shipment end],
+            [Planned Shipment Start],[Shipment Created On],[Transp Plan Date],[Material],[Frieght doc text]) AS BI_DELMON
+            ON ZOMRETM.[SO]=BI_DELMON.[Sales Order] AND ZOMRETM.[SO Item]=BI_DELMON.[SO Item] AND ZOMRETM.[Material Number]=BI_DELMON.[Material]
+            
+        LEFT OUTER JOIN
+        (   SELECT [SO],[SO Item],[ASP Information],[CRM Serial Number],[Disposition],[GR Quantity],[SO Stock Qty],[CRM Note],[RTV PO<span class="op">/</span>STO Date],[LC-&gt;BU Text]
+            FROM SAP_ZOMRET1) AS ZOMRET1
+            ON ZOMRETM.[SO]=ZOMRET1.[SO] AND ZOMRETM.[SO Item]=ZOMRET1.[SO Item]
+            
+        LEFT OUTER JOIN
+        (   SELECT [SO],[Information from DCM]
+            FROM SAP_ZOMVIS1_HEADER) AS ZOMVIS1
+            ON ZOMRETM.[SO]=ZOMVIS1.[SO]
+            
+        LEFT OUTER JOIN
+        (   SELECT <span class="kw">MAX</span>([Delivery Date]) AS [Max Delivery Date], <span class="kw">MAX</span>([Delivery ETA]) AS [Delivery ETA], [CSR Number]
+            FROM BI_CRST_LPS_SHIPMENTS_CSR
+            WHERE [Freight Direction] <span class="kw">IN</span> (<span class="st">&#39;Inbound&#39;</span>, <span class="st">&#39;Third Party&#39;</span>)                                                     <span class="op">--</span><span class="st"> </span><span class="dv">11</span><span class="op">/</span><span class="dv">9</span><span class="op">/</span><span class="dv">2018</span> <span class="op">-</span><span class="st"> </span>eshanme <span class="op">-</span><span class="st"> </span>Added <span class="st">&#39;Third Party&#39;</span>
+            GROUP BY [CSR Number]) AS MAX_LPS_DELIVERY
+            ON ZOMRETM.[Customer PO]=MAX_LPS_DELIVERY.[CSR Number]
+            
+        LEFT OUTER JOIN
+        (   SELECT DISTINCT [Pro Number],[CSR Number],[Status],[Delivery Date],[Destination City],[Carrier Name],[Freight Direction]
+            FROM BI_CRST_LPS_SHIPMENTS_CSR
+            WHERE [Freight Direction] <span class="kw">IN</span> (<span class="st">&#39;Inbound&#39;</span>, <span class="st">&#39;Third Party&#39;</span>)                                                     <span class="op">--</span><span class="st"> </span><span class="dv">11</span><span class="op">/</span><span class="dv">9</span><span class="op">/</span><span class="dv">2018</span> <span class="op">-</span><span class="st"> </span>eshanme <span class="op">-</span><span class="st"> </span>Added <span class="st">&#39;Third Party&#39;</span>
+            GROUP BY [Pro Number],[CSR Number],[Status],[Destination City],[Carrier Name],
+            [Freight Direction],[CSR Number],[Delivery Date],[Delivery ETA]) AS LPS
+            ON MAX_LPS_DELIVERY.[CSR Number]=LPS.[CSR Number] AND MAX_LPS_DELIVERY.[Max Delivery Date]=LPS.[Delivery Date]
+            
+        LEFT OUTER JOIN
+        (   SELECT [Plant],[Company Region],[Hub]
+            FROM REF_PLANTS) AS REF
+            ON ZOMRETM.[Plant]=REF.[Plant]
+        
+        LEFT OUTER JOIN REF_NRO_REGIONS AS ARM_NRO ON ARM.[Pick<span class="op">-</span>up Region]=ARM_NRO.[State]
+            
+        WHERE ZOMRETM.[Sales Document Type] =<span class="st"> &#39;ZRE2&#39;</span>
+    
+    REVOKE SELECT ON [BI_RETURNS_E2E] to <span class="st">&quot;RNAM_USER&quot;</span>;
+
+        
+        <span class="op">--</span>TABLE_STATUS <span class="op">-</span><span class="st"> </span>Truncating
+    EXEC UpdateTableStatus <span class="dv">426</span>,<span class="st">&#39;Truncating&#39;</span>,<span class="st">&#39;&#39;</span>;
+
+    TRUNCATE TABLE [BI_RETURNS_E2E]
+
+    <span class="op">--</span>TABLE_STATUS <span class="op">-</span><span class="st"> </span>Updating
+    EXEC UpdateTableStatus <span class="dv">426</span>,<span class="st">&#39;Updating&#39;</span>,<span class="st">&#39;&#39;</span>;   
+    
+    INSERT INTO [BI_RETURNS_E2E]
+
+    SELECT <span class="op">*</span>
+<span class="st">        </span>
+<span class="st">    </span>FROM <span class="co">#RETURNS_TEMP</span>
+
+    <span class="op">--</span>Drop temp table                      
+    DROP TABLE <span class="co">#RETURNS_TEMP;</span>
+
+    
+    GRANT SELECT ON [BI_RETURNS_E2E] to <span class="st">&quot;RNAM_USER&quot;</span>;
+    
+
+    <span class="op">--</span>TABLE_STATUS <span class="op">-</span><span class="st"> </span>Success
+    EXEC UpdateTableStatus <span class="dv">426</span>,<span class="st">&#39;Success&#39;</span>,<span class="st">&#39;End&#39;</span>,<span class="st">&#39;bcamdb.dbo.BI_RETURNS_E2E&#39;</span>,<span class="st">&#39;bcamdb.dbo.BI_RETURNS_E2E&#39;</span>; 
+
+  END TRY
+  BEGIN CATCH
+    <span class="op">--</span><span class="st"> </span>Execute the error retrieval routine.
+         EXEC UpdateTableStatus <span class="dv">426</span>,<span class="st">&#39;Failed&#39;</span>;
+
+         GRANT SELECT ON [BI_RETURNS_E2E] to <span class="st">&quot;RNAM_USER&quot;</span>;
+
+  END CATCH;
+    
+END</code></pre></div>
+</div>
+
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIkJJX1JFVFVSTlNfRTJFIg0KYXV0aG9yOiAiU2hhbnRhbnUgTWVuZGhla2FyIg0KZGF0ZTogIkRlY2VtYmVyIDYsIDIwMTgiDQotLS0NCg0KPHNjcmlwdCBzcmM9ImxpYnMvbG9jYXRpb25oYXNoLmpzIj48L3NjcmlwdD4NCg0KIyBTdW1tYXJ5DQoNCkhlcmUgeW91IHdpbGwgbGVhcm4gYWxsIHRoZSBpbmZvcm1hdGlvbiBhYm91dCBTdG9yZWQgUHJvY2VkdXJlIGZvciBUQUJMRV9BQkMsIGFuZCBhdCB0aGUgYm90dG9tIHlvdSBjYW4gZ2V0IHRoZSBmaW5hbCBTdG9yZWQgUHJvY2VkdXJlLiBXZSB3aWxsIGdvIGFsb25nIGFuZCBleHBsYWluIGFsbCB0aGUgaW5mb3JtYXRpb24gZm9yIGVhY2ggbGluZSBhcyB3ZSBnbyBhbG9uZy4NCg0KIyBCbG9jayAxDQoNCjxkaXYgY2xhc3MgPSAicm93Ij4NCjxkaXYgY2xhc3M9ImNvbC1tZC02Ij4NCkxvcmVtIGlwc3VtIGRvbG9yIHNpdCBhbWV0LCBjb25zZWN0ZXR1ciBhZGlwaXNjaW5nIGVsaXQsIHNlZCBkbyBlaXVzbW9kIHRlbXBvciBpbmNpZGlkdW50IHV0IGxhYm9yZSBldCBkb2xvcmUgbWFnbmEgYWxpcXVhLiBOYXRvcXVlIHBlbmF0aWJ1cyBldCBtYWduaXMgZGlzIHBhcnR1cmllbnQgbW9udGVzIG5hc2NldHVyIHJpZGljdWx1cy4gTWF0dGlzIGFsaXF1YW0gZmF1Y2lidXMgcHVydXMgaW4gbWFzc2EuIEFsaXF1ZXQgbmVjIHVsbGFtY29ycGVyIHNpdCBhbWV0IHJpc3VzLiBMZWN0dXMgdXJuYSBkdWlzIGNvbnZhbGxpcyBjb252YWxsaXMgdGVsbHVzLiBOaWJoIG1hdXJpcyBjdXJzdXMgbWF0dGlzIG1vbGVzdGllIGEgaWFjdWxpcy4gVHVycGlzIGVnZXN0YXMgcHJldGl1bSBhZW5lYW4gcGhhcmV0cmEgbWFnbmEgYWMuIERpcyBwYXJ0dXJpZW50IG1vbnRlcyBuYXNjZXR1ciByaWRpY3VsdXMgbXVzIG1hdXJpcy4gRWdldCBzaXQgYW1ldCB0ZWxsdXMgY3Jhcy4gQ29tbW9kbyBvZGlvIGFlbmVhbiBzZWQgYWRpcGlzY2luZyBkaWFtIGRvbmVjIGFkaXBpc2NpbmcgdHJpc3RpcXVlIHJpc3VzLiBWaXZlcnJhIGFsaXF1ZXQgZWdldCBzaXQgYW1ldCB0ZWxsdXMuDQo8L2Rpdj4NCjxkaXYgY2xhc3M9ImNvbC1tZC02Ij4NCmBgYHtzcWwgYmxvY2sxLCBldmFsID0gRkFMU0UsIHJlc3VsdHM9J21hcmt1cCd9DQpVU0UgW0JDQU1EQl0NCkdPDQovKioqKioqIE9iamVjdDogIFN0b3JlZFByb2NlZHVyZSBbZGJvXS5bU1BfQklfUkVUVVJOU19FMkVdICAgIFNjcmlwdCBEYXRlOiAxMi8wNi8yMDE4IDA5OjA4OjQ4ICoqKioqKi8NClNFVCBBTlNJX05VTExTIE9ODQpHTw0KU0VUIFFVT1RFRF9JREVOVElGSUVSIE9ODQpHTw0KDQpBTFRFUiBQUk9DRURVUkUgW2Rib10uW1NQX0JJX1JFVFVSTlNfRTJFXSBBUyANCkJFR0lODQoJU0VUIE5PQ09VTlQgT047DQoJDQoJDQogIEJFR0lOIFRSWQ0KCQ0KCS0tVEFCTEVfU1RBVFVTIC0gUXVlcnlpbmcNCglFWEVDIFVwZGF0ZVRhYmxlU3RhdHVzIDQyNiwnUXVlcnlpbmcnLCcnOw0KDQoJLS1Ecm9wIHRlbXAgdGFibGUgaWYgaXQgZXhpc3RzDQoJSUYgT0JKRUNUX0lEKCd0ZW1wZGIuLiNSRVRVUk5TX1RFTVAnKSBJUyBOT1QgTlVMTCBEUk9QIFRBQkxFICNSRVRVUk5TX1RFTVA7DQoJDQoJLS1DcmVhdGUgdGVtcCB0YWJsZQ0KCQ0KCS0tSU5TRVJUIFFVRVJZIEhFUkUNCglDUkVBVEUgVEFCTEUgI1JFVFVSTlNfVEVNUA0KCSgNCgkJW1NPXQkJCQkJdmFyY2hhcig1MCkgIE5PVCBOVUxMLA0KICAgIFtTTyBJdGVtXQkJCQl2YXJjaGFyKDUwKSAgTk9UIE5VTEwsDQoJICBbU08gQ1JFQVRFIERBVEVdCQlkYXRldGltZQkgTlVMTCwNCgkJW1NPIENSRUFURSBUSU1FXQkJdmFyY2hhcig1MCkJIE5VTEwsDQoJCVtDdXN0b21lciBQT10JCQl2YXJjaGFyKDUwKSAgTlVMTCwNCiAgICBbT3ZlcmR1ZSBJbmRpY2F0b3JdCQl2YXJjaGFyKDUwKSAgTlVMTCwNCiAgICBbSXRlbSBDYXRlZ29yeV0JCQl2YXJjaGFyKDUwKSAgTlVMTCwNCiAgICBbUmV0dXJuIFJlYXNvbl0JCQl2YXJjaGFyKDUwKSAgTlVMTCwNCiAgICBbUmV0dXJuIFJlYXNvbiBUZXh0XQl2YXJjaGFyKDE1MCkgIE5VTEwsDQogICAgW0luc3BlY3Rpb24gQ29kZV0JCXZhcmNoYXIoNTApICBOVUxMLA0KICAgIFtJbnNwZWN0aW9uIFRleHRdCQl2YXJjaGFyKDUwKSAgTlVMTCwNCiAgICBbSXRlbSBJbnRlcm5hbCBOb3Rlc10JdmFyY2hhcigyNTUpIE5VTEwsDQogICAgW0luc3BlY3Rpb24gQ29tbWVudF0JdmFyY2hhcig1MCkgIE5VTEwsDQogICAgW1NhbGVzIERvY3VtZW50IFR5cGVdCXZhcmNoYXIoNTApICBOVUxMLA0KICAgIFtTY2hlZHVsZWQgUmV0dXJuIERhdGVdCWRhdGV0aW1lCSBOVUxMLA0KICAgIFtNYXRlcmlhbCBOdW1iZXJdCQl2YXJjaGFyKDUwKSAgTlVMTCwNCiAgICBbTWF0ZXJpYWwgRGVzY3JpcHRpb25dCXZhcmNoYXIoMjUwKSAgTlVMTCwNCiAgICBbT3JkZXIgUXVhbnRpdHldCQlmbG9hdAkgICAgIE5VTEwsDQogICAgW1dCUyBFbGVtZW50XQkJCXZhcmNoYXIoNTApICBOVUxMLA0KICAgIFtQbGFudF0JCQkJCXZhcmNoYXIoNTApICBOVUxMLA0KICAgIFtTbG9jXQkJCQkJdmFyY2hhcig1MCkgIE5VTEwsDQogICAgW05ldCBQcmljZV0JCQkJZmxvYXQJCSBOVUxMLA0KICAgIFtGYXVsdCBEZXNjcmlwdGlvbl0JCXZhcmNoYXIoNTAwKSBOVUxMLA0KICAgIFtTZXJpYWwgTnVtYmVyXQkJCXZhcmNoYXIoNTApICBOVUxMLA0KICAgIFtTb2xkIHRvIHBhcnR5XQkJCXZhcmNoYXIoNTApICBOVUxMLA0KICAgIFtTb2xkIHRvIG5hbWVdCQkJdmFyY2hhcig1MCkgIE5VTEwsDQogICAgW0ZpbmFsIEV4dCBDdXN0b21lcl0JdmFyY2hhcig1MCkgIE5VTEwsDQogICAgW0ZpbmFsIEV4dCBDdXN0b21lciBOYW1lXQl2YXJjaGFyKDUwKSAgTlVMTCwNCiAgICBbUmVmdW5kIFR5cGVdCQkJdmFyY2hhcig1MCkgIE5VTEwsDQogICAgW09yZGVyIFJlYXNvbl0JCQl2YXJjaGFyKDUwKSAgTlVMTCwNCiAgICBbUmVhc29uIGZvciBSZWplY3Rpb25dCXZhcmNoYXIoNTApICBOVUxMLA0KICAgIFtSZWFzb24gZm9yIFJlaiBUZXh0XQl2YXJjaGFyKDUwKSAgTlVMTCwNCiAgICBbQ2FuY2VsbGF0aW9uIFN0YXR1c10JdmFyY2hhcig1MCkgIE5VTEwsDQogICAgW0NhbmNlbGxhdGlvbiBEYXRlXQkJZGF0ZXRpbWUJIE5VTEwsDQogICAgW0NyZWF0ZWQvQ2hhbmdlZCBCeV0JdmFyY2hhcig1MCkgIE5VTEwsDQogICAgW0RlbGl2ZXJ5IEJsb2NrXQkJdmFyY2hhcig1MCkgIE5VTEwsDQogICAgW0FwcHJvdmFsIEJsb2NrXQkJdmFyY2hhcig1MCkgIE5VTEwsDQogICAgW0RlbGl2ZXJ5XQkJCQl2YXJjaGFyKDUwKSAgTlVMTCwNCiAgICBbRGVsaXZlcnkgU3RhdHVzXQkJdmFyY2hhcig1MCkgIE5VTEwsDQogICAgW1JlcGxhY2VtZW50IFNPXQkJdmFyY2hhcig1MCkgIE5VTEwsDQogICAgW0NyZWRpdCBNZW1vXQkJCXZhcmNoYXIoNTApICBOVUxMLA0KICAgIFtHb29kcyBSZWNlaXB0XQkJCXZhcmNoYXIoNTApICBOVUxMLA0KICAgIFtHUiBEYXRlXQkJCQlkYXRldGltZQkgTlVMTCwNCiAgICBbU08gU3RvY2sgSW5kaWNhdG9yXQl2YXJjaGFyKDUwKSAgTlVMTCwNCiAgICBbU08gU3RvY2sgUXR5XQkJCWZsb2F0CQkgTlVMTCwNCiAgICBbRm9sbG93IHVwIEFjdGl2aXR5IENvZGVdCXZhcmNoYXIoNTApICBOVUxMLA0KICAgIFtGb2xsb3cgdXAgQWN0aXZpdHldCXZhcmNoYXIoNTApICBOVUxMLA0KICAgIFtSTUEgUmVxdWVzdCBJRF0JCXZhcmNoYXIoNTApICBOVUxMLA0KICAgIFtSTUEgSXRlbV0JCQkJdmFyY2hhcig1MCkgIE5VTEwsDQogICAgW1ZlbmRvciBSTUEgTnVtYmVyXQkJdmFyY2hhcig1MCkgIE5VTEwsDQogICAgW1ZlbmRvciBJRF0JCQkJdmFyY2hhcig1MCkgIE5VTEwsDQogICAgW1ZlbmRvciBOYW1lXQkJCXZhcmNoYXIoNTApICBOVUxMLA0KICAgIFtSTUEgU3RhdHVzXQkJCXZhcmNoYXIoNTApICBOVUxMLA0KICAgIFtPcmcgUE9dCQkJCXZhcmNoYXIoNTApICBOVUxMLA0KICAgIFtQTyBOdW1iZXJdCQkJCXZhcmNoYXIoNTApICBOVUxMLA0KICAgIFtQTyBWZW5kb3JdCQkJCXZhcmNoYXIoNTApICBOVUxMLA0KICAgIFtQTyBWZW5kb3IgTmFtZV0JCXZhcmNoYXIoNTApICBOVUxMLA0KICAgIFtSVFYgUE8gR1JdCQkJCXZhcmNoYXIoNTApICBOVUxMLA0KICAgIFtSVFYgUE8gSVJdCQkJCXZhcmNoYXIoNTApICBOVUxMLA0KICAgIFtTbWFydCBSZXR1cm5zXQkJCXZhcmNoYXIoNTApICBOVUxMLA0KICAgIFtBV0IgTnVtYmVyXQkJCXZhcmNoYXIoNTApICBOVUxMLA0KICAgIFtSTUEgUmZSXQkJCQl2YXJjaGFyKDUwKSAgTlVMTCwNCiAgICBbUk1BIE51bWJlcl0JCQl2YXJjaGFyKDUwKSAgTlVMTCwNCiAgICBbTWF0ZXJpYWwgUi1TdGF0ZV0JCXZhcmNoYXIoNTApICBOVUxMLA0KICAgIFtPcmRlciBSZWFzb24gVGV4dF0JCXZhcmNoYXIoNTApICBOVUxMLA0KICAgIFtDYW5jZWxsYXRpb24gRmxhZ10JCXZhcmNoYXIoNTApICBOVUxMLA0KICAgIFtDYW5jZWxsYXRpb24gVGltZV0JCXZhcmNoYXIoNTApICBOVUxMLA0KICAgIFtTaGlwbWVudCBOdW1iZXJdCQl2YXJjaGFyKDUwKSAgTlVMTCwNCiAgICBbU2hpcG1lbnQgU3RhdHVzXQkJdmFyY2hhcig1MCkgIE5VTEwsDQogICAgW1NoaXBtZW50IERhdGVdCQkJZGF0ZXRpbWUJIE5VTEwsDQogICAgW05leHQgUGxhbnRdCQkJdmFyY2hhcig1MCkgIE5VTEwsDQogICAgW01hdGVyaWFsIFJlY2VpdmVkXQkJdmFyY2hhcig1MCkgIE5VTEwsDQogICAgW0xvY2tlZF0JCQkJdmFyY2hhcig1MCkgIE5VTEwsDQogICAgW0RvY3VtZW50XQkJCQl2YXJjaGFyKDUwKSAgTlVMTCwNCiAgICBbSXRlbV0JCQkJCXZhcmNoYXIoNTApICBOVUxMLA0KICAgIFtJdGVtIENhdF0JCQkJdmFyY2hhcig1MCkgIE5VTEwsDQogICAgW1Byb2R1Y3RdCQkJCXZhcmNoYXIoNTApICBOVUxMLA0KICAgIFtRdWFudGl0eV0JCQkJZmxvYXQJCSBOVUxMLA0KICAgIFtVbml0XQkJCQkJdmFyY2hhcig1MCkgIE5VTEwsDQogICAgW0dSRCAoQWN0KV0JCQkJdmFyY2hhcig1MCkgIE5VTEwsDQogICAgW0dSVCAoQWN0KV0JCQkJdmFyY2hhcig1MCkgIE5VTEwsDQogICAgW1B1dGF3YXkgQV0JCQkJdmFyY2hhcig1MCkgIE5VTEwsDQogICAgW1B1dHdUbSBBXQkJCQl2YXJjaGFyKDUwKSAgTlVMTCwNCiAgICBbUHV0YXdheV0JCQkJdmFyY2hhcig1MCkgIE5VTEwsDQogICAgW0dvb2RzIFJjcHRdCQkJdmFyY2hhcig1MCkgIE5VTEwsDQogICAgW1Byb2QgT3JkXQkJCQl2YXJjaGFyKDUwKSAgTlVMTCwNCiAgICBbVW5sRHRBY3RdCQkJCWRhdGV0aW1lCSBOVUxMLA0KICAgIFtVbmxUbSBBXQkJCQl2YXJjaGFyKDUwKSAgTlVMTCwNCiAgICBbUyZBIFN0YXR1c10JCQl2YXJjaGFyKDUwKSAgTlVMTCwNCiAgICBbUGFja1N0YXR1c10JCQl2YXJjaGFyKDUwKSAgTlVMTCwNCiAgICBbRVJQIEVycm9yXQkJCQl2YXJjaGFyKDUwKSAgTlVMTCwNCiAgICBbRG9jIENhdF0JCQkJdmFyY2hhcig1MCkgIE5VTEwsDQogICAgW09yaWdpbl0JCQkJdmFyY2hhcig1MCkgIE5VTEwsDQogICAgW1BPXQkJCQkJdmFyY2hhcig1MCkgIE5VTEwsDQogICAgW1BPIEl0ZW1dCQkJCXZhcmNoYXIoNTApICBOVUxMLA0KICAgIFtJdGVtIFR5cGVdCQkJCXZhcmNoYXIoNTApICBOVUxMLA0KICAgIFtJdGVtIFR5cGUgRGVzY3JpcHRpb25dCXZhcmNoYXIoNTApICBOVUxMLA0KICAgIFtJdGVtIENhdCBEZXNjcmlwdGlvbl0JdmFyY2hhcig1MCkgIE5VTEwsDQogICAgW1dhcmVob3VzZV0JCQkJdmFyY2hhcig1MCkgIE5VTEwsDQogICAgW0NTUiBSZXF1ZXN0b3IgTmFtZV0JdmFyY2hhcigyMDEpIE5VTEwsDQogICAgW1N0YW5kYXJkIHByaWNlXQkJZmxvYXQJCSBOVUxMLA0KICAgIFtTYWxlcyBPcmddCQkJCXZhcmNoYXIoNTApICBOVUxMLAkJIC0tYWRkZWQgMjAxNi8wNS8xMQ0KICAgIFtNYXRlcmlhbCBHcm91cF0JCXZhcmNoYXIoNTApICBOVUxMLAkJIC0tYWRkZWQgMjAxNi8wNS8xMQ0KCQlbVVBTIFJlZmVyZW5jZSBOdW1iZXJdCQl2YXJjaGFyKDI1NSkgTlVMTCwJCSAtLWFkZGVkIDIwMTYvMDUvMTENCgkJW1VQUyBTdGF0dXNdCQkJCXZhcmNoYXIoNTApCSBOVUxMLAkJIC0tYWRkZWQgMjAxNi8wNS8xMQ0KCQlbVVBTIFNoaXAgVG8gQ2l0eV0JCQl2YXJjaGFyKDUwKQkgTlVMTCwJCSAtLWFkZGVkIDIwMTYvMDUvMTENCgkJW1VQUyBTaGlwIHRvIFN0YXRlXQkJCXZhcmNoYXIoNTApCSBOVUxMLAkJIC0tYWRkZWQgMjAxNi8wNS8xMQ0KCQlbVVBTIFNoaXAgVG8gQ291bnRyeV0JCXZhcmNoYXIoNTApCSBOVUxMLAkJIC0tYWRkZWQgMjAxNi8wNS8xMQ0KCQlbVVBTIFNlcnZpY2VdCQkJCXZhcmNoYXIoMjU1KQkgTlVMTCwJCSAtLWFkZGVkIDIwMTYvMDUvMTENCgkJW1VQUyBTY2hlZHVsZWQgRGVsaXZlcnldCWRhdGV0aW1lCSBOVUxMLAkJIC0tYWRkZWQgMjAxNi8wNS8xMQ0KCQlbVVBTIERhdGUgRGVsaXZlcmVkXQkJZGF0ZXRpbWUJIE5VTEwsCQkgLS1hZGRlZCAyMDE2LzA1LzExDQoJCVtVUFMgRGVsaXZlcnkgVGltZV0JCQl2YXJjaGFyKDUwKQkgTlVMTCwJCSAtLWFkZGVkIDIwMTYvMDUvMTENCgkJW0N1c3RvbWVyXQkJCQl2YXJjaGFyKDUwKQkgTnVsbCwJCSAtLWFkZGVkIDIwMTYvMDUvMTYNCgkJW1VvTV0JCQkJCXZhcmNoYXIoNTApCSBOdWxsLAkJIC0tYWRkZWQgMjAxNi8wNi8xNA0KCQlbU3RhdGVdCQkJCQl2YXJjaGFyKDUwKQkgTnVsbCwJCSAtLWFkZGVkIDIwMTYvMDYvMTQNCgkJW0NpdHldCQkJCQl2YXJjaGFyKDEwMCkJIE51bGwsCQkgLS1hZGRlZCAyMDE2LzA2LzE0DQoJCVtaaXBdCQkJCQl2YXJjaGFyKDUwKQkgTnVsbCwJCSAtLWFkZGVkIDIwMTYvMDYvMTQNCgkJW05STyBSZWdpb25dCQkJdmFyY2hhcig1MCkJIE51bGwsCQkgLS1hZGRlZCAyMDE2LzA2LzE0DQoJCVtHTSBEYXRlXQkJCQl2YXJjaGFyKDUwKQkgTnVsbCwJCSAtLWFkZGVkIDIwMTYvMDYvMTQNCgkJW0dNIFRpbWVdCQkJCXZhcmNoYXIoNTApCSBOdWxsLAkJIC0tYWRkZWQgMjAxNi8wNi8xNA0KCQlbRGlzdHJpYnV0aW9uIHN0YXR1c10JdmFyY2hhcig1MCkJIE51bGwsCQkgLS1hZGRlZCAyMDE2LzA2LzE0DQoJCVtBU1AgSW5mb3JtYXRpb25dCQkJCXZhcmNoYXIoMjU1KQlOdWxsLAkJIC0tYWRkZWQgMjAxNi8xMC8xMA0KCQlbQ1JNIFNlcmlhbCBOdW1iZXJdCQkJCXZhcmNoYXIoMTAwKQkJTnVsbCwJCSAtLWFkZGVkIDIwMTYvMTAvMTAJDQoJCVtEaXNwb3NpdGlvbl0JCQkJCXZhcmNoYXIoMTAwKQlOdWxsLAkJIC0tYWRkZWQgMjAxNi8xMC8xMAkNCgkJW0dSIFF1YW50aXR5XQkJCQkJZmxvYXQJCQlOdWxsLAkJIC0tYWRkZWQgMjAxNi8xMC8xMA0KCQlbU08gU3RvY2sgUXVhbnRpdHldCQkJCWZsb2F0CQkJTnVsbCwJCSAtLWFkZGVkIDIwMTYvMTAvMTANCgkJW0NSTSBOb3RlXQkJCQkJCXZhcmNoYXIoMjU1KQlOdWxsLAkJIC0tYWRkZWQgMjAxNi8xMC8xMAkNCiAgICBbUlRWIFBPL1NUTyBEYXRlXQkJCQlkYXRldGltZQkJTnVsbCwJCSAtLWFkZGVkIDIwMTYvMTAvMTANCiAgICBbTEMtPkJVIFRleHRdCQkJCQl2YXJjaGFyKDI1NSkJTnVsbCwJCSAtLWFkZGVkIDIwMTYvMTAvMTANCiAgICBbTGFzdCBDaGFuZ2VkIE9uXQkJCQlkYXRldGltZQkJTnVsbCwJCSAtLWFkZGVkIDIwMTYvMTAvMTANCiAgICBbSW5mb3JtYXRpb24gZnJvbSBEQ01dCQkJdmFyY2hhcigyNTUpCU51bGwsCQkgLS1hZGRlZCAyMDE2LzEwLzEwDQogICAgW0xQUyBQcm8gTnVtYmVyXQkJCQl2YXJjaGFyKDEwMCkJTnVsbCwJCSAtLWFkZGVkIDIwMTYvMTEvMzANCgkJW0xQUyBTdGF0dXNdCQkJCQl2YXJjaGFyKDUwKQkJTnVsbCwJCSAtLWFkZGVkIDIwMTYvMTEvMzANCgkJW0xQUyBDYXJyaWVyIE5hbWVdCQkJCXZhcmNoYXIoMTAwKQlOdWxsLAkJIC0tYWRkZWQgMjAxNi8xMS8zMA0KCQlbTFBTIERlbGl2ZXJ5IEVUQV0JCQkJZGF0ZXRpbWUJCU51bGwsCQkgLS1hZGRlZCAyMDE2LzExLzMwDQoJCVtMUFMgRGVsaXZlcnkgRGF0ZV0JCQkJZGF0ZXRpbWUJCU51bGwsCQkgLS1hZGRlZCAyMDE2LzExLzMwDQoJCVtSVFYgRGVsaXZlcnkgQ3JlYXRlZCBPbl0JCQkJZGF0ZXRpbWUJCU51bGwsCQkgLS1hZGRlZCAyMDE2LzExLzMwDQoJCVtSVFYgU2hpcG1lbnRdCQkJCQkJCXZhcmNoYXIoNTApCQlOdWxsLAkJIC0tYWRkZWQgMjAxNi8xMS8zMA0KCQlbUlRWIEZyZWlnaHQgRG9jIFRleHRdCQkJCQl2YXJjaGFyKDEwMCkJTnVsbCwJCSAtLWFkZGVkIDIwMTYvMTEvMzANCgkJW1JUViBBY3QgbG9hZGluZyBlbmRdCQkJCQlkYXRldGltZQkJTnVsbCwJCSAtLWFkZGVkIDIwMTYvMTEvMzANCgkJW1JUViBBY3QgU2hpcG1lbnQgQ29tcGxldGUgRGF0ZV0JCWRhdGV0aW1lCQlOdWxsLAkJIC0tYWRkZWQgMjAxNi8xMS8zMA0KCQlbUlRWIEFjdHVhbCBDaGVjayBpbiBkYXRlXQkJCQlkYXRldGltZQkJTnVsbCwJCSAtLWFkZGVkIDIwMTYvMTEvMzANCgkJW1JUViBBY3R1YWwgR00gRGF0ZV0JCQkJCWRhdGV0aW1lCQlOdWxsLAkJIC0tYWRkZWQgMjAxNi8xMS8zMA0KCQlbUlRWIEFjdHVhbCBQYWNraW5nIERhdGVdCQkJCWRhdGV0aW1lCQlOdWxsLAkJIC0tYWRkZWQgMjAxNi8xMS8zMA0KCQlbUlRWIEFjdHVhbCBTaGlwbWVudCBFbmRdCQkJCWRhdGV0aW1lCQlOdWxsLAkJIC0tYWRkZWQgMjAxNi8xMS8zMA0KCQlbUlRWIEN1cnIgbG9hZGluZyBzdGFydF0JCQkJZGF0ZXRpbWUJCU51bGwsCQkgLS1hZGRlZCAyMDE2LzExLzMwDQoJCVtSVFYgQ3VyciBTaGlwbWVudCBTdGFydF0JCQkJZGF0ZXRpbWUJCU51bGwsCQkgLS1hZGRlZCAyMDE2LzExLzMwDQoJCVtSVFYgRGVsaXZlcnkgRGF0ZV0JCQkJCQlkYXRldGltZQkJTnVsbCwJCSAtLWFkZGVkIDIwMTYvMTEvMzANCgkJW1JUViBMb2FkaW5nIERhdGVdCQkJCQkJZGF0ZXRpbWUJCU51bGwsCQkgLS1hZGRlZCAyMDE2LzExLzMwDQoJCVtSVFYgUGlja2luZyBEYXRlXQkJCQkJCWRhdGV0aW1lCQlOdWxsLAkJIC0tYWRkZWQgMjAxNi8xMS8zMA0KCQlbUlRWIFBsYW5uZWQgbG9hZCBlbmRdCQkJCQlkYXRldGltZQkJTnVsbCwJCSAtLWFkZGVkIDIwMTYvMTEvMzANCgkJW1JUViBQbGFubmVkIHNoaXBtZW50IGVuZF0JCQkJZGF0ZXRpbWUJCU51bGwsCQkgLS1hZGRlZCAyMDE2LzExLzMwDQoJCVtSVFYgUGxhbm5lZCBTaGlwbWVudCBTdGFydF0JCQlkYXRldGltZQkJTnVsbCwJCSAtLWFkZGVkIDIwMTYvMTEvMzANCgkJW1JUViBTaGlwbWVudCBDcmVhdGVkIE9uXQkJCQlkYXRldGltZQkJTnVsbCwJCSAtLWFkZGVkIDIwMTYvMTEvMzANCgkJW1JUViBUcmFuc3AgUGxhbiBEYXRlXQkJCQkJZGF0ZXRpbWUJCU51bGwsCQkgLS1hZGRlZCAyMDE2LzExLzMwDQoJCVtDb250YWN0IFBlcnNvbl0JCQkJCQl2YXJjaGFyKDUwKQkJTnVsbCwJCSAtLWFkZGVkIDIwMTYvMTIvMTINCgkJW0NvbW1vZGl0eSBMVjFdCQkJCQkJCXZhcmNoYXIoMjUwKQlOdWxsLAkJIC0tYWRkZWQgMjAxNy8wMi8xOQ0KCQlbQ29tcGFueSBSZWdpb25dCQkJCQkJdmFyY2hhcig1MCkJCU51bGwsICAgICAgICAtLWFkZGVkIDIwMTcvMDIvMjgNCgkJW0h1Yl0JCQkJCQkJCQl2YXJjaGFyKDUwKQkJTnVsbCwgICAgICAgIC0tYWRkZWQgMjAxNy8wMi8yOA0KCQlbUHJvamVjdCBOYW1lXQkJCQkJCQl2YXJjaGFyKDUwKQkJTnVsbCwgICAgICAgIC0tYWRkZWQgMjAxNy8wNC8yOA0KCQlQcmltYXJ5IEtleQkJCQkoW1NPXSwgW1NPIGl0ZW1dKQ0KCSkJOw0KDQoNCglJTlNFUlQgSU5UTyAjUkVUVVJOU19URU1QDQoNCgkJU0VMRUNUDQoJCQ0KCQlaT01SRVRNLltTT10sDQoJCVpPTVJFVE0uW1NPIEl0ZW1dLAkNCgkJWlZCQVAuW0NSRUFURUQgT05dIEFTIFtTTyBDUkVBVEUgREFURV0sDQoJCVpWQkFQLltDUkVBVEVEIE9OIFRJTUVdIEFTIFtTTyBDUkVBVEUgVElNRV0sDQoJCVpPTVJFVE0uW0N1c3RvbWVyIFBPXSwNCgkJWk9NUkVUTS5bT3ZlcmR1ZSBJbmRpY2F0b3JdLA0KCQlaT01SRVRNLltJdGVtIENhdGVnb3J5XSwNCgkJWk9NUkVUTS5bUmV0dXJuIFJlYXNvbl0sDQoJCVpPTVJFVE0uW1JldHVybiBSZWFzb24gVGV4dF0sDQoJCVpPTVJFVE0uW0luc3BlY3Rpb24gQ29kZV0sDQoJCVpPTVJFVE0uW0luc3BlY3Rpb24gVGV4dF0sDQoJCVpPTVJFVE0uW0l0ZW0gSW50ZXJuYWwgTm90ZXNdLA0KCQlaT01SRVRNLltJbnNwZWN0aW9uIENvbW1lbnRdLA0KCQlaT01SRVRNLltTYWxlcyBEb2N1bWVudCBUeXBlXSwNCgkJWk9NUkVUTS5bU2NoZWR1bGVkIFJldHVybiBEYXRlXSwNCgkJWk9NUkVUTS5bTWF0ZXJpYWwgTnVtYmVyXSwNCgkJWk9NUkVUTS5bTWF0ZXJpYWwgRGVzY3JpcHRpb25dLA0KCQlaT01SRVRNLltPcmRlciBRdWFudGl0eV0sDQoJCVpPTVJFVE0uW1dCUyBFbGVtZW50XSwNCgkJWk9NUkVUTS5bUGxhbnRdLA0KCQlaT01SRVRNLltTbG9jXSwNCgkJWk9NUkVUTS5bTmV0IFByaWNlXSwNCgkJWk9NUkVUTS5bRmF1bHQgRGVzY3JpcHRpb25dLA0KCQlaT01SRVRNLltTZXJpYWwgTnVtYmVyXSwNCgkJWk9NUkVUTS5bU29sZCB0byBwYXJ0eV0sDQoJCVpPTVJFVE0uW1NvbGQgdG8gbmFtZV0sDQoJCVpPTVJFVE0uW0ZpbmFsIEV4dCBDdXN0b21lcl0sDQoJCVpPTVJFVE0uW0ZpbmFsIEV4dCBDdXN0b21lciBOYW1lXSwNCgkJWk9NUkVUTS5bUmVmdW5kIFR5cGVdLA0KCQlaT01SRVRNLltPcmRlciBSZWFzb25dLA0KCQlaT01SRVRNLltSZWFzb24gZm9yIFJlamVjdGlvbl0sDQoJCVpPTVJFVE0uW1JlYXNvbiBmb3IgUmVqIFRleHRdLA0KCQlaT01SRVRNLltDYW5jZWxsYXRpb24gU3RhdHVzXSwNCgkJWk9NUkVUTS5bQ2FuY2VsbGF0aW9uIERhdGVdLA0KCQlaT01SRVRNLltDcmVhdGVkL0NoYW5nZWQgQnldLA0KCQlaT01SRVRNLltEZWxpdmVyeSBCbG9ja10sDQoJCVpPTVJFVE0uW0FwcHJvdmFsIEJsb2NrXSwNCgkJWk9NUkVUTS5bRGVsaXZlcnldLA0KCQlaT01SRVRNLltEZWxpdmVyeSBTdGF0dXNdLA0KCQlaT01SRVRNLltSZXBsYWNlbWVudCBTT10sDQoJCVpPTVJFVE0uW0NyZWRpdCBNZW1vXSwNCgkJWk9NUkVUTS5bR29vZHMgUmVjZWlwdF0sDQoJCVpPTVJFVE0uW0dSIERhdGVdLA0KCQlaT01SRVRNLltTTyBTdG9jayBJbmRpY2F0b3JdLA0KCQlaT01SRVRNLltTTyBTdG9jayBRdHldLA0KCQlaT01SRVRNLltGb2xsb3cgdXAgQWN0aXZpdHkgQ29kZV0sDQoJCVpPTVJFVE0uW0ZvbGxvdyB1cCBBY3Rpdml0eV0sDQoJCVpPTVJFVE0uW1JNQSBSZXF1ZXN0IElEXSwNCgkJWk9NUkVUTS5bUk1BIEl0ZW1dLA0KCQlaT01SRVRNLltWZW5kb3IgUk1BIE51bWJlcl0sDQoJCVpPTVJFVE0uW1ZlbmRvciBJRF0sDQoJCVpPTVJFVE0uW1ZlbmRvciBOYW1lXSwNCgkJWk9NUkVUTS5bUk1BIFN0YXR1c10sDQoJCVpPTVJFVE0uW09yZyBQT10sDQoJCVpPTVJFVE0uW1BPIE51bWJlcl0sDQoJCVpPTVJFVE0uW1BPIFZlbmRvcl0sDQoJCVpPTVJFVE0uW1BPIFZlbmRvciBOYW1lXSwNCgkJWk9NUkVUTS5bUlRWIFBPIEdSXSwNCgkJWk9NUkVUTS5bUlRWIFBPIElSXSwNCgkJWk9NUkVUTS5bU21hcnQgUmV0dXJuc10sDQoJCVpPTVJFVE0uW0FXQiBOdW1iZXJdLA0KCQlaT01SRVRNLltSTUEgUmZSXSwNCgkJWk9NUkVUTS5bUk1BIE51bWJlcl0sDQoJCVpPTVJFVE0uW01hdGVyaWFsIFItU3RhdGVdLA0KCQlaT01SRVRNLltPcmRlciBSZWFzb24gVGV4dF0sDQoJCVpPTVJFVE0uW0NhbmNlbGxhdGlvbiBGbGFnXSwNCgkJWk9NUkVUTS5bQ2FuY2VsbGF0aW9uIFRpbWVdLA0KCQlaT01SRVRNLltTaGlwbWVudCBOdW1iZXJdLA0KCQlaT01SRVRNLltTaGlwbWVudCBTdGF0dXNdLA0KCQlaT01SRVRNLltTaGlwbWVudCBEYXRlXSwNCgkJWk9NUkVUTS5bTmV4dCBQbGFudF0sDQoJCVpPTVJFVE0uW01hdGVyaWFsIFJlY2VpdmVkXSwNCgkJSVRFTS5bTG9ja2VkXSwNCgkJSVRFTS5bRG9jdW1lbnRdLA0KCQlJVEVNLltJdGVtXSwNCgkJSVRFTS5bSXRlbSBDYXRdLA0KCQlJVEVNLltQcm9kdWN0XSwNCgkJSVRFTS5bUXVhbnRpdHldLA0KCQlJVEVNLltVbml0XSwNCgkJSVRFTS5bR1JEIChBY3QpXSwNCgkJSVRFTS5bR1JUIChBY3QpXSwNCgkJSVRFTS5bUHV0YXdheSBBXSwNCgkJSVRFTS5bUHV0d1RtIEFdLA0KCQlJVEVNLltQdXRhd2F5XSwNCgkJSVRFTS5bR29vZHMgUmNwdF0sDQoJCUlURU0uW1Byb2QgT3JkXSwNCgkJSVRFTS5bVW5sRHRBY3RdLA0KCQlJVEVNLltVbmxUbSBBXSwNCgkJSVRFTS5bUyZBIFN0YXR1c10sDQoJCUlURU0uW1BhY2tTdGF0dXNdLA0KCQlJVEVNLltFUlAgRXJyb3JdLA0KCQlJVEVNLltEb2MgQ2F0XSwNCgkJSVRFTS5bT3JpZ2luXSwNCgkJSVRFTS5bUE9dLA0KCQlJVEVNLltQTyBJdGVtXSwNCgkJSVRFTS5bSXRlbSBUeXBlXSwNCgkJSVRFTS5bSXRlbSBUeXBlIERlc2NyaXB0aW9uXSwNCgkJSVRFTS5bSXRlbSBDYXQgRGVzY3JpcHRpb25dLA0KCQlJVEVNLltXYXJlaG91c2VdLA0KCQlBUk0uW0luaXRpYWwgRXJpY3Nzb24gRW1wbG95ZWUtRmlyc3RdKycgJytBUk0uW0luaXRpYWwgRXJpY3Nzb24gRW1wbG95ZWUtTGFzdF0gQVMgW0NTUiBSZXF1ZXN0b3IgTmFtZV0sDQoJCU1CRVcuW1N0YW5kYXJkIHByaWNlXSwNCgkJWlZCQUsuW1NhbGVzIE9yZ10sIC0tYWRkZWQgMjAxNi8wNS8xMQ0KCQlQTUFTVEVSLltNYXRlcmlhbCBHcm91cCBEZXNjcmlwdGlvbl0gQVMgW01hdGVyaWFsIEdyb3VwXSwgLS1jaGFuZ2VkIDIwMTcvMTIvMDYNCgkJVVBTLltSZWZlcmVuY2UgTnVtYmVyXSBBUyBbVVBTIFJlZmVyZW5jZSBOdW1iZXJdLCAtLWFkZGVkIDIwMTYvMDUvMTENCgkJVVBTLltTdGF0dXNdIEFTIFtVUFMgU3RhdHVzXSwgLS1hZGRlZCAyMDE2LzA1LzExDQoJCVVQUy5bU2hpcCB0byBDaXR5XSBBUyBbVVBTIFNoaXAgdG8gQ2l0eV0sIC0tYWRkZWQgMjAxNi8wNS8xMQ0KCQlVUFMuW1NoaXAgdG8gU3RhdGVdIEFTIFtVUFMgU2hpcCB0byBTdGF0ZV0sIC0tYWRkZWQgMjAxNi8wNS8xMQ0KCQlVUFMuW1NoaXAgVG8gQ291bnRyeV0gQVMgW1VQUyBTaGlwIHRvIENvdW50cnldLCAtLWFkZGVkIDIwMTYvMDUvMTENCgkJVVBTLltTZXJ2aWNlXSBBUyBbVVBTIFNlcnZpY2VdLCAtLWFkZGVkIDIwMTYvMDUvMTENCgkJVVBTLltTY2hlZHVsZWQgRGVsaXZlcnldIEFTIFtVUFMgU2NoZWR1bGVkIERlbGl2ZXJ5XSwgLS1hZGRlZCAyMDE2LzA1LzExDQoJCVVQUy5bRGF0ZSBEZWxpdmVyZWRdIEFTIFtVUFMgRGF0ZSBEZWxpdmVyZWRdLCAtLWFkZGVkIDIwMTYvMDUvMTENCgkJVVBTLltEZWxpdmVyeSBUaW1lXSBBUyBbVVBTIERlbGl2ZXJ5IFRpbWVdLCAtLWFkZGVkIDIwMTYvMDUvMTENCgkJQ0FTRSANCgkJCVdIRU4gQ1UuW0N1c3RvbWVyIFVuaXRdIElTIE5PVCBOVUxMIFRIRU4gQ1UuW0N1c3RvbWVyIFVuaXRdDQoJCQlXSEVOIFpWQkFLLltDdXN0b21lciBQT10gTElLRSAnJUlDUlJCJScgVEhFTiAnSU5URVJOQUwnIA0KCQkJRUxTRSBTT0ZGSUNFLltTYWxlcyBPZmZpY2UgRGVzY3JpcHRpb25dDQoJCUVORCBBUyBbQ3VzdG9tZXJdLCAtLWFkZGVkIDIwMTYvMDUvMTYNCgkJWlZCQVAuW1VvTV0sIC0tYWRkZWQgMjAxNi8wNi8xNA0KCQlDT0FMRVNDRShDVVNUTU9OLltSZWdpb25dLEFSTS5bUGljay11cCBSZWdpb25dKSBBUyBbU3RhdGVdLCAtLWFkZGVkIDIwMTYvMDYvMTQgLS11cGRhdGVkIDIwMTcvMDQvMjQNCgkJQ09BTEVTQ0UoQ1VTVE1PTi5bU2hpcCB0byBDaXR5XSxBUk0uW1BpY2stdXAgQ2l0eV0pIEFTIFtDaXR5XSwgLS1hZGRlZCAyMDE2LzA2LzE0IC0tdXBkYXRlZCAyMDE3LzA0LzI0DQoJCUNPQUxFU0NFKENVU1RNT04uW1NoaXAgdG8gWmlwXSxBUk0uW1BpY2stdXAgUG9zdGFsIENvZGVdKSBBUyBbWmlwXSwgLS1hZGRlZCAyMDE2LzA2LzE0IC0tdXBkYXRlZCAyMDE3LzA0LzI0DQoJCUNPQUxFU0NFKENVU1RNT04uW05STyBSZWdpb25dLEFSTV9OUk8uW05STyBSZWdpb25dKSwgLS1hZGRlZCAyMDE2LzA2LzE0IC0tdXBkYXRlZCAyMDE3LzA0LzI0DQoJCURFTE1PTi5bQWN0dWFsR01EYXRlXSBBUyBbR00gRGF0ZV0sIC0tYWRkZWQgMjAxNi8wNi8xNA0KCQlERUxNT04uW0FjdHVhbEdNdGltZV0gQVMgW0dNIFRpbWVdLCAtLWFkZGVkIDIwMTYvMDYvMTQNCgkJREVMTU9OLltEaXN0cmlidXRpb24gc3RhdHVzXSwgLS1hZGRlZCAyMDE2LzA2LzE0DQoJCVpPTVJFVDEuW0FTUCBJbmZvcm1hdGlvbl0sIC0tYWRkZWQgMjAxNi8xMC8xMA0KCQlaT01SRVQxLltDUk0gU2VyaWFsIE51bWJlcl0sIC0tYWRkZWQgMjAxNi8xMC8xMA0KCQlaT01SRVQxLltEaXNwb3NpdGlvbl0sIC0tYWRkZWQgMjAxNi8xMC8xMA0KCQlaT01SRVQxLltHUiBRdWFudGl0eV0sIC0tYWRkZWQgMjAxNi8xMC8xMA0KCQlaT01SRVQxLltTTyBTdG9jayBRdHldIEFTIFtTTyBTdG9jayBRdWFudGl0eV0sIC0tYWRkZWQgMjAxNi8xMC8xMA0KCQlaT01SRVQxLltDUk0gTm90ZV0sIC0tYWRkZWQgMjAxNi8xMC8xMA0KCQlaT01SRVQxLltSVFYgUE8vU1RPIERhdGVdLCAtLWFkZGVkIDIwMTYvMTAvMTANCgkJWk9NUkVUMS5bTEMtPkJVIFRleHRdLCAtLWFkZGVkIDIwMTYvMTAvMTANCgkJWlZCQVAuW0xhc3QgQ2hhbmdlZCBPbl0sIC0tYWRkZWQgMjAxNi8xMC8xMA0KCQlDQVNFIA0KCQkJV0hFTiBaT01SRVRNLltSZWFzb24gZm9yIFJlamVjdGlvbl0gSVMgTk9UIE5VTEwgQU5EIElURU0uW0dSRCAoQWN0KV0gSVMgTlVMTCBUSEVOIE5VTEwNCgkJCUVMU0UgWk9NVklTMS5bSW5mb3JtYXRpb24gZnJvbSBEQ01dDQoJCUVORCBBUyBbSW5mb3JtYW50aW9uIGZyb20gRENNXSwgLS1hZGRlZCAyMDE2LzEwLzEwDQoJCUxQUy5bUHJvIE51bWJlcl0gQVMgW0xQUyBQcm8gTnVtYmVyXSwgLS1hZGRlZCAyMDE2LzExLzMwDQoJCUxQUy5bU3RhdHVzXSBBUyBbTFBTIFN0YXR1c10sIC0tYWRkZWQgMjAxNi8xMS8zMA0KCQlMUFMuW0NhcnJpZXIgTmFtZV0gQVMgW0xQUyBDYXJyaWVyIE5hbWVdLCAtLWFkZGVkIDIwMTYvMTEvMzANCgkJTUFYX0xQU19ERUxJVkVSWS5bRGVsaXZlcnkgRVRBXSBBUyBbTFBTIERlbGl2ZXJ5IEVUQV0sCQkJCQkJCQkJCQkJCQktLSBhZGRlZCAtIDExLzkvMjAxOA0KCQlMUFMuW0RlbGl2ZXJ5IERhdGVdIEFTIFtMUFMgRGVsaXZlcnkgRGF0ZV0sIC0tYWRkZWQgMjAxNi8xMS8zMA0KCQlCSV9ERUxNT04uW0RlbGl2ZXJ5IENyZWF0ZWQgT25dIEFTIFtSVFYgRGVsaXZlcnkgQ3JlYXRlZCBPbl0sIC0tYWRkZWQgMjAxNi8xMS8zMA0KCQlCSV9ERUxNT04uW1NoaXBtZW50XSBBUyBbUlRWIFNoaXBtZW50XSwgLS1hZGRlZCAyMDE2LzExLzMwDQoJCUJJX0RFTE1PTi5bRnJpZWdodCBkb2MgdGV4dF0gQVMgW1JUViBGcmVpZ2h0IERvYyBUZXh0XSwgLS1hZGRlZCAyMDE2LzExLzMwDQoJCUJJX0RFTE1PTi5bQWN0IGxvYWRpbmcgZW5kXSBBUyBbUlRWIEFjdCBsb2FkaW5nIGVuZF0sIC0tYWRkZWQgMjAxNi8xMS8zMA0KCQlCSV9ERUxNT04uW0FjdCBTaGlwbWVudCBDb21wbGV0ZSBEYXRlXSBBUyBbUlRWIEFjdCBTaGlwbWVudCBDb21wbGV0ZSBEYXRlXSwgLS1hZGRlZCAyMDE2LzExLzMwDQoJCUJJX0RFTE1PTi5bQWN0dWFsIENoZWNrIGluIGRhdGVdIEFTIFtSVFYgQWN0dWFsIENoZWNrIGluIGRhdGVdLCAtLWFkZGVkIDIwMTYvMTEvMzANCgkJQklfREVMTU9OLltBY3R1YWwgR00gRGF0ZV0gQVMgW1JUViBBY3R1YWwgR00gRGF0ZV0sIC0tYWRkZWQgMjAxNi8xMS8zMA0KCQlCSV9ERUxNT04uW0FjdHVhbCBQYWNraW5nIERhdGVdIEFTIFtSVFYgQWN0dWFsIFBhY2tpbmcgRGF0ZV0sIC0tYWRkZWQgMjAxNi8xMS8zMA0KCQlCSV9ERUxNT04uW0FjdHVhbCBTaGlwbWVudCBFbmRdIEFTIFtSVFYgQWN0dWFsIFNoaXBtZW50IEVuZF0sIC0tYWRkZWQgMjAxNi8xMS8zMA0KCQlCSV9ERUxNT04uW0N1cnIgbG9hZGluZyBzdGFydF0gQVMgW1JUViBDdXJyIGxvYWRpbmcgc3RhcnRdLCAtLWFkZGVkIDIwMTYvMTEvMzANCgkJQklfREVMTU9OLltDdXJyIFNoaXBtZW50IFN0YXJ0XSBBUyBbUlRWIEN1cnIgU2hpcG1lbnQgU3RhcnRdLCAtLWFkZGVkIDIwMTYvMTEvMzANCgkJQklfREVMTU9OLltEZWxpdmVyeSBEYXRlXSBBUyBbUlRWIERlbGl2ZXJ5IERhdGVdLCAtLWFkZGVkIDIwMTYvMTEvMzANCgkJQklfREVMTU9OLltMb2FkaW5nIERhdGVdIEFTIFtSVFYgTG9hZGluZyBEYXRlXSwgLS1hZGRlZCAyMDE2LzExLzMwDQoJCUJJX0RFTE1PTi5bUGlja2luZyBEYXRlXSBBUyBbUlRWIFBpY2tpbmcgRGF0ZV0sIC0tYWRkZWQgMjAxNi8xMS8zMA0KCQlCSV9ERUxNT04uW1BsYW5uZWQgbG9hZCBlbmRdIEFTIFtSVFYgUGxhbm5lZCBsb2FkIGVuZF0sIC0tYWRkZWQgMjAxNi8xMS8zMA0KCQlCSV9ERUxNT04uW1BsYW5uZWQgc2hpcG1lbnQgZW5kXSBBUyBbUlRWIFBsYW5uZWQgc2hpcG1lbnQgZW5kXSwgLS1hZGRlZCAyMDE2LzExLzMwDQoJCUJJX0RFTE1PTi5bUGxhbm5lZCBTaGlwbWVudCBTdGFydF0gQVMgW1JUViBQbGFubmVkIFNoaXBtZW50IFN0YXJ0XSwgLS1hZGRlZCAyMDE2LzExLzMwDQoJCUJJX0RFTE1PTi5bU2hpcG1lbnQgQ3JlYXRlZCBPbl0gQVMgW1JUViBTaGlwbWVudCBDcmVhdGVkIE9uXSwgLS1hZGRlZCAyMDE2LzExLzMwDQoJCUJJX0RFTE1PTi5bVHJhbnNwIFBsYW4gRGF0ZV0gQVMgW1JUViBUcmFuc3AgUGxhbiBEYXRlXSwgLS1hZGRlZCAyMDE2LzExLzMwDQoJCUFSTS5bQ29udGFjdCBQZXJzb25dLCAtLWFkZGVkIDIwMTYvMTIvMTINCgkJUE1BU1RFUi5bQ29tbW9kaXR5IExWMV0sIC0tYWRkZWQgMjAxNy8wMi8xOQ0KCQlSRUYuW0NvbXBhbnkgUmVnaW9uXSwgLS1hZGRlZCAyMDE3LzAyLzI4DQoJCVJFRi5bSHViXSwgLS1hZGRlZCAyMDE3LzAyLzI4DQoJCUNPQUxFU0NFKEFSTTIuW1Byb2plY3QgTmFtZV0sQVJNLltQcm9qZWN0IE5hbWVdKSBBUyBbUHJvamVjdCBOYW1lXSAtLWFkZGVkIDIwMTcvMDQvMjgNCg0KCQkNCgkJRlJPTSBTQVBfWk9NUkVUTSBBUyBaT01SRVRNDQoNCgkJSU5ORVIgSk9JTg0KCQkoCVNFTEVDVCBbU09dLFtTTyBJdGVtXSxbUmVhc29uIGZvciBSZWplY3Rpb25dLFtDUkVBVEVEIE9OXSxbQ1JFQVRFRCBPTiBUSU1FXSxbVW9NXSxbTGFzdCBDaGFuZ2VkIE9uXQ0KCQkJRlJPTSBTQVBfWlZCQVApIEFTIFpWQkFQDQoJCQlPTiBaT01SRVRNLltTT109WlZCQVAuW1NPXSBBTkQgWk9NUkVUTS5bU08gSXRlbV09WlZCQVAuW1NPIEl0ZW1dDQoJCQkNCgkJTEVGVCBPVVRFUiBKT0lOIC0tdXBkYXRlZCAyMDE3LzAxLzExDQoJCSgJU0VMRUNUIE1BWChbR1JEIChBY3QpXStbR1JUIChBY3QpXSkgQVMgW01heCBHUiBEYXRlXSxbUk1BIE51bWJlcl0NCgkJCUZST00gRVdNX1JFVFVSTl9ERUxJVkVSWV9JVEVNDQoJCQlXSEVSRSBbUXVhbnRpdHldIDw+IDAgLS1hZGRlZCAyMDE3LzAxLzE3DQoJCQlHUk9VUCBCWSBbUk1BIE51bWJlcl0pIEFTIE1BWF9JVEVNDQoJCQlPTiAoKFpPTVJFVE0uW1JNQSBOdW1iZXJdPU1BWF9JVEVNLltSTUEgTnVtYmVyXSkNCgkJCQlPUg0KCQkJCShNQVhfSVRFTS5bUk1BIE51bWJlcl0gbGlrZSAnJScrWk9NUkVUTS5bU09dKyclJyBBTkQgUklHSFQoTUFYX0lURU0uW1JNQSBOdW1iZXJdLDYpPVpPTVJFVE0uW1NPIEl0ZW1dKSkNCg0KCQlMRUZUIE9VVEVSIEpPSU4gLS11cGRhdGVkIDIwMTcvMDEvMTENCgkJKAlTRUxFQ1QgW1JNQSBOdW1iZXJdLFtFUlAgRG9jXSxbTG9ja2VkXSxbRG9jdW1lbnRdLFtJdGVtXSxbSXRlbSBDYXRdLFtQcm9kdWN0XSxbUXVhbnRpdHldLFtVbml0XSxbR1JEIChBY3QpXSxbR1JUIChBY3QpXSxbUHV0YXdheSBBXSwNCgkJCVtQdXR3VG0gQV0sW1B1dGF3YXldLFtHb29kcyBSY3B0XSxbUHJvZCBPcmRdLFtVbmxEdEFjdF0sW1VubFRtIEFdLFtTJkEgU3RhdHVzXSxbUGFja1N0YXR1c10sW0VSUCBFcnJvcl0sDQoJCQlbRG9jIENhdF0sW09yaWdpbl0sW1BPXSxbUE8gSXRlbV0sW0l0ZW0gVHlwZV0sW0l0ZW0gVHlwZSBEZXNjcmlwdGlvbl0sW0l0ZW0gQ2F0IERlc2NyaXB0aW9uXSxbV2FyZWhvdXNlXQ0KCQkJRlJPTSBFV01fUkVUVVJOX0RFTElWRVJZX0lURU0pIEFTIElURU0NCgkJCU9OIE1BWF9JVEVNLltSTUEgTnVtYmVyXT1JVEVNLltSTUEgTnVtYmVyXSBBTkQgTUFYX0lURU0uW01heCBHUiBEYXRlXT0oSVRFTS5bR1JEIChBY3QpXStJVEVNLltHUlQgKEFjdCldKQ0KDQoJCUxFRlQgT1VURVIgSk9JTg0KCQkoCVNFTEVDVCBESVNUSU5DVCBbQ1NSIE51bWJlcl0sW0luaXRpYWwgRXJpY3Nzb24gRW1wbG95ZWUtTGFzdF0sW0luaXRpYWwgRXJpY3Nzb24gRW1wbG95ZWUtRmlyc3RdLFtDb250YWN0IFBlcnNvbl0sW1BpY2stdXAgQ2l0eV0sW1BpY2stdXAgUmVnaW9uXSxbUGljay11cCBQb3N0YWwgQ29kZV0sTUFYKFtQcm9qZWN0IE5hbWVdKSBBUyBbUHJvamVjdCBOYW1lXQ0KCQkJRlJPTSBFQldfQVJNX09SREVSUw0KCQkJR1JPVVAgQlkgW0NTUiBOdW1iZXJdLFtJbml0aWFsIEVyaWNzc29uIEVtcGxveWVlLUxhc3RdLFtJbml0aWFsIEVyaWNzc29uIEVtcGxveWVlLUZpcnN0XSxbQ29udGFjdCBQZXJzb25dLFtQaWNrLXVwIENpdHldLFtQaWNrLXVwIFJlZ2lvbl0sW1BpY2stdXAgUG9zdGFsIENvZGVdKSBBUyBBUk0NCgkJCU9OIFpPTVJFVE0uW0N1c3RvbWVyIFBPXT1BUk0uW0NTUiBOdW1iZXJdDQoJCQ0KCQlMRUZUIE9VVEVSIEpPSU4NCgkJKAlTRUxFQ1QgRElTVElOQ1QgW0NTUiBOdW1iZXJdLFtDU1IgSXRlbV0sW1Byb2plY3QgTmFtZV0NCgkJCUZST00gRUJXX0FSTV9PUkRFUlMpIEFTIEFSTTINCgkJCU9OIFpPTVJFVE0uW0N1c3RvbWVyIFBPXT1BUk0yLltDU1IgTnVtYmVyXSBBTkQgWk9NUkVUTS5bU08gSXRlbV09QVJNMi5bQ1NSIEl0ZW1dDQoNCgkJSU5ORVIgSk9JTg0KCQkoCVNFTEVDVCBbTWF0ZXJpYWxdLFtQbG50XSxbU3RhbmRhcmQgcHJpY2VdIA0KCQkJRlJPTSBTQVBfTUJFVykgQVMgTUJFVw0KCQkJT04gWk9NUkVUTS5bTWF0ZXJpYWwgTnVtYmVyXT1NQkVXLltNYXRlcmlhbF0gQU5EIFpPTVJFVE0uW1BsYW50XT1NQkVXLltQbG50XQ0KCQkJDQoJCUxFRlQgT1VURVIgSk9JTg0KCQkoCVNFTEVDVCBbU09dLFtTYWxlcyBPcmddLFtDdXN0b21lciBQT10sW1NvbGQtdG8gUGFydHldLCBbU2FsZXMgT2ZmaWNlXSANCgkJCUZST00gU0FQX1pWQkFLKSBBUyBaVkJBSw0KCQkJT04gWk9NUkVUTS5bU09dPVpWQkFLLltTT10NCgkJCQ0KCQlMRUZUIE9VVEVSIEpPSU4NCgkJKAlTRUxFQ1QgW01hdGVyaWFsXSwgW1BsYW50XSwgW01hdGVyaWFsIEdyb3VwIERlc2NyaXB0aW9uXSxbQ29tbW9kaXR5IExWMV0JCQkJCQktLSAxMi81LzIwMTcgLSBlc2hhbm1lDQoJCQlGUk9NIEJJX01BVEVSSUFMX1BMQU5UX1NVTU1BUlkpIEFTIFBNQVNURVINCgkJCU9OIFpPTVJFVE0uW01hdGVyaWFsIE51bWJlcl09UE1BU1RFUi5bTWF0ZXJpYWxdIEFORCBaT01SRVRNLltQbGFudF0gPSBQTUFTVEVSLltQbGFudF0NCgkJDQoJCUxFRlQgT1VURVIgSk9JTg0KCQkoCVNFTEVDVCBNQVgoW0RhdGUgRGVsaXZlcmVkXSkgQVMgW01heCBEZWxpdmVyeSBEYXRlXSxNQVgoUklHSFQoW1RyYWNraW5nIE51bWJlcl0sNSkpIEFTIFtNYXggVHJhY2tpbmcgTnVtYmVyXSwgUmlnaHQoW1JlZmVyZW5jZSBOdW1iZXJdLDgpIEFTIFNPIA0KCQkJRlJPTSBVUFNfUE9EX1RSQUNLSU5HIA0KCQkJV0hFUkUgW1N0YXR1c109J0RlbGl2ZXJlZCcgQU5EIFtTaGlwIFRvIENpdHldPD4nREFMTEFTJw0KCQkJR1JPVVAgQlkgUklHSFQoW1JlZmVyZW5jZSBOdW1iZXJdLDgpKSBNQVhfVVBTX0RFTElWRVJZDQoJCQlPTiBaT01SRVRNLltTT109TUFYX1VQU19ERUxJVkVSWS5bU09dDQoJCQ0KCQlMRUZUIE9VVEVSIEpPSU4NCgkJKAlTRUxFQ1QgRElTVElOQ1QgW1JlZmVyZW5jZSBOdW1iZXJdLE1BWChSSUdIVChbVHJhY2tpbmcgTnVtYmVyXSw1KSkgQVMgW01heCBUcmFja2luZyBOdW1iZXJdLFtNYW5pZmVzdCBEYXRlXSxbU3RhdHVzXSwoW1NoaXAgVG8gQ2l0eV0pLA0KCQkJW1NoaXAgdG8gU3RhdGVdLFtTaGlwIFRvIENvdW50cnldLFtTZXJ2aWNlXSxbU2NoZWR1bGVkIERlbGl2ZXJ5XSxbRGF0ZSBEZWxpdmVyZWRdLFtEZWxpdmVyeSBUaW1lXSxSaWdodChbUmVmZXJlbmNlIE51bWJlcl0sOCkgQVMgU08NCgkJCUZST00gVVBTX1BPRF9UUkFDS0lORyANCgkJCVdIRVJFIFtTdGF0dXNdPSdEZWxpdmVyZWQnIEFORCBbU2hpcCBUbyBDaXR5XTw+J0RBTExBUycNCgkJCUdST1VQIEJZIFtSZWZlcmVuY2UgTnVtYmVyXSxbTWFuaWZlc3QgRGF0ZV0sW1N0YXR1c10sKFtTaGlwIFRvIENpdHldKSwNCgkJCVtTaGlwIHRvIFN0YXRlXSxbU2hpcCBUbyBDb3VudHJ5XSxbU2VydmljZV0sW1NjaGVkdWxlZCBEZWxpdmVyeV0sW0RhdGUgRGVsaXZlcmVkXSxbRGVsaXZlcnkgVGltZV0sUmlnaHQoW1JlZmVyZW5jZSBOdW1iZXJdLDgpKSBBUyBVUFMJDQoJCQlPTiBNQVhfVVBTX0RFTElWRVJZLltTT109VVBTLltTT10gQU5EIE1BWF9VUFNfREVMSVZFUlkuW01heCBEZWxpdmVyeSBEYXRlXT1VUFMuW0RhdGUgRGVsaXZlcmVkXSBBTkQgTUFYX1VQU19ERUxJVkVSWS5bTWF4IFRyYWNraW5nIE51bWJlcl09VVBTLltNYXggVHJhY2tpbmcgTnVtYmVyXQ0KDQoJCUxFRlQgT1VURVIgSk9JTg0KCQkoCVNFTEVDVCBbQ3VzdG9tZXIgVW5pdF0sW1NvbGQgdG9dDQoJCQlGUk9NIFJFRl9DVV9BU1NJR05NRU5UKSBBUyBDVQ0KCQkJT04gWlZCQUsuW1NvbGQtdG8gUGFydHldPUNVLltTb2xkIHRvXQ0KCQkJDQoJCUxFRlQgT1VURVIgSk9JTg0KCQkoCVNFTEVDVCBbU2FsZXMgT2ZmaWNlIERlc2NyaXB0aW9uXSxbU2FsZXMgT2ZmaWNlXQ0KCQkJRlJPTSBSRUZfU0FMRVNfT0ZGSUNFKSBBUyBTT0ZGSUNFDQoJCQlPTiBaVkJBSy5bU2FsZXMgT2ZmaWNlXT1TT0ZGSUNFLltTYWxlcyBPZmZpY2VdDQoJCQkNCgkJTEVGVCBPVVRFUiBKT0lODQoJCSgJU0VMRUNUIFtTT10sW1NPIEl0ZW1dLE1BWChbUmVnaW9uXSkgQVMgUkVHSU9OLE1BWChbU2hpcCB0byBDaXR5XSkgQVMgW1NoaXAgdG8gQ2l0eV0sTUFYKFtTaGlwIHRvIFppcF0pIEFTIFtTaGlwIHRvIFppcF0sTUFYKFtOUk8gUmVnaW9uXSkgQVMgW05STyBSZWdpb25dDQoJCQlGUk9NIEJJX0NVU1RNT04gR1JPVVAgQlkgW1NPXSxbU08gSXRlbV0pIEFTIENVU1RNT04NCgkJCU9OIFpPTVJFVE0uW1NPXT1DVVNUTU9OLltTT10gQU5EIFpPTVJFVE0uW1NPIEl0ZW1dPUNVU1RNT04uW1NPIEl0ZW1dDQoJCQkNCgkJTEVGVCBPVVRFUiBKT0lODQoJCSgJU0VMRUNUIFtEZWxpdmVyeV0sW0FjdHVhbEdNRGF0ZV0sW0FjdHVhbEdNdGltZV0sW0Rpc3RyaWJ1dGlvbiBzdGF0dXNdDQoJCQlGUk9NIFNBUF9aWkRFTE1PTl9IRUFERVJfT1VUQk9VTkQpIEFTIERFTE1PTg0KCQkJT04gWk9NUkVUTS5bRGVsaXZlcnldPURFTE1PTi5bRGVsaXZlcnldDQoNCgkJTEVGVCBPVVRFUiBKT0lODQoJCSgJU0VMRUNUIFtTYWxlcyBPcmRlcl0sW1NPIEl0ZW1dLFtQT10sW0RlbGl2ZXJ5IENyZWF0ZWQgT25dLFtTaGlwbWVudF0sW0FjdCBsb2FkaW5nIGVuZF0sW0FjdCBTaGlwbWVudCBDb21wbGV0ZSBEYXRlXSxbQWN0dWFsIENoZWNrIGluIGRhdGVdLA0KCQkJW0FjdHVhbCBHTSBEYXRlXSxbQWN0dWFsIFBhY2tpbmcgRGF0ZV0sW0FjdHVhbCBTaGlwbWVudCBFbmRdLFtDdXJyIGxvYWRpbmcgc3RhcnRdLA0KCQkJW0N1cnIgU2hpcG1lbnQgU3RhcnRdLFtEZWxpdmVyeSBEYXRlXSxbTG9hZGluZyBEYXRlXSxbUGlja2luZyBEYXRlXSxbUGxhbm5lZCBsb2FkIGVuZF0sW1BsYW5uZWQgc2hpcG1lbnQgZW5kXSwNCgkJCVtQbGFubmVkIFNoaXBtZW50IFN0YXJ0XSxbU2hpcG1lbnQgQ3JlYXRlZCBPbl0sW1RyYW5zcCBQbGFuIERhdGVdLFtNYXRlcmlhbF0sW0ZyaWVnaHQgZG9jIHRleHRdDQoJCQlGUk9NIEJJX1paREVMTU9OX09VVEJPVU5EDQoJCQlXSEVSRSBbUE9dIGxpa2UgJzc3MSUnIEFORCBbU2hpcG1lbnRdIElTIE5PVCBOVUxMIEFORCBbRnJpZWdodCBkb2MgdGV4dF0gSVMgTk9UIE5VTEwNCgkJCUdST1VQIEJZIFtTYWxlcyBPcmRlcl0sW1NPIEl0ZW1dLFtQT10sW0RlbGl2ZXJ5IENyZWF0ZWQgT25dLFtTaGlwbWVudF0sW0FjdCBsb2FkaW5nIGVuZF0sW0FjdCBTaGlwbWVudCBDb21wbGV0ZSBEYXRlXSxbQWN0dWFsIENoZWNrIGluIGRhdGVdLA0KCQkJW0FjdHVhbCBHTSBEYXRlXSxbQWN0dWFsIFBhY2tpbmcgRGF0ZV0sW0FjdHVhbCBTaGlwbWVudCBFbmRdLFtDdXJyIGxvYWRpbmcgc3RhcnRdLA0KCQkJW0N1cnIgU2hpcG1lbnQgU3RhcnRdLFtEZWxpdmVyeSBEYXRlXSxbTG9hZGluZyBEYXRlXSxbUGlja2luZyBEYXRlXSxbUGxhbm5lZCBsb2FkIGVuZF0sW1BsYW5uZWQgc2hpcG1lbnQgZW5kXSwNCgkJCVtQbGFubmVkIFNoaXBtZW50IFN0YXJ0XSxbU2hpcG1lbnQgQ3JlYXRlZCBPbl0sW1RyYW5zcCBQbGFuIERhdGVdLFtNYXRlcmlhbF0sW0ZyaWVnaHQgZG9jIHRleHRdKSBBUyBCSV9ERUxNT04NCgkJCU9OIFpPTVJFVE0uW1NPXT1CSV9ERUxNT04uW1NhbGVzIE9yZGVyXSBBTkQgWk9NUkVUTS5bU08gSXRlbV09QklfREVMTU9OLltTTyBJdGVtXSBBTkQgWk9NUkVUTS5bTWF0ZXJpYWwgTnVtYmVyXT1CSV9ERUxNT04uW01hdGVyaWFsXQ0KCQkJDQoJCUxFRlQgT1VURVIgSk9JTg0KCQkoCVNFTEVDVCBbU09dLFtTTyBJdGVtXSxbQVNQIEluZm9ybWF0aW9uXSxbQ1JNIFNlcmlhbCBOdW1iZXJdLFtEaXNwb3NpdGlvbl0sW0dSIFF1YW50aXR5XSxbU08gU3RvY2sgUXR5XSxbQ1JNIE5vdGVdLFtSVFYgUE8vU1RPIERhdGVdLFtMQy0+QlUgVGV4dF0NCgkJCUZST00gU0FQX1pPTVJFVDEpIEFTIFpPTVJFVDENCgkJCU9OIFpPTVJFVE0uW1NPXT1aT01SRVQxLltTT10gQU5EIFpPTVJFVE0uW1NPIEl0ZW1dPVpPTVJFVDEuW1NPIEl0ZW1dDQoJCQkNCgkJTEVGVCBPVVRFUiBKT0lODQoJCSgJU0VMRUNUIFtTT10sW0luZm9ybWF0aW9uIGZyb20gRENNXQ0KCQkJRlJPTSBTQVBfWk9NVklTMV9IRUFERVIpIEFTIFpPTVZJUzENCgkJCU9OIFpPTVJFVE0uW1NPXT1aT01WSVMxLltTT10NCgkJCQ0KCQlMRUZUIE9VVEVSIEpPSU4NCgkJKAlTRUxFQ1QgTUFYKFtEZWxpdmVyeSBEYXRlXSkgQVMgW01heCBEZWxpdmVyeSBEYXRlXSwgTUFYKFtEZWxpdmVyeSBFVEFdKSBBUyBbRGVsaXZlcnkgRVRBXSwgW0NTUiBOdW1iZXJdDQoJCQlGUk9NIEJJX0NSU1RfTFBTX1NISVBNRU5UU19DU1INCgkJCVdIRVJFIFtGcmVpZ2h0IERpcmVjdGlvbl0gSU4gKCdJbmJvdW5kJywgJ1RoaXJkIFBhcnR5JykJCQkJCQkJCQkJCQkJCS0tIDExLzkvMjAxOCAtIGVzaGFubWUgLSBBZGRlZCAnVGhpcmQgUGFydHknDQoJCQlHUk9VUCBCWSBbQ1NSIE51bWJlcl0pIEFTIE1BWF9MUFNfREVMSVZFUlkNCgkJCU9OIFpPTVJFVE0uW0N1c3RvbWVyIFBPXT1NQVhfTFBTX0RFTElWRVJZLltDU1IgTnVtYmVyXQ0KCQkJDQoJCUxFRlQgT1VURVIgSk9JTg0KCQkoCVNFTEVDVCBESVNUSU5DVCBbUHJvIE51bWJlcl0sW0NTUiBOdW1iZXJdLFtTdGF0dXNdLFtEZWxpdmVyeSBEYXRlXSxbRGVzdGluYXRpb24gQ2l0eV0sW0NhcnJpZXIgTmFtZV0sW0ZyZWlnaHQgRGlyZWN0aW9uXQ0KCQkJRlJPTSBCSV9DUlNUX0xQU19TSElQTUVOVFNfQ1NSDQoJCQlXSEVSRSBbRnJlaWdodCBEaXJlY3Rpb25dIElOICgnSW5ib3VuZCcsICdUaGlyZCBQYXJ0eScpCQkJCQkJCQkJCQkJCQktLSAxMS85LzIwMTggLSBlc2hhbm1lIC0gQWRkZWQgJ1RoaXJkIFBhcnR5Jw0KCQkJR1JPVVAgQlkgW1BybyBOdW1iZXJdLFtDU1IgTnVtYmVyXSxbU3RhdHVzXSxbRGVzdGluYXRpb24gQ2l0eV0sW0NhcnJpZXIgTmFtZV0sDQoJCQlbRnJlaWdodCBEaXJlY3Rpb25dLFtDU1IgTnVtYmVyXSxbRGVsaXZlcnkgRGF0ZV0sW0RlbGl2ZXJ5IEVUQV0pIEFTIExQUw0KCQkJT04gTUFYX0xQU19ERUxJVkVSWS5bQ1NSIE51bWJlcl09TFBTLltDU1IgTnVtYmVyXSBBTkQgTUFYX0xQU19ERUxJVkVSWS5bTWF4IERlbGl2ZXJ5IERhdGVdPUxQUy5bRGVsaXZlcnkgRGF0ZV0NCgkJCQ0KCQlMRUZUIE9VVEVSIEpPSU4NCgkJKAlTRUxFQ1QgW1BsYW50XSxbQ29tcGFueSBSZWdpb25dLFtIdWJdDQoJCQlGUk9NIFJFRl9QTEFOVFMpIEFTIFJFRg0KCQkJT04gWk9NUkVUTS5bUGxhbnRdPVJFRi5bUGxhbnRdDQoJCQ0KCQlMRUZUIE9VVEVSIEpPSU4gUkVGX05ST19SRUdJT05TIEFTIEFSTV9OUk8gT04gQVJNLltQaWNrLXVwIFJlZ2lvbl09QVJNX05STy5bU3RhdGVdDQoJCQkNCgkJV0hFUkUgWk9NUkVUTS5bU2FsZXMgRG9jdW1lbnQgVHlwZV0gPSAnWlJFMicNCgkNCglSRVZPS0UgU0VMRUNUIE9OIFtCSV9SRVRVUk5TX0UyRV0gdG8gIlJOQU1fVVNFUiI7DQoNCgkJDQoJCS0tVEFCTEVfU1RBVFVTIC0gVHJ1bmNhdGluZw0KCUVYRUMgVXBkYXRlVGFibGVTdGF0dXMgNDI2LCdUcnVuY2F0aW5nJywnJzsNCg0KCVRSVU5DQVRFIFRBQkxFIFtCSV9SRVRVUk5TX0UyRV0NCg0KCS0tVEFCTEVfU1RBVFVTIC0gVXBkYXRpbmcNCglFWEVDIFVwZGF0ZVRhYmxlU3RhdHVzIDQyNiwnVXBkYXRpbmcnLCcnOwkNCgkNCglJTlNFUlQgSU5UTyBbQklfUkVUVVJOU19FMkVdDQoNCglTRUxFQ1QgKg0KCQkNCglGUk9NICNSRVRVUk5TX1RFTVANCg0KCS0tRHJvcCB0ZW1wIHRhYmxlICAgICAgICAgICAgICAgICAgICAgIA0KCURST1AgVEFCTEUgI1JFVFVSTlNfVEVNUDsNCg0KCQ0KCUdSQU5UIFNFTEVDVCBPTiBbQklfUkVUVVJOU19FMkVdIHRvICJSTkFNX1VTRVIiOw0KCQ0KDQoJLS1UQUJMRV9TVEFUVVMgLSBTdWNjZXNzDQoJRVhFQyBVcGRhdGVUYWJsZVN0YXR1cyA0MjYsJ1N1Y2Nlc3MnLCdFbmQnLCdiY2FtZGIuZGJvLkJJX1JFVFVSTlNfRTJFJywnYmNhbWRiLmRiby5CSV9SRVRVUk5TX0UyRSc7CQ0KDQogIEVORCBUUlkNCiAgQkVHSU4gQ0FUQ0gNCiAgICAtLSBFeGVjdXRlIHRoZSBlcnJvciByZXRyaWV2YWwgcm91dGluZS4NCgkgICAgIEVYRUMgVXBkYXRlVGFibGVTdGF0dXMgNDI2LCdGYWlsZWQnOw0KDQoJCSBHUkFOVCBTRUxFQ1QgT04gW0JJX1JFVFVSTlNfRTJFXSB0byAiUk5BTV9VU0VSIjsNCg0KICBFTkQgQ0FUQ0g7DQogICAJDQpFTkQNCmBgYA0KPC9kaXY+DQo8L2Rpdj4NCg0KIyBCbG9jayAyDQoNCjxkaXYgY2xhc3MgPSAicm93Ij4NCjxkaXYgY2xhc3M9ImNvbC1tZC02Ij4NCkxvcmVtIGlwc3VtIGRvbG9yIHNpdCBhbWV0LCBjb25zZWN0ZXR1ciBhZGlwaXNjaW5nIGVsaXQsIHNlZCBkbyBlaXVzbW9kIHRlbXBvciBpbmNpZGlkdW50IHV0IGxhYm9yZSBldCBkb2xvcmUgbWFnbmEgYWxpcXVhLiBOYXRvcXVlIHBlbmF0aWJ1cyBldCBtYWduaXMgZGlzIHBhcnR1cmllbnQgbW9udGVzIG5hc2NldHVyIHJpZGljdWx1cy4gTWF0dGlzIGFsaXF1YW0gZmF1Y2lidXMgcHVydXMgaW4gbWFzc2EuIEFsaXF1ZXQgbmVjIHVsbGFtY29ycGVyIHNpdCBhbWV0IHJpc3VzLiBMZWN0dXMgdXJuYSBkdWlzIGNvbnZhbGxpcyBjb252YWxsaXMgdGVsbHVzLiBOaWJoIG1hdXJpcyBjdXJzdXMgbWF0dGlzIG1vbGVzdGllIGEgaWFjdWxpcy4gVHVycGlzIGVnZXN0YXMgcHJldGl1bSBhZW5lYW4gcGhhcmV0cmEgbWFnbmEgYWMuIERpcyBwYXJ0dXJpZW50IG1vbnRlcyBuYXNjZXR1ciByaWRpY3VsdXMgbXVzIG1hdXJpcy4gRWdldCBzaXQgYW1ldCB0ZWxsdXMgY3Jhcy4gQ29tbW9kbyBvZGlvIGFlbmVhbiBzZWQgYWRpcGlzY2luZyBkaWFtIGRvbmVjIGFkaXBpc2NpbmcgdHJpc3RpcXVlIHJpc3VzLiBWaXZlcnJhIGFsaXF1ZXQgZWdldCBzaXQgYW1ldCB0ZWxsdXMuDQo8L2Rpdj4NCjxkaXYgY2xhc3M9ImNvbC1tZC02Ij4NCmBgYHtzcWwgYmxvY2syLCBldmFsID0gRkFMU0UsIHJlc3VsdHM9J21hcmt1cCd9DQpgYGANCjwvZGl2Pg0KPC9kaXY+DQoNCiMgQmxvY2sgMw0KDQo8ZGl2IGNsYXNzID0gInJvdyI+DQo8ZGl2IGNsYXNzPSJjb2wtbWQtNiI+DQpMb3JlbSBpcHN1bSBkb2xvciBzaXQgYW1ldCwgY29uc2VjdGV0dXIgYWRpcGlzY2luZyBlbGl0LCBzZWQgZG8gZWl1c21vZCB0ZW1wb3IgaW5jaWRpZHVudCB1dCBsYWJvcmUgZXQgZG9sb3JlIG1hZ25hIGFsaXF1YS4gTmF0b3F1ZSBwZW5hdGlidXMgZXQgbWFnbmlzIGRpcyBwYXJ0dXJpZW50IG1vbnRlcyBuYXNjZXR1ciByaWRpY3VsdXMuIE1hdHRpcyBhbGlxdWFtIGZhdWNpYnVzIHB1cnVzIGluIG1hc3NhLiBBbGlxdWV0IG5lYyB1bGxhbWNvcnBlciBzaXQgYW1ldCByaXN1cy4gTGVjdHVzIHVybmEgZHVpcyBjb252YWxsaXMgY29udmFsbGlzIHRlbGx1cy4gTmliaCBtYXVyaXMgY3Vyc3VzIG1hdHRpcyBtb2xlc3RpZSBhIGlhY3VsaXMuIFR1cnBpcyBlZ2VzdGFzIHByZXRpdW0gYWVuZWFuIHBoYXJldHJhIG1hZ25hIGFjLiBEaXMgcGFydHVyaWVudCBtb250ZXMgbmFzY2V0dXIgcmlkaWN1bHVzIG11cyBtYXVyaXMuIEVnZXQgc2l0IGFtZXQgdGVsbHVzIGNyYXMuIENvbW1vZG8gb2RpbyBhZW5lYW4gc2VkIGFkaXBpc2NpbmcgZGlhbSBkb25lYyBhZGlwaXNjaW5nIHRyaXN0aXF1ZSByaXN1cy4gVml2ZXJyYSBhbGlxdWV0IGVnZXQgc2l0IGFtZXQgdGVsbHVzLg0KPC9kaXY+DQo8ZGl2IGNsYXNzPSJjb2wtbWQtNiI+DQpgYGB7c3FsIGJsb2NrMywgZXZhbCA9IEZBTFNFLCByZXN1bHRzPSdtYXJrdXAnfQ0KYGBgDQo8L2Rpdj4NCjwvZGl2Pg0KDQojIEZpbmFsIFN0b3JlZCBQcm9jZWR1cmUNCg0KYGBge3Igc2hvd2Jsb2NrMSwgcmVmLmxhYmVsPWMoJ2Jsb2NrMScsJ2Jsb2NrMicsJ2Jsb2NrMycpLCBldmFsPUZBTFNFfQ0KYGBgDQoNCg0K</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

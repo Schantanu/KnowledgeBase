@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Author - Shantanu Mendhekar" />
+
+
+<title>SQL Basics</title>
+
+<script src="libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="libs/navigation-1.1/tabsets.js"></script>
+<script src="libs/navigation-1.1/codefolding.js"></script>
+<script src="libs/navigation-1.1/sourceembed.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; background-color: #f8f8f8; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+pre, code { background-color: #f8f8f8; }
+code > span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code > span.dt { color: #204a87; } /* DataType */
+code > span.dv { color: #0000cf; } /* DecVal */
+code > span.bn { color: #0000cf; } /* BaseN */
+code > span.fl { color: #0000cf; } /* Float */
+code > span.ch { color: #4e9a06; } /* Char */
+code > span.st { color: #4e9a06; } /* String */
+code > span.co { color: #8f5902; font-style: italic; } /* Comment */
+code > span.ot { color: #8f5902; } /* Other */
+code > span.al { color: #ef2929; } /* Alert */
+code > span.fu { color: #000000; } /* Function */
+code > span.er { color: #a40000; font-weight: bold; } /* Error */
+code > span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #000000; } /* Constant */
+code > span.sc { color: #000000; } /* SpecialChar */
+code > span.vs { color: #4e9a06; } /* VerbatimString */
+code > span.ss { color: #4e9a06; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #000000; } /* Variable */
+code > span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code > span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code > span.ex { } /* Extension */
+code > span.at { color: #c4a000; } /* Attribute */
+code > span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code > span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+div.sourceCode {
+  overflow-x: visible;
+}
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 30px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 26px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 20px;
+}
+h5 {
+  font-size: 18px;
+}
+h6 {
+  font-size: 16px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+<link rel="stylesheet" href="libs\style.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("105_SQL_Basics.rmd");
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">SQL Basics</h1>
+<h4 class="author"><em>Author - <a href="mailto:shantanu.mendhekar@ericsson.com">Shantanu Mendhekar</a></em></h4>
+<h4 class="date"><em>Update Date - 09 December, 2018 21:20 PM</em></h4>
+
+</div>
+
+
+<script src="libs/locationhash.js"></script>
+<div id="what-is-sql" class="section level1">
+<h1>What is SQL?</h1>
+<p>SQL (pronounced “sequel” or “S-Q-L”) stands for Structured Query Language. It is one of the basic languages to communicate with a Database for accessing and manipulating data.</p>
+<p>SQL can be used to do the following -</p>
+<div class="sourceCode"><pre class="sourceCode html"><code class="sourceCode html">* Execute queries against a database
+* Retrieve data from a database
+* Insert records in a database
+* Update records in a database
+* Delete records from a database
+* Create new database
+* Create new tables in a database
+* Create Stored Procedures in a database
+* Create views in a database
+* Set permissions on tables, procedures, and views</code></pre></div>
+<p>RDMS stands for Relational Database Management System. RDBMS is the basis for SQL, and for all modern database systems such as MS SQL Server, IBM DB2, Oracle, MySQL, and Microsoft Access. The data in RDBMS is stored in database objects called tables. A table is a collection of related data entries and it consists of columns and rows.</p>
+<p>For example, the following rows from the BI_MATERIAL_PLANT_SUMMARY table -</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(RODBC)
+<span class="kw">library</span>(dplyr)
+<span class="kw">library</span>(magrittr)
+<span class="kw">library</span>(kableExtra)
+<span class="kw">library</span>(knitr)
+
+connection &lt;-<span class="st"> </span><span class="kw">odbcConnect</span>(<span class="st">&quot;REPORTINGDBDEV&quot;</span>)
+query &lt;-<span class="st"> &quot;</span>
+
+<span class="st">SELECT TOP 5</span>
+<span class="st">[Material]</span>
+<span class="st">,[Material Description]</span>
+<span class="st">,[Commodity LV1]</span>
+<span class="st">,[Plant]</span>
+<span class="st">,[Company Region]</span>
+<span class="st">FROM BI_MATERIAL_PLANT_SUMMARY</span>
+<span class="st">WHERE [Commodity LV1] LIKE &#39;%Radios%&#39;</span>
+
+<span class="st">&quot;</span>
+data &lt;-<span class="st"> </span><span class="kw">sqlQuery</span>(connection, query)
+
+<span class="kw">odbcCloseAll</span>()
+
+data <span class="op">%&gt;%</span>
+<span class="kw">kable</span>(<span class="st">&quot;html&quot;</span>) <span class="op">%&gt;%</span>
+<span class="kw">kable_styling</span>(<span class="dt">bootstrap_options =</span> <span class="kw">c</span>(<span class="st">&quot;striped&quot;</span>, <span class="st">&quot;hover&quot;</span>))</code></pre></div>
+<table class="table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Material
+</th>
+<th style="text-align:left;">
+Material Description
+</th>
+<th style="text-align:left;">
+Commodity LV1
+</th>
+<th style="text-align:right;">
+Plant
+</th>
+<th style="text-align:left;">
+Company Region
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<span class="citation">@KRC11859/1</span>
+</td>
+<td style="text-align:left;">
+USED RUS 01 B4 60W
+</td>
+<td style="text-align:left;">
+Radios
+</td>
+<td style="text-align:right;">
+2666
+</td>
+<td style="text-align:left;">
+RNAM
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span class="citation">@KRC11859/1</span>
+</td>
+<td style="text-align:left;">
+USED RUS 01 B4 60W
+</td>
+<td style="text-align:left;">
+Radios
+</td>
+<td style="text-align:right;">
+2687
+</td>
+<td style="text-align:left;">
+RNAM
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span class="citation">@KRC11859/2</span>
+</td>
+<td style="text-align:left;">
+USED RUS 01 B4 80W
+</td>
+<td style="text-align:left;">
+Radios
+</td>
+<td style="text-align:right;">
+2666
+</td>
+<td style="text-align:left;">
+RNAM
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span class="citation">@KRC11859/2</span>
+</td>
+<td style="text-align:left;">
+USED RUS 01 B4 80W
+</td>
+<td style="text-align:left;">
+Radios
+</td>
+<td style="text-align:right;">
+2687
+</td>
+<td style="text-align:left;">
+RNAM
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+<span class="citation">@KRC11866/1</span>
+</td>
+<td style="text-align:left;">
+USED RUS 01 B2 60W
+</td>
+<td style="text-align:left;">
+Radios
+</td>
+<td style="text-align:right;">
+2666
+</td>
+<td style="text-align:left;">
+RNAM
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="what-is-a-sql-query" class="section level1">
+<h1>What is a SQL Query?</h1>
+<p>A query is an inquiry into the database using the SELECT statement. A query is used to extract data from the database in a readable format according to the user’s request.</p>
+<p>For instance, if you have an employee table, you might issue a SQL statement that returns the employee who has made the most sales. This request to the database for usable employee information is a typical query that can be performed in a relational database.</p>
+</div>
+<div id="how-to-write-a-sql-query" class="section level1">
+<h1>How to write a SQL Query?</h1>
+<p>The 3 basic terms for writing a basic SQL Query are</p>
+<pre><code>SELECT - How do we show it?
+FROM - Where do we get the data from?
+WHERE - What data should we filter to show?</code></pre>
+<p>Imagine the database against which you are writing a query as an Excel sheet, and the query is just selecting specific data from that sheet. Let’s convert the 3 basics of the SQL Query into something relateable to the Excel sheet.</p>
+<div class="figure">
+<img src="SQL_Basics/sql_query_excel.png" />
+
+</div>
+<p><strong>SELECT</strong> - The SELECT will be selecting the columns from the above sheet. Let’s say we select columns ‘SO’, ‘Plant’ and ‘Quantity’</p>
+<p><strong>FROM</strong> - The FROM will be the database we want to see these columns from. The outer dotted line represents the entire SQL Table from where we want to get that data. For our example, let’s take the database ‘BI_CUSTMON’.</p>
+<p><strong>WHERE</strong> - The WHERE will be the filters that we want to put on each of these columns to show only the rows we want. Let’s say we want to view the only the plants ‘2266’ and ‘2509’.</p>
+<p>Now, let’s convert the above requirements into a basic SQL Query.</p>
+<div class="sourceCode"><pre class="sourceCode html"><code class="sourceCode html">SELECT [SO], [Plant], [Quantity]
+FROM BI_CUSTMON
+WHERE [Plant] IN (&#39;2266&#39;,&#39;2509&#39;)</code></pre></div>
+<p>When you run the above query, it will select the columns from the database you specified and will filter it according to the plants stated. The result of the query can be seen below.</p>
+<div class="figure">
+<img src="SQL_Basics/sql_query_result.png" />
+
+</div>
+</div>
+<div id="connect-to-sql" class="section level1">
+<h1>Connect to SQL</h1>
+<div id="basic-output" class="section level2">
+<h2>Basic Output</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(DBI)</code></pre></div>
+<pre><code>## Loading required package: methods</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># odbc &lt;- dbConnect(odbc::odbc(), Driver = &quot;SQL Server&quot;, Server = &quot;REPORTINGDB&quot;)</span>
+
+con &lt;-<span class="st"> </span>DBI<span class="op">::</span><span class="kw">dbConnect</span>(odbc<span class="op">::</span><span class="kw">odbc</span>(), 
+                      <span class="dt">Driver =</span> <span class="st">&quot;SQL Server&quot;</span>, 
+                      <span class="dt">Server =</span> <span class="st">&quot;EUSAAMW0656</span><span class="ch">\\</span><span class="st">REPORTINGDB&quot;</span>, 
+                      <span class="dt">Database =</span> <span class="st">&quot;BCAMDB&quot;</span>, 
+                      <span class="dt">Trusted_Connection =</span> <span class="st">&quot;True&quot;</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> TOP <span class="dv">5</span> * <span class="kw">FROM</span> REF_MRP_CONTROLLER</code></pre></div>
+<div class="knitsql-table">
+<table>
+<caption>5 records</caption>
+<thead>
+<tr class="header">
+<th align="left">MRP Controller</th>
+<th align="left">Commodity</th>
+<th align="left">Planner Name</th>
+<th align="left">Material Manager</th>
+<th align="left">Buyer</th>
+<th align="left">Sourcing Prime</th>
+<th align="left">PSM Responsible</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">001</td>
+<td align="left">CONTROLLER1</td>
+<td align="left">Not Assigned</td>
+<td align="left">Not Assigned</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="left">A01</td>
+<td align="left">Yabne Villalpando</td>
+<td align="left">Yabne Villalpando</td>
+<td align="left">Not Assigned</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">A02</td>
+<td align="left">Rogelio Medina</td>
+<td align="left">Rogelio Medina</td>
+<td align="left">Not Assigned</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="left">A03</td>
+<td align="left">Taciana Azuma</td>
+<td align="left">Taciana Azuma</td>
+<td align="left">Not Assigned</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">A04</td>
+<td align="left">Conrado Corona</td>
+<td align="left">Conrado Corona</td>
+<td align="left">Not Assigned</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="kable-output" class="section level2">
+<h2>Kable Output</h2>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> TOP <span class="dv">5</span> * <span class="kw">FROM</span> REF_MRP_CONTROLLER</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr<span class="op">::</span><span class="kw">kable</span>(select_1_result)</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">MRP Controller</th>
+<th align="left">Commodity</th>
+<th align="left">Planner Name</th>
+<th align="left">Material Manager</th>
+<th align="left">Buyer</th>
+<th align="left">Sourcing Prime</th>
+<th align="left">PSM Responsible</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">001</td>
+<td align="left">CONTROLLER1</td>
+<td align="left">Not Assigned</td>
+<td align="left">Not Assigned</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="left">A01</td>
+<td align="left">Yabne Villalpando</td>
+<td align="left">Yabne Villalpando</td>
+<td align="left">Not Assigned</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">A02</td>
+<td align="left">Rogelio Medina</td>
+<td align="left">Rogelio Medina</td>
+<td align="left">Not Assigned</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="left">A03</td>
+<td align="left">Taciana Azuma</td>
+<td align="left">Taciana Azuma</td>
+<td align="left">Not Assigned</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">A04</td>
+<td align="left">Conrado Corona</td>
+<td align="left">Conrado Corona</td>
+<td align="left">Not Assigned</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="sql-syntax" class="section level1">
+<h1>SQL Syntax</h1>
+<div id="sql-select" class="section level2">
+<h2>SQL Select</h2>
+<p>To select everything in the columns</p>
+<div class="sourceCode"><pre class="sourceCode html"><code class="sourceCode html">SELECT *
+FROM BI_MATERIAL_PLANT_SUMMARY</code></pre></div>
+<p>To show top 10 rows for a SQL Table</p>
+<div class="sourceCode"><pre class="sourceCode html"><code class="sourceCode html">SELECT TOP 10 *
+FROM BI_MATERIAL_PLANT_SUMMARY</code></pre></div>
+<p>To select distinct values in the tabl</p>
+<div class="sourceCode"><pre class="sourceCode html"><code class="sourceCode html">SELECT DISTINCT [Plant]
+FROM BI_MATERIAL_PLANT_SUMMARY</code></pre></div>
+</div>
+<div id="sql-count" class="section level2">
+<h2>SQL Count</h2>
+<p>To find a count of rows in the table</p>
+<div class="sourceCode"><pre class="sourceCode html"><code class="sourceCode html">SELECT COUNT(*)
+FROM BI_MATERIAL_PLANT_SUMMARY</code></pre></div>
+<p>To find a count of rows of a distinct values in a column</p>
+<div class="sourceCode"><pre class="sourceCode html"><code class="sourceCode html">SELECT COUNT(DISTINCT [Plant])
+FROM BI_MATERIAL_PLANT_SUMMARY</code></pre></div>
+</div>
+<div id="sql-alias" class="section level2">
+<h2>SQL Alias</h2>
+<p>SQL aliases are used to give a database table, or a column in a table, a temporary name.</p>
+<p>To give a column an Alias</p>
+<div class="sourceCode"><pre class="sourceCode html"><code class="sourceCode html">SELECT DISTINCT [Plant] AS [SCOP Plants]
+FROM BI_MATERIAL_PLANT_SUMMARY
+WHERE [Plant] IN (&#39;2685&#39;,&#39;2666&#39;)</code></pre></div>
+<p>To give a table an Alias</p>
+<div class="sourceCode"><pre class="sourceCode html"><code class="sourceCode html">SELECT DISTINCT MPS.[Plant]
+FROM BI_MATERIAL_PLANT_SUMMARY MPS</code></pre></div>
+</div>
+<div id="sql-where" class="section level2">
+<h2>SQL Where</h2>
+<p>The WHERE Clause is used to extract only those records that fulfill a specified criterion.</p>
+<p>To display all columns in the table for only one part.</p>
+<div class="sourceCode"><pre class="sourceCode html"><code class="sourceCode html">SELECT *
+FROM BI_MATERIAL_PLANT_SUMMARY
+WHERE [Material] = &#39;RPM2531611/200M&#39;</code></pre></div>
+<p>To display all columns in the table for multiple parts.</p>
+<div class="sourceCode"><pre class="sourceCode html"><code class="sourceCode html">SELECT *
+FROM BI_MATERIAL_PLANT_SUMMARY
+WHERE [Material] IN (&#39;RPM2531611/200M&#39;,&#39;KRC161382/1&#39;)</code></pre></div>
+<p>To display specific columns for a part, select the columns and write it next to the SELECT statement.</p>
+<div class="sourceCode"><pre class="sourceCode html"><code class="sourceCode html">SELECT [Material], [Commodity LV1], [Material Description]
+FROM BI_MATERIAL_PLANT_SUMMARY
+WHERE [Material] = &#39;RPM2531611/200M&#39;</code></pre></div>
+<p>To display a part using Wildcard entry</p>
+<div class="sourceCode"><pre class="sourceCode html"><code class="sourceCode html">SELECT *
+FROM BI_MATERIAL_PLANT_SUMMARY
+WHERE [Material] LIKE &#39;RPM%&#39;</code></pre></div>
+<p>AND Operator</p>
+<div class="sourceCode"><pre class="sourceCode html"><code class="sourceCode html">SELECT *
+FROM BI_MATERIAL_PLANT_SUMMARY
+WHERE [Material] = &#39;RPM2531611/200M&#39;
+AND [Hub] = &#39;LEV&#39;</code></pre></div>
+<p>OR Operator</p>
+<div class="sourceCode"><pre class="sourceCode html"><code class="sourceCode html">SELECT *
+FROM BI_MATERIAL_PLANT_SUMMARY
+WHERE [Material] = &#39;RPM2531611/200M&#39;
+OR [Material] = &#39;Unicorn&#39;</code></pre></div>
+<p>AND &amp; OR Operator</p>
+<div class="sourceCode"><pre class="sourceCode html"><code class="sourceCode html">SELECT *
+FROM BI_MATERIAL_PLANT_SUMMARY
+WHERE [Company Region] = &#39;RNAM&#39;
+AND ([Material] = &#39;RPM2531611/200M&#39; OR [Material] = &#39;Unicorn&#39;)</code></pre></div>
+</div>
+</div>
+
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlNRTCBCYXNpY3MiDQphdXRob3I6IA0KLSAiQXV0aG9yIC0gW1NoYW50YW51IE1lbmRoZWthcl0obWFpbHRvOnNoYW50YW51Lm1lbmRoZWthckBlcmljc3Nvbi5jb20pIg0KZGF0ZToNCi0gIlVwZGF0ZSBEYXRlIC0gYHIgZm9ybWF0KFN5cy50aW1lKCksICclZCAlQiwgJVkgJUg6JU0gJXAnKWAiDQpwYXJhbXM6DQogIG91dHB1dERpcjogIlByb2plY3RzL0luYm91bmQiDQogIHVwZGF0ZUZyZXF1ZW5jeTogIkRhaWx5IiAjICJNb250aGx5IiAiV2Vla2x5Ig0KICB1cGRhdGVEYXk6ICIiDQotLS0NCg0KPHNjcmlwdCBzcmM9ImxpYnMvbG9jYXRpb25oYXNoLmpzIj48L3NjcmlwdD4NCg0KIyBXaGF0IGlzIFNRTD8NClNRTCAocHJvbm91bmNlZCAic2VxdWVsIiBvciAiUy1RLUwiKSBzdGFuZHMgZm9yIFN0cnVjdHVyZWQgUXVlcnkgTGFuZ3VhZ2UuIEl0IGlzIG9uZSBvZiB0aGUgYmFzaWMgbGFuZ3VhZ2VzIHRvIGNvbW11bmljYXRlIHdpdGggYSBEYXRhYmFzZSBmb3IgYWNjZXNzaW5nIGFuZCBtYW5pcHVsYXRpbmcgZGF0YS4NCg0KU1FMIGNhbiBiZSB1c2VkIHRvIGRvIHRoZSBmb2xsb3dpbmcgLQ0KYGBge2h0bWx9DQoqIEV4ZWN1dGUgcXVlcmllcyBhZ2FpbnN0IGEgZGF0YWJhc2UNCiogUmV0cmlldmUgZGF0YSBmcm9tIGEgZGF0YWJhc2UNCiogSW5zZXJ0IHJlY29yZHMgaW4gYSBkYXRhYmFzZQ0KKiBVcGRhdGUgcmVjb3JkcyBpbiBhIGRhdGFiYXNlDQoqIERlbGV0ZSByZWNvcmRzIGZyb20gYSBkYXRhYmFzZQ0KKiBDcmVhdGUgbmV3IGRhdGFiYXNlDQoqIENyZWF0ZSBuZXcgdGFibGVzIGluIGEgZGF0YWJhc2UNCiogQ3JlYXRlIFN0b3JlZCBQcm9jZWR1cmVzIGluIGEgZGF0YWJhc2UNCiogQ3JlYXRlIHZpZXdzIGluIGEgZGF0YWJhc2UNCiogU2V0IHBlcm1pc3Npb25zIG9uIHRhYmxlcywgcHJvY2VkdXJlcywgYW5kIHZpZXdzDQpgYGANCg0KUkRNUyBzdGFuZHMgZm9yIFJlbGF0aW9uYWwgRGF0YWJhc2UgTWFuYWdlbWVudCBTeXN0ZW0uIFJEQk1TIGlzIHRoZSBiYXNpcyBmb3IgU1FMLCBhbmQgZm9yIGFsbCBtb2Rlcm4gZGF0YWJhc2Ugc3lzdGVtcyBzdWNoIGFzIE1TIFNRTCBTZXJ2ZXIsIElCTSBEQjIsIE9yYWNsZSwgTXlTUUwsIGFuZCBNaWNyb3NvZnQgQWNjZXNzLiBUaGUgZGF0YSBpbiBSREJNUyBpcyBzdG9yZWQgaW4gZGF0YWJhc2Ugb2JqZWN0cyBjYWxsZWQgdGFibGVzLiBBIHRhYmxlIGlzIGEgY29sbGVjdGlvbiBvZiByZWxhdGVkIGRhdGEgZW50cmllcyBhbmQgaXQgY29uc2lzdHMgb2YgY29sdW1ucyBhbmQgcm93cy4NCg0KRm9yIGV4YW1wbGUsIHRoZSBmb2xsb3dpbmcgcm93cyBmcm9tIHRoZSBCSV9NQVRFUklBTF9QTEFOVF9TVU1NQVJZIHRhYmxlIC0NCg0KYGBge3IgZXZhbCA9IFRSVUUsIGVjaG8gPSBUUlVFLCB3YXJuaW5nID0gRkFMU0UsIG1lc3NhZ2UgPSBGQUxTRX0NCmxpYnJhcnkoUk9EQkMpDQpsaWJyYXJ5KGRwbHlyKQ0KbGlicmFyeShtYWdyaXR0cikNCmxpYnJhcnkoa2FibGVFeHRyYSkNCmxpYnJhcnkoa25pdHIpDQoNCmNvbm5lY3Rpb24gPC0gb2RiY0Nvbm5lY3QoIlJFUE9SVElOR0RCREVWIikNCnF1ZXJ5IDwtICINCg0KU0VMRUNUIFRPUCA1DQpbTWF0ZXJpYWxdDQosW01hdGVyaWFsIERlc2NyaXB0aW9uXQ0KLFtDb21tb2RpdHkgTFYxXQ0KLFtQbGFudF0NCixbQ29tcGFueSBSZWdpb25dDQpGUk9NIEJJX01BVEVSSUFMX1BMQU5UX1NVTU1BUlkNCldIRVJFIFtDb21tb2RpdHkgTFYxXSBMSUtFICclUmFkaW9zJScNCg0KIg0KZGF0YSA8LSBzcWxRdWVyeShjb25uZWN0aW9uLCBxdWVyeSkNCg0Kb2RiY0Nsb3NlQWxsKCkNCg0KZGF0YSAlPiUNCmthYmxlKCJodG1sIikgJT4lDQprYWJsZV9zdHlsaW5nKGJvb3RzdHJhcF9vcHRpb25zID0gYygic3RyaXBlZCIsICJob3ZlciIpKQ0KYGBgDQoNCiMgV2hhdCBpcyBhIFNRTCBRdWVyeT8NCkEgcXVlcnkgaXMgYW4gaW5xdWlyeSBpbnRvIHRoZSBkYXRhYmFzZSB1c2luZyB0aGUgU0VMRUNUIHN0YXRlbWVudC4gQSBxdWVyeSBpcyB1c2VkIHRvIGV4dHJhY3QgZGF0YSBmcm9tIHRoZSBkYXRhYmFzZSBpbiBhIHJlYWRhYmxlIGZvcm1hdCBhY2NvcmRpbmcgdG8gdGhlIHVzZXIncyByZXF1ZXN0Lg0KDQpGb3IgaW5zdGFuY2UsIGlmIHlvdSBoYXZlIGFuIGVtcGxveWVlIHRhYmxlLCB5b3UgbWlnaHQgaXNzdWUgYSBTUUwgc3RhdGVtZW50IHRoYXQgcmV0dXJucyB0aGUgZW1wbG95ZWUgd2hvIGhhcyBtYWRlIHRoZSBtb3N0IHNhbGVzLiBUaGlzIHJlcXVlc3QgdG8gdGhlIGRhdGFiYXNlIGZvciB1c2FibGUgZW1wbG95ZWUgaW5mb3JtYXRpb24gaXMgYSB0eXBpY2FsIHF1ZXJ5IHRoYXQgY2FuIGJlIHBlcmZvcm1lZCBpbiBhIHJlbGF0aW9uYWwgZGF0YWJhc2UuDQoNCiMgSG93IHRvIHdyaXRlIGEgU1FMIFF1ZXJ5Pw0KDQpUaGUgMyBiYXNpYyB0ZXJtcyBmb3Igd3JpdGluZyBhIGJhc2ljIFNRTCBRdWVyeSBhcmUNCmBgYA0KU0VMRUNUIC0gSG93IGRvIHdlIHNob3cgaXQ/DQpGUk9NIC0gV2hlcmUgZG8gd2UgZ2V0IHRoZSBkYXRhIGZyb20/DQpXSEVSRSAtIFdoYXQgZGF0YSBzaG91bGQgd2UgZmlsdGVyIHRvIHNob3c/DQpgYGANCkltYWdpbmUgdGhlIGRhdGFiYXNlIGFnYWluc3Qgd2hpY2ggeW91IGFyZSB3cml0aW5nIGEgcXVlcnkgYXMgYW4gRXhjZWwgc2hlZXQsIGFuZCB0aGUgcXVlcnkgaXMganVzdCBzZWxlY3Rpbmcgc3BlY2lmaWMgZGF0YSBmcm9tIHRoYXQgc2hlZXQuIExldCdzIGNvbnZlcnQgdGhlIDMgYmFzaWNzIG9mIHRoZSBTUUwgUXVlcnkgaW50byBzb21ldGhpbmcgcmVsYXRlYWJsZSB0byB0aGUgRXhjZWwgc2hlZXQuDQoNCiFbXShTUUxfQmFzaWNzL3NxbF9xdWVyeV9leGNlbC5wbmcpDQoNCl9fU0VMRUNUX18gLSBUaGUgU0VMRUNUIHdpbGwgYmUgc2VsZWN0aW5nIHRoZSBjb2x1bW5zIGZyb20gdGhlIGFib3ZlIHNoZWV0LiBMZXQncyBzYXkgd2Ugc2VsZWN0IGNvbHVtbnMgJ1NPJywgJ1BsYW50JyBhbmQgJ1F1YW50aXR5Jw0KDQpfX0ZST01fXyAtIFRoZSBGUk9NIHdpbGwgYmUgdGhlIGRhdGFiYXNlIHdlIHdhbnQgdG8gc2VlIHRoZXNlIGNvbHVtbnMgZnJvbS4gVGhlIG91dGVyIGRvdHRlZCBsaW5lIHJlcHJlc2VudHMgdGhlIGVudGlyZSBTUUwgVGFibGUgZnJvbSB3aGVyZSB3ZSB3YW50IHRvIGdldCB0aGF0IGRhdGEuIEZvciBvdXIgZXhhbXBsZSwgbGV0J3MgdGFrZSB0aGUgZGF0YWJhc2UgJ0JJX0NVU1RNT04nLg0KDQpfX1dIRVJFX18gLSBUaGUgV0hFUkUgd2lsbCBiZSB0aGUgZmlsdGVycyB0aGF0IHdlIHdhbnQgdG8gcHV0IG9uIGVhY2ggb2YgdGhlc2UgY29sdW1ucyB0byBzaG93IG9ubHkgdGhlIHJvd3Mgd2Ugd2FudC4gTGV0J3Mgc2F5IHdlIHdhbnQgdG8gdmlldyB0aGUgb25seSB0aGUgcGxhbnRzICcyMjY2JyBhbmQgJzI1MDknLg0KDQpOb3csIGxldCdzIGNvbnZlcnQgdGhlIGFib3ZlIHJlcXVpcmVtZW50cyBpbnRvIGEgYmFzaWMgU1FMIFF1ZXJ5Lg0KDQpgYGB7aHRtbH0NClNFTEVDVCBbU09dLCBbUGxhbnRdLCBbUXVhbnRpdHldDQpGUk9NIEJJX0NVU1RNT04NCldIRVJFIFtQbGFudF0gSU4gKCcyMjY2JywnMjUwOScpDQpgYGANCg0KV2hlbiB5b3UgcnVuIHRoZSBhYm92ZSBxdWVyeSwgaXQgd2lsbCBzZWxlY3QgdGhlIGNvbHVtbnMgZnJvbSB0aGUgZGF0YWJhc2UgeW91IHNwZWNpZmllZCBhbmQgd2lsbCBmaWx0ZXIgaXQgYWNjb3JkaW5nIHRvIHRoZSBwbGFudHMgc3RhdGVkLiBUaGUgcmVzdWx0IG9mIHRoZSBxdWVyeSBjYW4gYmUgc2VlbiBiZWxvdy4NCg0KIVtdKFNRTF9CYXNpY3Mvc3FsX3F1ZXJ5X3Jlc3VsdC5wbmcpDQoNCiMgQ29ubmVjdCB0byBTUUwNCg0KIyMgQmFzaWMgT3V0cHV0DQoNCmBgYHtyfQ0KbGlicmFyeShEQkkpDQoNCiMgb2RiYyA8LSBkYkNvbm5lY3Qob2RiYzo6b2RiYygpLCBEcml2ZXIgPSAiU1FMIFNlcnZlciIsIFNlcnZlciA9ICJSRVBPUlRJTkdEQiIpDQoNCmNvbiA8LSBEQkk6OmRiQ29ubmVjdChvZGJjOjpvZGJjKCksIA0KICAgICAgICAgICAgICAgICAgICAgIERyaXZlciA9ICJTUUwgU2VydmVyIiwgDQogICAgICAgICAgICAgICAgICAgICAgU2VydmVyID0gIkVVU0FBTVcwNjU2XFxSRVBPUlRJTkdEQiIsIA0KICAgICAgICAgICAgICAgICAgICAgIERhdGFiYXNlID0gIkJDQU1EQiIsIA0KICAgICAgICAgICAgICAgICAgICAgIFRydXN0ZWRfQ29ubmVjdGlvbiA9ICJUcnVlIikNCmBgYA0KDQpgYGB7c3FsLCBjb25uZWN0aW9uID0gY29ufQ0KU0VMRUNUIFRPUCA1ICogRlJPTSBSRUZfTVJQX0NPTlRST0xMRVINCmBgYA0KDQojIyBLYWJsZSBPdXRwdXQNCg0KYGBge3NxbCBjb25uZWN0aW9uID0gY29uLCBzZWxlY3RfMSwgb3V0cHV0LnZhcj0ic2VsZWN0XzFfcmVzdWx0IiwgY2FjaGU9VFJVRX0NClNFTEVDVCBUT1AgNSAqIEZST00gUkVGX01SUF9DT05UUk9MTEVSDQpgYGANCg0KYGBge3IgcHJpbnRfcmVzdWx0LCAgZXJyb3I9VFJVRX0NCmtuaXRyOjprYWJsZShzZWxlY3RfMV9yZXN1bHQpDQpgYGANCg0KIyBTUUwgU3ludGF4DQoNCiMjIFNRTCBTZWxlY3QNClRvIHNlbGVjdCBldmVyeXRoaW5nIGluIHRoZSBjb2x1bW5zDQoNCmBgYHtodG1sfQ0KU0VMRUNUICoNCkZST00gQklfTUFURVJJQUxfUExBTlRfU1VNTUFSWQ0KYGBgDQoNClRvIHNob3cgdG9wIDEwIHJvd3MgZm9yIGEgU1FMIFRhYmxlDQoNCmBgYHtodG1sfQ0KU0VMRUNUIFRPUCAxMCAqDQpGUk9NIEJJX01BVEVSSUFMX1BMQU5UX1NVTU1BUlkNCmBgYA0KDQpUbyBzZWxlY3QgZGlzdGluY3QgdmFsdWVzIGluIHRoZSB0YWJsDQoNCmBgYHtodG1sfQ0KU0VMRUNUIERJU1RJTkNUIFtQbGFudF0NCkZST00gQklfTUFURVJJQUxfUExBTlRfU1VNTUFSWQ0KYGBgDQoNCiMjIFNRTCBDb3VudA0KDQpUbyBmaW5kIGEgY291bnQgb2Ygcm93cyBpbiB0aGUgdGFibGUNCg0KYGBge2h0bWx9DQpTRUxFQ1QgQ09VTlQoKikNCkZST00gQklfTUFURVJJQUxfUExBTlRfU1VNTUFSWQ0KYGBgDQoNClRvIGZpbmQgYSBjb3VudCBvZiByb3dzIG9mIGEgZGlzdGluY3QgdmFsdWVzIGluIGEgY29sdW1uDQoNCmBgYHtodG1sfQ0KU0VMRUNUIENPVU5UKERJU1RJTkNUIFtQbGFudF0pDQpGUk9NIEJJX01BVEVSSUFMX1BMQU5UX1NVTU1BUlkNCmBgYA0KDQojIyBTUUwgQWxpYXMNCg0KU1FMIGFsaWFzZXMgYXJlIHVzZWQgdG8gZ2l2ZSBhIGRhdGFiYXNlIHRhYmxlLCBvciBhIGNvbHVtbiBpbiBhIHRhYmxlLCBhIHRlbXBvcmFyeSBuYW1lLg0KDQpUbyBnaXZlIGEgY29sdW1uIGFuIEFsaWFzDQoNCmBgYHtodG1sfQ0KU0VMRUNUIERJU1RJTkNUIFtQbGFudF0gQVMgW1NDT1AgUGxhbnRzXQ0KRlJPTSBCSV9NQVRFUklBTF9QTEFOVF9TVU1NQVJZDQpXSEVSRSBbUGxhbnRdIElOICgnMjY4NScsJzI2NjYnKQ0KYGBgDQoNClRvIGdpdmUgYSB0YWJsZSBhbiBBbGlhcw0KDQpgYGB7aHRtbH0NClNFTEVDVCBESVNUSU5DVCBNUFMuW1BsYW50XQ0KRlJPTSBCSV9NQVRFUklBTF9QTEFOVF9TVU1NQVJZIE1QUw0KYGBgDQoNCiMjIFNRTCBXaGVyZQ0KDQpUaGUgV0hFUkUgQ2xhdXNlIGlzIHVzZWQgdG8gZXh0cmFjdCBvbmx5IHRob3NlIHJlY29yZHMgdGhhdCBmdWxmaWxsIGEgc3BlY2lmaWVkIGNyaXRlcmlvbi4NCg0KVG8gZGlzcGxheSBhbGwgY29sdW1ucyBpbiB0aGUgdGFibGUgZm9yIG9ubHkgb25lIHBhcnQuDQoNCmBgYHtodG1sfQ0KU0VMRUNUICoNCkZST00gQklfTUFURVJJQUxfUExBTlRfU1VNTUFSWQ0KV0hFUkUgW01hdGVyaWFsXSA9ICdSUE0yNTMxNjExLzIwME0nDQpgYGANCg0KVG8gZGlzcGxheSBhbGwgY29sdW1ucyBpbiB0aGUgdGFibGUgZm9yIG11bHRpcGxlIHBhcnRzLg0KDQpgYGB7aHRtbH0NClNFTEVDVCAqDQpGUk9NIEJJX01BVEVSSUFMX1BMQU5UX1NVTU1BUlkNCldIRVJFIFtNYXRlcmlhbF0gSU4gKCdSUE0yNTMxNjExLzIwME0nLCdLUkMxNjEzODIvMScpDQpgYGANCg0KVG8gZGlzcGxheSBzcGVjaWZpYyBjb2x1bW5zIGZvciBhIHBhcnQsIHNlbGVjdCB0aGUgY29sdW1ucyBhbmQgd3JpdGUgaXQgbmV4dCB0byB0aGUgU0VMRUNUIHN0YXRlbWVudC4NCg0KYGBge2h0bWx9DQpTRUxFQ1QgW01hdGVyaWFsXSwgW0NvbW1vZGl0eSBMVjFdLCBbTWF0ZXJpYWwgRGVzY3JpcHRpb25dDQpGUk9NIEJJX01BVEVSSUFMX1BMQU5UX1NVTU1BUlkNCldIRVJFIFtNYXRlcmlhbF0gPSAnUlBNMjUzMTYxMS8yMDBNJw0KYGBgDQoNClRvIGRpc3BsYXkgYSBwYXJ0IHVzaW5nIFdpbGRjYXJkIGVudHJ5DQoNCmBgYHtodG1sfQ0KU0VMRUNUICoNCkZST00gQklfTUFURVJJQUxfUExBTlRfU1VNTUFSWQ0KV0hFUkUgW01hdGVyaWFsXSBMSUtFICdSUE0lJw0KYGBgDQoNCkFORCBPcGVyYXRvcg0KDQpgYGB7aHRtbH0NClNFTEVDVCAqDQpGUk9NIEJJX01BVEVSSUFMX1BMQU5UX1NVTU1BUlkNCldIRVJFIFtNYXRlcmlhbF0gPSAnUlBNMjUzMTYxMS8yMDBNJw0KQU5EIFtIdWJdID0gJ0xFVicNCmBgYA0KDQpPUiBPcGVyYXRvcg0KDQpgYGB7aHRtbH0NClNFTEVDVCAqDQpGUk9NIEJJX01BVEVSSUFMX1BMQU5UX1NVTU1BUlkNCldIRVJFIFtNYXRlcmlhbF0gPSAnUlBNMjUzMTYxMS8yMDBNJw0KT1IgW01hdGVyaWFsXSA9ICdVbmljb3JuJw0KYGBgDQoNCkFORCAmIE9SIE9wZXJhdG9yDQoNCmBgYHtodG1sfQ0KU0VMRUNUICoNCkZST00gQklfTUFURVJJQUxfUExBTlRfU1VNTUFSWQ0KV0hFUkUgW0NvbXBhbnkgUmVnaW9uXSA9ICdSTkFNJw0KQU5EIChbTWF0ZXJpYWxdID0gJ1JQTTI1MzE2MTEvMjAwTScgT1IgW01hdGVyaWFsXSA9ICdVbmljb3JuJykNCmBgYA==</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

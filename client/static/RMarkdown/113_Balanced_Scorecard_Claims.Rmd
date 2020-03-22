@@ -1,0 +1,2066 @@
+---
+title: "Balanced Scorecard - Claims"
+author: "Shantanu Mendhekar"
+date: "Last Update: `r format(Sys.time(), '%B %d, %Y, %X')`"
+---
+
+<script src="libs/locationhash.js"></script>
+
+# Summary {.tabset .tabset-fade .tabset-pills}
+
+## Contacts
+
+Report Owner - [Marta Errazquin](mailto:marta.errazquin@ericsson.com?subject=QUERY: Balanced Scorecard Claims)  
+Report Developer - [Shantanu Mendhekar](mailto:shantanu.mendhekar@ericsson.com?subject=QUERY: Balanced Scorecard Claims)  
+Report Users - MANA LEV Claims
+
+## Files
+
+<form method="get" action="../RMarkdown/files/113_Balanced_Scorecard_Claims/Claims_Scorecard_Raw_Data.xlsx">
+   <button type="submit"class="btn btn-secondary btn-sm">Download Raw Data</button>
+</form>
+
+## Gitlab
+
+```{r, eval = FALSE}
+https://scmgr.eams.ericsson.net/eshanme/KnowledgeBase/blob/master/static/RMarkdown/113_Balanced_Scorecard_Claims.Rmd
+```
+
+# Functions
+
+Following functions are used to create the interactive elements and automated raw data pull.
+
+## Create Line Chart
+
+```{r, message=FALSE, warning=FALSE }
+MetricLineChart <- function(MetricName, MetricYLabel, MetricQuery) {
+  library(RODBC)
+  library(dplyr)
+  library(xts)
+  library(dygraphs)
+  
+  # Connect to SQL Server
+  connection <- odbcConnect("REPORTINGDB")
+  
+  # Extract Data
+  MetricData <- sqlQuery(connection, MetricQuery)
+  
+  # Close SQL Server Connection
+  odbcCloseAll()
+  
+  # Filter Data for Individual Role = 'All'
+  MetricDataAll <- filter(MetricData, MetricData$`Individual Role` == "All")
+  
+  # Convert Metric Data to Time Series
+  MetricTimeSeries <- xts(MetricDataAll$Value, as.Date(MetricDataAll$Date, format='%m-%d-%Y'))
+  
+  # Time Series Line Chart
+  linechart <- dygraph(MetricTimeSeries, main = MetricName, ylab = MetricYLabel) %>%
+                dySeries("V1", label = "KPI Value") %>%
+                dyAxis("x", drawGrid = FALSE) %>%
+                dyRangeSelector(height = 20, strokeColor = "") %>%
+                dyLegend(show = "always", hideOnMouseOut = FALSE) %>%
+                dyOptions(includeZero = FALSE, axisLineColor = "navy", gridLineColor = "lightblue"
+                          ,drawPoints = TRUE, pointSize = 2)
+  
+  linechart
+}
+```
+
+## Create Data Table
+
+```{r, message=FALSE, warning=FALSE }
+MetricDataTable <- function(MetricQuery) {
+  library(RODBC)
+  library(DT)
+  
+  # Connect to SQL Server
+  connection <- odbcConnect("REPORTINGDB")
+  
+  # Extract Data
+  MetricData <- sqlQuery(connection, MetricQuery)
+  
+  # Close SQL Server Connection
+  odbcCloseAll()
+
+  # Create Datatable
+  datatable(MetricData
+    ,extensions = 'Buttons'
+    ,options = list(order = list(list(4, 'asc'))
+      ,pageLength = 5
+      ,autoWidth = TRUE
+      ,scrollX = TRUE
+      ,dom = 'Bfrtip', buttons = c('copy','excel'))
+  )
+}
+```
+
+## Write Raw Data
+
+```{python, message=FALSE, warning=FALSE}
+def writeRawData(Query, sheetName):
+
+    import pyodbc
+    import pandas as pd
+    from pandas import ExcelWriter
+    from openpyxl import load_workbook
+
+    # Setup connection to SQL Server
+    connection = pyodbc.connect("Driver={SQL Server} ;"
+                                "Server=EUSAAMW0656\\REPORTINGDB;"
+                                "Database=BCAMDB;"
+                                "Trusted_Connection=yes;")
+    
+    # Open connection
+    cursor = connection.cursor()
+    
+    # Import Query Data into DataFrame
+    df = pd.read_sql_query(Query, connection)
+    
+    # Close SQL Server connection
+    cursor.close()
+    connection.close()
+    
+    # Excel file location
+    filename = '..\\RMarkdown\\files\\113_Balanced_Scorecard_Claims\\Claims_Scorecard_Raw_Data.xlsx'
+    
+    # Load and Write To Workbook
+    book = load_workbook(filename)
+    writer = pd.ExcelWriter(filename, engine='openpyxl')
+    writer.book = book
+    writer.sheets = dict((ws.title, ws) for ws in book.worksheets)
+    
+    df.to_excel(writer, sheet_name=sheetName, index=False)
+    
+    writer.save()
+    writer.close()
+```
+
+## KPI Example
+
+<div class = "row">
+<div class = "col-md-6">
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Mattis aliquam faucibus purus in massa. Aliquet nec ullamcorper sit amet risus. Lectus urna duis convallis convallis tellus. Nibh mauris cursus mattis molestie a iaculis. Turpis egestas pretium aenean pharetra magna ac. Dis parturient montes nascetur ridiculus mus mauris. Eget sit amet tellus cras. Commodo odio aenean sed adipiscing diam donec adipiscing tristique risus. Viverra aliquet eget sit amet tellus.
+
+```{r, out.width="100%", warning=FALSE, message=FALSE, eval=FALSE}
+MetricName <- "KPI Name"
+MetricYLabel <- "KPI Measure Type"
+MetricQuery <- "
+-- KPI Name
+
+
+"
+
+MetricLineChart(MetricName, MetricYLabel, MetricQuery)
+```
+
+</div>
+<div class = "col-md-6">
+
+**Raw Data**
+
+```{python, eval=FALSE}
+MetricRawDataSheetName = "KPI_Name"
+MetricRawQuery = """
+-- KPI Name
+
+
+"""
+
+writeRawData(MetricRawQuery, MetricRawDataSheetName)
+print('Raw Data written to ' + MetricRawDataSheetName + ' sheet.')
+```
+
+**Data Table**
+
+```{r, warning=FALSE, message=FALSE, eval=FALSE}
+MetricDataTable(MetricQuery)
+```
+
+</div>
+</div>
+
+# Order Delivery Managers
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Mattis aliquam faucibus purus in massa. Aliquet nec ullamcorper sit amet risus. Lectus urna duis convallis convallis tellus. Nibh mauris cursus mattis molestie a iaculis. Turpis egestas pretium aenean pharetra magna ac. Dis parturient montes nascetur ridiculus mus mauris. Eget sit amet tellus cras. Commodo odio aenean sed adipiscing diam donec adipiscing tristique risus. Viverra aliquet eget sit amet tellus.
+
+## Delivery Precision to CRDD
+
+<div class = "row">
+<div class = "col-md-6">
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Mattis aliquam faucibus purus in massa. Aliquet nec ullamcorper sit amet risus. Lectus urna duis convallis convallis tellus. Nibh mauris cursus mattis molestie a iaculis. Turpis egestas pretium aenean pharetra magna ac. Dis parturient montes nascetur ridiculus mus mauris. Eget sit amet tellus cras. Commodo odio aenean sed adipiscing diam donec adipiscing tristique risus. Viverra aliquet eget sit amet tellus.
+
+```{r, out.width="100%", warning=FALSE, message=FALSE}
+MetricName <- "Delivery Precision to CRDD"
+MetricYLabel <- "In Percent"
+MetricQuery <- "
+-- Delivery Precision CRDD
+
+SET NOCOUNT ON
+
+IF OBJECT_ID('tempdb..#TEMP_DELIVERY_PRECISION') IS NOT NULL
+	DROP TABLE #TEMP_DELIVERY_PRECISION
+
+CREATE TABLE #TEMP_DELIVERY_PRECISION (
+	[CSR Number] VARCHAR(50)
+	,[CSR Item] VARCHAR(50)
+	,[Delivery Precision Required Delivery Date of Header] DATE
+)
+
+INSERT INTO #TEMP_DELIVERY_PRECISION
+SELECT
+[CSR Number]
+,[CSR Item]
+,CASE
+	WHEN DATEPART(DW, [SO Line Create Date]) BETWEEN 1 AND 4 THEN DATEADD(DAY, 2, [SO Line Create Date])
+	WHEN DATEPART(DW, [SO Line Create Date]) BETWEEN 5 AND 6 THEN DATEADD(DAY, 4, [SO Line Create Date])
+	WHEN DATEPART(DW, [SO Line Create Date]) = 7 THEN DATEADD(DAY, 3, [SO Line Create Date])
+END AS [Delivery Precision Required Delivery Date of Header]
+FROM BI_ARM_CMS_COMBINED
+
+SELECT DISTINCT
+'Claims/ODM' AS [Metric Group]
+,'Delivery Precision CRDD' AS [Metric Name]
+,DATEPART(YEAR, [CSR Creation Date]) AS [Year]
+,DATEPART(MONTH, [CSR Creation Date]) AS [Month]
+,CAST(DATEPART(MONTH, [CSR Creation Date]) AS VARCHAR(2)) + '-' + '1' + '-' + CAST(DATEPART(YEAR, [CSR Creation Date]) AS VARCHAR(4)) AS [Date]
+,[Customer] AS [Individual Role]
+-- Numerator
+,COUNT(DISTINCT
+		(CASE
+			WHEN ([Route] = '0003' AND [Shp Crtdon] <= TDP.[Delivery Precision Required Delivery Date of Header])
+			OR ([Replacement Delivery Date] <= TDP.[Delivery Precision Required Delivery Date of Header])
+			OR ([STO DO Creation Date] IS NOT NULL AND [Shp Crtdon] <= TDP.[Delivery Precision Required Delivery Date of Header])
+			OR ([STO DO Creation Date] IS NULL AND [At Market Merge Date] <= TDP.[Delivery Precision Required Delivery Date of Header])
+			THEN CMS.[CSR Number] + '-' + CMS.[CSR Item]
+			ELSE NULL
+		END)) * 1.0
+
+-- Denominator
+/ COUNT(DISTINCT
+		(CASE
+			WHEN TDP.[Delivery Precision Required Delivery Date of Header] IS NOT NULL
+			THEN CMS.[CSR Number] + '-' + CMS.[CSR Item]
+			ELSE NULL
+		END)) * 1.0
+		
+		AS [Value]
+
+FROM BI_ARM_CMS_COMBINED CMS
+LEFT JOIN #TEMP_DELIVERY_PRECISION TDP ON CMS.[CSR Number] = TDP.[CSR Number]
+										AND CMS.[CSR Item] = TDP.[CSR Item]
+
+WHERE
+DATEPART(YEAR, [CSR Creation Date]) >= 2018
+AND [Company Region] = 'RNAM'								
+AND CMS.[CSR Number] NOT LIKE 'CL0%'
+AND [Order Type] IN ('Non-Valuated', 'Replacement', 'Replacement Request')
+AND [Customer] IN ('AT&T','Canada','Regional Carriers','Sprint','T-Mobile','Verizon','Emerging Business','Cable')
+AND CASE WHEN ISNULL([CSR Number Description],'') LIKE '%FCO%' AND ISNULL([Reason Code],'') LIKE '%VENDOR%' THEN 'FCO'
+          WHEN [Order Type] = 'Non-Valuated' THEN 'Non-Valuated Claims'
+          WHEN (([Project Name] LIKE '%Sprint%' AND [Project Name] LIKE '%CLEAN%')
+                OR ([Project Name] LIKE '%SNV%' AND [Project Name] LIKE '%CLEAN%')
+                OR ([Project Name] LIKE '%TMO%' AND [Project Name] LIKE '%CLEAN%')
+                OR ([Project Name] LIKE '%TMO%' AND [Project Name] LIKE '%HYBRID%')
+                OR ([Project Name] LIKE '%FCO%')
+                OR ([CSR Number Description] LIKE '%CLEAN%')
+                ) THEN 'Special Projects'
+          ELSE 'Standard Claims' END = 'Standard Claims'
+
+GROUP BY 
+DATEPART(YEAR, [CSR Creation Date])
+,DATEPART(MONTH, [CSR Creation Date])
+,[Customer]
+
+UNION 
+
+SELECT DISTINCT
+'Claims/ODM' AS [Metric Group]
+,'Delivery Precision CRDD' AS [Metric Name]
+,DATEPART(YEAR, [CSR Creation Date]) AS [Year]
+,DATEPART(MONTH, [CSR Creation Date]) AS [Month]
+,CAST(DATEPART(MONTH, [CSR Creation Date]) AS VARCHAR(2)) + '-' + '1' + '-' + CAST(DATEPART(YEAR, [CSR Creation Date]) AS VARCHAR(4)) AS [Date]
+,'All' AS [Individual Role]
+-- Numerator
+,COUNT(DISTINCT
+		(CASE
+			WHEN ([Route] = '0003' AND [Shp Crtdon] <= TDP.[Delivery Precision Required Delivery Date of Header])
+			OR ([Replacement Delivery Date] <= TDP.[Delivery Precision Required Delivery Date of Header])
+			OR ([STO DO Creation Date] IS NOT NULL AND [Shp Crtdon] <= TDP.[Delivery Precision Required Delivery Date of Header])
+			OR ([STO DO Creation Date] IS NULL AND [At Market Merge Date] <= TDP.[Delivery Precision Required Delivery Date of Header])
+			THEN CMS.[CSR Number] + '-' + CMS.[CSR Item]
+			ELSE NULL
+		END)) * 1.0
+
+-- Denominator
+/ COUNT(DISTINCT
+		(CASE
+			WHEN TDP.[Delivery Precision Required Delivery Date of Header] IS NOT NULL
+			THEN CMS.[CSR Number] + '-' + CMS.[CSR Item]
+			ELSE NULL
+		END)) * 1.0
+		
+		AS [Value]
+
+FROM BI_ARM_CMS_COMBINED CMS
+LEFT JOIN #TEMP_DELIVERY_PRECISION TDP ON CMS.[CSR Number] = TDP.[CSR Number]
+										AND CMS.[CSR Item] = TDP.[CSR Item]
+
+WHERE
+DATEPART(YEAR, [CSR Creation Date]) >= 2018
+AND [Company Region] = 'RNAM'								
+AND CMS.[CSR Number] NOT LIKE 'CL0%'
+AND [Order Type] IN ('Non-Valuated', 'Replacement', 'Replacement Request')
+AND [Customer] IN ('AT&T','Canada','Regional Carriers','Sprint','T-Mobile','Verizon','Emerging Business','Cable')
+AND CASE WHEN ISNULL([CSR Number Description],'') LIKE '%FCO%' AND ISNULL([Reason Code],'') LIKE '%VENDOR%' THEN 'FCO'
+          WHEN [Order Type] = 'Non-Valuated' THEN 'Non-Valuated Claims'
+          WHEN (([Project Name] LIKE '%Sprint%' AND [Project Name] LIKE '%CLEAN%')
+                OR ([Project Name] LIKE '%SNV%' AND [Project Name] LIKE '%CLEAN%')
+                OR ([Project Name] LIKE '%TMO%' AND [Project Name] LIKE '%CLEAN%')
+                OR ([Project Name] LIKE '%TMO%' AND [Project Name] LIKE '%HYBRID%')
+                OR ([Project Name] LIKE '%FCO%')
+                OR ([CSR Number Description] LIKE '%CLEAN%')
+                ) THEN 'Special Projects'
+          ELSE 'Standard Claims' END = 'Standard Claims'
+
+GROUP BY 
+DATEPART(YEAR, [CSR Creation Date])
+,DATEPART(MONTH, [CSR Creation Date])
+"
+
+MetricLineChart(MetricName, MetricYLabel, MetricQuery)
+```
+
+</div>
+<div class = "col-md-6">
+
+**Raw Data**
+
+```{python}
+MetricRawDataSheetName = "Delivery_Precision_To_CRDD"
+MetricRawQuery = """
+-- Delivery Precision CRDD Raw Data
+
+SET NOCOUNT ON
+
+IF OBJECT_ID('tempdb..#TEMP_DELIVERY_PRECISION') IS NOT NULL
+	DROP TABLE #TEMP_DELIVERY_PRECISION
+	
+CREATE TABLE #TEMP_DELIVERY_PRECISION (
+	[CSR Number] VARCHAR(50)
+	,[CSR Item] VARCHAR(50)
+	,[Delivery Precision Required Delivery Date of Header] DATE
+)
+
+INSERT INTO #TEMP_DELIVERY_PRECISION
+SELECT
+[CSR Number]
+,[CSR Item]
+,CASE
+	WHEN DATEPART(DW, [SO Line Create Date]) BETWEEN 1 AND 4 THEN DATEADD(DAY, 2, [SO Line Create Date])
+	WHEN DATEPART(DW, [SO Line Create Date]) BETWEEN 5 AND 6 THEN DATEADD(DAY, 4, [SO Line Create Date])
+	WHEN DATEPART(DW, [SO Line Create Date]) = 7 THEN DATEADD(DAY, 3, [SO Line Create Date])
+END AS [Delivery Precision Required Delivery Date of Header]
+FROM BI_ARM_CMS_COMBINED
+
+SELECT
+'Claims/ODM' AS [Metric Group]
+,'Delivery Precision CRDD' AS [Metric Name]
+,DATEPART(YEAR, [CSR Creation Date]) AS [Year]
+,DATEPART(MONTH, [CSR Creation Date]) AS [Month]
+,CAST(DATEPART(MONTH, [CSR Creation Date]) AS VARCHAR(2)) + '-' + '1' + '-' + CAST(DATEPART(YEAR, [CSR Creation Date]) AS VARCHAR(4)) AS [Date]
+,[Customer] AS [Individual Role]
+,CASE WHEN ([Route] = '0003' AND [Shp Crtdon] <= TDP.[Delivery Precision Required Delivery Date of Header])
+			OR ([Replacement Delivery Date] <= TDP.[Delivery Precision Required Delivery Date of Header])
+			OR ([STO DO Creation Date] IS NOT NULL AND [Shp Crtdon] <= TDP.[Delivery Precision Required Delivery Date of Header])
+			OR ([STO DO Creation Date] IS NULL AND [At Market Merge Date] <= TDP.[Delivery Precision Required Delivery Date of Header])
+		THEN CAST(CMS.[CSR Number] AS VARCHAR(20)) + '-' + CAST(CMS.[CSR Item] AS VARCHAR(10))
+		ELSE NULL
+		END AS [Numerator]
+,CASE
+	WHEN TDP.[Delivery Precision Required Delivery Date of Header] IS NOT NULL
+	THEN CAST(CMS.[CSR Number] AS VARCHAR(20)) + '-' + CAST(CMS.[CSR Item] AS VARCHAR(10))
+	ELSE NULL
+END AS [Denominator]
+--,*
+
+FROM BI_ARM_CMS_COMBINED CMS
+LEFT JOIN #TEMP_DELIVERY_PRECISION TDP ON CMS.[CSR Number] = TDP.[CSR Number]
+										AND CMS.[CSR Item] = TDP.[CSR Item]
+										
+WHERE
+DATEPART(YEAR, [CSR Creation Date]) >= 2018
+AND [Company Region] = 'RNAM'			
+AND CMS.[CSR Number] NOT LIKE 'CL0%'
+AND [Order Type] IN ('Non-Valuated', 'Replacement', 'Replacement Request')
+AND [Customer] IN ('AT&T','Canada','Regional Carriers','Sprint','T-Mobile','Verizon','Emerging Business','Cable')
+AND CASE WHEN ISNULL([CSR Number Description],'') LIKE '%FCO%' AND ISNULL([Reason Code],'') LIKE '%VENDOR%' THEN 'FCO'
+          WHEN [Order Type] = 'Non-Valuated' THEN 'Non-Valuated Claims'
+          WHEN (([Project Name] LIKE '%Sprint%' AND [Project Name] LIKE '%CLEAN%')
+                OR ([Project Name] LIKE '%SNV%' AND [Project Name] LIKE '%CLEAN%')
+                OR ([Project Name] LIKE '%TMO%' AND [Project Name] LIKE '%CLEAN%')
+                OR ([Project Name] LIKE '%TMO%' AND [Project Name] LIKE '%HYBRID%')
+                OR ([Project Name] LIKE '%FCO%')
+                OR ([CSR Number Description] LIKE '%CLEAN%')
+                ) THEN 'Special Projects'
+          ELSE 'Standard Claims' END = 'Standard Claims'
+"""
+
+writeRawData(MetricRawQuery, MetricRawDataSheetName)
+print('Raw Data written to ' + MetricRawDataSheetName + ' sheet.')
+```
+
+**Data Table**
+
+```{r, warning=FALSE, message=FALSE}
+MetricDataTable(MetricQuery)
+```
+
+</div>
+</div>
+
+## Order Fulfillment Lead Time
+
+<div class = "row">
+<div class = "col-md-6">
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Mattis aliquam faucibus purus in massa. Aliquet nec ullamcorper sit amet risus. Lectus urna duis convallis convallis tellus. Nibh mauris cursus mattis molestie a iaculis. Turpis egestas pretium aenean pharetra magna ac. Dis parturient montes nascetur ridiculus mus mauris. Eget sit amet tellus cras. Commodo odio aenean sed adipiscing diam donec adipiscing tristique risus. Viverra aliquet eget sit amet tellus.
+
+```{r, out.width="100%", warning=FALSE, message=FALSE}
+MetricName <- "Order Fulfillment Lead Time"
+MetricYLabel <- "In Business Days"
+MetricQuery <- "
+-- Order Fulfillment Lead Time
+
+SELECT
+'Claims/ODM' AS [Metric Group]
+,'Order Fulfillment Lead Time' AS [Metric Name]
+,[Year]
+,[Month]
+,CAST([Month] AS VARCHAR(2)) + '-' + '1' + '-' + CAST([Year] AS VARCHAR(4)) AS [Date]
+,'All' AS [Individual Role]
+,AVG(T.[Business Hours]) AS [Value]
+
+FROM  (SELECT DISTINCT
+		DATEPART(YEAR, [Delivery Create Date]) AS [Year]
+		,DATEPART(MONTH, [Delivery Create Date]) AS [Month]
+		,[CSR Number]
+		,[Customer]
+		,[Delivery Create Date] AS [Start Date]
+    ,[Replacement Delivery Date] AS [End Date]
+		,(BCAMDB.dbo.BusinessMinutes([Delivery Create Date], [Replacement Delivery Date]) * 1.0 / 60)/9 AS [Business Hours]
+
+		FROM BI_ARM_CMS_COMBINED
+
+		WHERE DATEPART(YEAR, [CSR Creation Date]) >= 2018
+		AND ([Delivery Create Date]) IS NOT NULL
+		AND ([Replacement Delivery Date]) IS NOT NULL
+		AND [Company Region] = 'RNAM'
+		AND [Order Type] IN ('Replacement', 'Replacement Request')
+    AND CASE WHEN ISNULL([CSR Number Description],'') LIKE '%FCO%' AND ISNULL([Reason Code],'') LIKE '%VENDOR%' THEN 'FCO'
+              WHEN [Order Type] = 'Non-Valuated' THEN 'Non-Valuated Claims'
+              WHEN (([Project Name] LIKE '%Sprint%' AND [Project Name] LIKE '%CLEAN%')
+                    OR ([Project Name] LIKE '%SNV%' AND [Project Name] LIKE '%CLEAN%')
+                    OR ([Project Name] LIKE '%TMO%' AND [Project Name] LIKE '%CLEAN%')
+                    OR ([Project Name] LIKE '%TMO%' AND [Project Name] LIKE '%HYBRID%')
+                    OR ([Project Name] LIKE '%FCO%')
+                    OR ([CSR Number Description] LIKE '%CLEAN%')
+                    ) THEN 'Special Projects'
+              ELSE 'Standard Claims' END = 'Standard Claims'
+    )	T
+		
+GROUP BY
+T.[Year]
+,T.[Month]
+
+UNION
+
+SELECT
+'Claims/ODM' AS [Metric Group]
+,'Order Fulfillment Lead Time' AS [Metric Name]
+,[Year]
+,[Month]
+,CAST([Month] AS VARCHAR(2)) + '-' + '1' + '-' + CAST([Year] AS VARCHAR(4)) AS [Date]
+,[Customer] AS [Individual Role]
+,AVG(T.[Business Hours]) AS [Value]
+
+FROM  (SELECT DISTINCT
+		DATEPART(YEAR, [Delivery Create Date]) AS [Year]
+		,DATEPART(MONTH, [Delivery Create Date]) AS [Month]
+		,[CSR Number]
+		,[Customer]
+		,[Delivery Create Date] AS [Start Date]
+    ,[Replacement Delivery Date] AS [End Date]
+		,(BCAMDB.dbo.BusinessMinutes([Delivery Create Date], [Replacement Delivery Date]) * 1.0 / 60)/9 AS [Business Hours]
+
+		FROM BI_ARM_CMS_COMBINED
+
+		WHERE DATEPART(YEAR, [CSR Creation Date]) >= 2018
+		AND ([Delivery Create Date]) IS NOT NULL
+		AND ([Replacement Delivery Date]) IS NOT NULL
+		AND [Company Region] = 'RNAM'
+		AND [Order Type] IN ('Replacement', 'Replacement Request')
+    AND CASE WHEN ISNULL([CSR Number Description],'') LIKE '%FCO%' AND ISNULL([Reason Code],'') LIKE '%VENDOR%' THEN 'FCO'
+              WHEN [Order Type] = 'Non-Valuated' THEN 'Non-Valuated Claims'
+              WHEN (([Project Name] LIKE '%Sprint%' AND [Project Name] LIKE '%CLEAN%')
+                    OR ([Project Name] LIKE '%SNV%' AND [Project Name] LIKE '%CLEAN%')
+                    OR ([Project Name] LIKE '%TMO%' AND [Project Name] LIKE '%CLEAN%')
+                    OR ([Project Name] LIKE '%TMO%' AND [Project Name] LIKE '%HYBRID%')
+                    OR ([Project Name] LIKE '%FCO%')
+                    OR ([CSR Number Description] LIKE '%CLEAN%')
+                    ) THEN 'Special Projects'
+              ELSE 'Standard Claims' END = 'Standard Claims'
+    )	T
+		
+GROUP BY
+[Year] 
+,[Month]
+,[Customer]
+"
+
+MetricLineChart(MetricName, MetricYLabel, MetricQuery)
+```
+
+</div>
+<div class = "col-md-6">
+
+**Raw Data**
+
+```{python}
+MetricRawDataSheetName = "Order_Fulfillment_Lead_Time"
+MetricRawQuery = """
+-- Order Fulfillment Lead Time Raw Data
+
+SELECT DISTINCT
+'Claims/ODM' AS [Metric Group]
+,'Order Fulfillment Lead Time' AS [Metric Name]
+,DATEPART(YEAR, [Delivery Create Date]) AS [Year]
+,DATEPART(MONTH, [Delivery Create Date]) AS [Month]
+,[CSR Number]
+,[Customer]
+,[Delivery Create Date] AS [Start Date]
+,[Replacement Delivery Date] AS [End Date]
+,(BCAMDB.dbo.BusinessMinutes([Delivery Create Date], [Replacement Delivery Date]) * 1.0 / 60) /9 AS [Business Hours]
+
+FROM BI_ARM_CMS_COMBINED
+
+WHERE DATEPART(YEAR, [CSR Creation Date]) >= 2018
+AND ([Delivery Create Date]) IS NOT NULL
+AND ([Replacement Delivery Date]) IS NOT NULL
+AND [Company Region] = 'RNAM'
+AND [Order Type] IN ('Replacement', 'Replacement Request')
+AND CASE WHEN ISNULL([CSR Number Description],'') LIKE '%FCO%' AND ISNULL([Reason Code],'') LIKE '%VENDOR%' THEN 'FCO'
+          WHEN [Order Type] = 'Non-Valuated' THEN 'Non-Valuated Claims'
+          WHEN (([Project Name] LIKE '%Sprint%' AND [Project Name] LIKE '%CLEAN%')
+                OR ([Project Name] LIKE '%SNV%' AND [Project Name] LIKE '%CLEAN%')
+                OR ([Project Name] LIKE '%TMO%' AND [Project Name] LIKE '%CLEAN%')
+                OR ([Project Name] LIKE '%TMO%' AND [Project Name] LIKE '%HYBRID%')
+                OR ([Project Name] LIKE '%FCO%')
+                OR ([CSR Number Description] LIKE '%CLEAN%')
+                ) THEN 'Special Projects'
+          ELSE 'Standard Claims' END = 'Standard Claims'
+"""
+
+writeRawData(MetricRawQuery, MetricRawDataSheetName)
+print('Raw Data written to ' + MetricRawDataSheetName + ' sheet.')
+```
+
+**Data Table**
+
+```{r, warning=FALSE, message=FALSE}
+MetricDataTable(MetricQuery)
+```
+
+</div>
+</div>
+
+## Excess Returns Accept/Reject
+
+<div class = "row">
+<div class = "col-md-6">
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Mattis aliquam faucibus purus in massa. Aliquet nec ullamcorper sit amet risus. Lectus urna duis convallis convallis tellus. Nibh mauris cursus mattis molestie a iaculis. Turpis egestas pretium aenean pharetra magna ac. Dis parturient montes nascetur ridiculus mus mauris. Eget sit amet tellus cras. Commodo odio aenean sed adipiscing diam donec adipiscing tristique risus. Viverra aliquet eget sit amet tellus.
+
+```{r, out.width="100%", warning=FALSE, message=FALSE}
+MetricName <- "Excess Returns Accept/Reject"
+MetricYLabel <- "In Percent"
+MetricQuery <- "
+-- Excess Returns Accept/Reject
+
+SELECT
+'Claims/ODM' AS [Metric Group]
+,'Excess Returns Accept/Reject' AS [Metric Name]
+,DATEPART(YEAR, [CSR Creation Date]) AS [Year]
+,DATEPART(MONTH, [CSR Creation Date]) AS [Month]
+,CAST(DATEPART(MONTH, [CSR Creation Date]) AS VARCHAR(2)) + '-' + '1' + '-' + CAST(DATEPART(YEAR, [CSR Creation Date]) AS VARCHAR(4)) AS [Date]
+--,[Final External Customer] AS [Individual Role]
+,'All' AS [Individual Role]
+,COUNT(CASE WHEN ([CSR Status (Item)] LIKE 'Approved' OR [CSR Status (Item)] LIKE 'Closed') THEN 1 ELSE NULL END) * 1.0
+  / COUNT(CASE WHEN ([CSR Status (Item)] LIKE 'Approved' OR [CSR Status (Item)] LIKE 'Closed' OR [CSR Status (Item)] LIKE 'Rejected') THEN 1 ELSE NULL END) AS [Value]
+
+FROM EBW_ARM_ORDERS
+
+WHERE DATEPART(YEAR, [CSR Creation Date]) >= '2018'
+AND [ARM - Return Reason Code] Like 'Excess%'
+
+GROUP BY
+DATEPART(YEAR, [CSR Creation Date])
+,DATEPART(MONTH, [CSR Creation Date])
+
+UNION
+
+SELECT
+'Claims/ODM' AS [Metric Group]
+,'Excess Returns Accept/Reject' AS [Metric Name]
+,DATEPART(YEAR, [CSR Creation Date]) AS [Year]
+,DATEPART(MONTH, [CSR Creation Date]) AS [Month]
+,CAST(DATEPART(MONTH, [CSR Creation Date]) AS VARCHAR(2)) + '-' + '1' + '-' + CAST(DATEPART(YEAR, [CSR Creation Date]) AS VARCHAR(4)) AS [Date]
+,[Final External Customer] AS [Individual Role]
+,COUNT(CASE WHEN ([CSR Status (Item)] LIKE 'Approved' OR [CSR Status (Item)] LIKE 'Closed') THEN 1 ELSE NULL END) * 1.0
+  / COUNT(CASE WHEN ([CSR Status (Item)] LIKE 'Approved' OR [CSR Status (Item)] LIKE 'Closed' OR [CSR Status (Item)] LIKE 'Rejected') THEN 1 ELSE NULL END) AS [Value]
+
+FROM EBW_ARM_ORDERS
+
+WHERE DATEPART(YEAR, [CSR Creation Date]) >= '2018'
+AND [ARM - Return Reason Code] Like 'Excess%'
+
+GROUP BY
+DATEPART(YEAR, [CSR Creation Date])
+,DATEPART(MONTH, [CSR Creation Date])
+,[Final External Customer]
+"
+
+MetricLineChart(MetricName, MetricYLabel, MetricQuery)
+```
+
+</div>
+<div class = "col-md-6">
+
+**Raw Data**
+
+```{python}
+MetricRawDataSheetName = "Excess_Returns_Accept_Reject"
+MetricRawQuery = """
+-- Excess Returns Accept/Reject Raw Data
+
+SELECT
+'Claims/ODM' AS [Metric Group]
+,'Excess Returns Accept/Reject' AS [Metric Name]
+,DATEPART(YEAR, [CSR Creation Date]) AS [Year]
+,DATEPART(MONTH, [CSR Creation Date]) AS [Month]
+,CAST(DATEPART(MONTH, [CSR Creation Date]) AS VARCHAR(2)) + '-' + '1' + '-' + CAST(DATEPART(YEAR, [CSR Creation Date]) AS VARCHAR(4)) AS [Date]
+,[Final External Customer] AS [Individual Role]
+,CASE WHEN ([CSR Status (Item)] LIKE 'Approved' OR [CSR Status (Item)] LIKE 'Closed') THEN 1 ELSE NULL END AS [Numerator]
+,CASE WHEN ([CSR Status (Item)] LIKE 'Approved' OR [CSR Status (Item)] LIKE 'Closed' OR [CSR Status (Item)] LIKE 'Rejected') THEN 1 ELSE NULL END AS [Denominator]
+,[CSR Number]
+,[CSR Status (Item)]
+
+FROM EBW_ARM_ORDERS
+
+WHERE DATEPART(YEAR, [CSR Creation Date]) >= '2018'
+AND [ARM - Return Reason Code] Like 'Excess%'
+"""
+
+writeRawData(MetricRawQuery, MetricRawDataSheetName)
+print('Raw Data written to ' + MetricRawDataSheetName + ' sheet.')
+```
+
+**Data Table**
+
+```{r, warning=FALSE, message=FALSE}
+MetricDataTable(MetricQuery)
+```
+
+</div>
+</div>
+
+## Order Create Cycle Time - PFS
+
+<div class = "row">
+<div class = "col-md-6">
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Mattis aliquam faucibus purus in massa. Aliquet nec ullamcorper sit amet risus. Lectus urna duis convallis convallis tellus. Nibh mauris cursus mattis molestie a iaculis. Turpis egestas pretium aenean pharetra magna ac. Dis parturient montes nascetur ridiculus mus mauris. Eget sit amet tellus cras. Commodo odio aenean sed adipiscing diam donec adipiscing tristique risus. Viverra aliquet eget sit amet tellus.
+
+```{r, out.width="100%", warning=FALSE, message=FALSE}
+MetricName <- "Order Create Cycle Time - PFS"
+MetricYLabel <- "In Business Days"
+MetricQuery <- "
+-- Order Create Cycle Time - PFS
+
+SELECT
+'Claims/ODM' AS [Metric Group]
+,'Order Create Cycle Time' AS [Metric Name]
+,[Year]
+,[Month]
+,CAST([Month] AS VARCHAR(2)) + '-' + '1' + '-' + CAST([Year] AS VARCHAR(4)) AS [Date]
+,'All' AS [Individual Role]
+,AVG([Business Hours]) AS [Value]
+
+FROM(SELECT DISTINCT
+	DATEPART(YEAR, ([CSR Creation Date] + DATEADD(HOUR, -6, [CSR Creation Time]))) AS [Year]
+	,DATEPART(MONTH, ([CSR Creation Date] + DATEADD(HOUR, -6, [CSR Creation Time]))) AS [Month]
+	,[CSR Number]
+	,[Customer]
+	,([CSR Creation Date] + DATEADD(HOUR, -6, [CSR Creation Time])) AS [Start Date]
+	,([Delivery Create Date] + DATEADD(HOUR, -6, [Delivery Created On Time])) AS [End Date]
+	,(BCAMDB.dbo.BusinessMinutes(([CSR Creation Date] + DATEADD(HOUR, -6, [CSR Creation Time])),([Delivery Create Date] + DATEADD(HOUR, -6, [Delivery Created On Time]))) * 1.00 / 60) AS [Business Hours]
+
+	FROM BI_ARM_CMS_COMBINED
+
+	WHERE DATEPART(YEAR, [CSR Creation Date]) >= 2018
+	AND ([CSR Creation Date] + [CSR Creation Time]) IS NOT NULL
+	AND ([Delivery Create Date] + [Delivery Created On Time]) IS NOT NULL
+	AND [Company Region] = 'RNAM'
+	AND [Order Type] IN ('Replacement', 'Replacement Request')
+	AND ([CSR Item] % 2) = 0
+  AND CASE WHEN ISNULL([CSR Number Description],'') LIKE '%FCO%' AND ISNULL([Reason Code],'') LIKE '%VENDOR%' THEN 'FCO'
+            WHEN [Order Type] = 'Non-Valuated' THEN 'Non-Valuated Claims'
+            WHEN (([Project Name] LIKE '%Sprint%' AND [Project Name] LIKE '%CLEAN%')
+                  OR ([Project Name] LIKE '%SNV%' AND [Project Name] LIKE '%CLEAN%')
+                  OR ([Project Name] LIKE '%TMO%' AND [Project Name] LIKE '%CLEAN%')
+                  OR ([Project Name] LIKE '%TMO%' AND [Project Name] LIKE '%HYBRID%')
+                  OR ([Project Name] LIKE '%FCO%')
+                  OR ([CSR Number Description] LIKE '%CLEAN%')
+                  ) THEN 'Special Projects'
+            ELSE 'Standard Claims' END = 'Standard Claims'
+	)T
+
+GROUP BY
+[Year]
+,[Month]
+
+UNION
+
+SELECT
+'Claims/ODM' AS [Metric Group]
+,'Order Create Cycle Time' AS [Metric Name]
+,[Year]
+,[Month]
+,CAST([Month] AS VARCHAR(2)) + '-' + '1' + '-' + CAST([Year] AS VARCHAR(4)) AS [Date]
+,[Customer] AS [Individual Role]
+,AVG([Business Hours]) AS [Value]
+
+FROM(SELECT DISTINCT
+	DATEPART(YEAR, ([CSR Creation Date] + DATEADD(HOUR, -6, [CSR Creation Time]))) AS [Year]
+	,DATEPART(MONTH, ([CSR Creation Date] + DATEADD(HOUR, -6, [CSR Creation Time]))) AS [Month]
+	,[CSR Number]
+	,[Customer]
+	,([CSR Creation Date] + DATEADD(HOUR, -6, [CSR Creation Time])) AS [Start Date]
+	,([Delivery Create Date] + DATEADD(HOUR, -6, [Delivery Created On Time])) AS [End Date]
+	,(BCAMDB.dbo.BusinessMinutes(([CSR Creation Date] + DATEADD(HOUR, -6, [CSR Creation Time])),([Delivery Create Date] + DATEADD(HOUR, -6, [Delivery Created On Time]))) * 1.00 / 60) AS [Business Hours]
+
+	FROM BI_ARM_CMS_COMBINED
+
+	WHERE DATEPART(YEAR, [CSR Creation Date]) >= 2018
+	AND ([CSR Creation Date] + [CSR Creation Time]) IS NOT NULL
+	AND ([Delivery Create Date] + [Delivery Created On Time]) IS NOT NULL
+	AND [Company Region] = 'RNAM'
+	AND [Order Type] IN ('Replacement', 'Replacement Request')
+	AND ([CSR Item] % 2) = 0
+  AND CASE WHEN ISNULL([CSR Number Description],'') LIKE '%FCO%' AND ISNULL([Reason Code],'') LIKE '%VENDOR%' THEN 'FCO'
+            WHEN [Order Type] = 'Non-Valuated' THEN 'Non-Valuated Claims'
+            WHEN (([Project Name] LIKE '%Sprint%' AND [Project Name] LIKE '%CLEAN%')
+                  OR ([Project Name] LIKE '%SNV%' AND [Project Name] LIKE '%CLEAN%')
+                  OR ([Project Name] LIKE '%TMO%' AND [Project Name] LIKE '%CLEAN%')
+                  OR ([Project Name] LIKE '%TMO%' AND [Project Name] LIKE '%HYBRID%')
+                  OR ([Project Name] LIKE '%FCO%')
+                  OR ([CSR Number Description] LIKE '%CLEAN%')
+                  ) THEN 'Special Projects'
+            ELSE 'Standard Claims' END = 'Standard Claims'
+	)T
+
+GROUP BY
+[Year]
+,[Month]
+,[Customer]
+"
+
+MetricLineChart(MetricName, MetricYLabel, MetricQuery)
+```
+
+</div>
+<div class = "col-md-6">
+
+**Raw Data**
+
+```{python}
+MetricRawDataSheetName = "Order_Create_Cycle_Time_PFS"
+MetricRawQuery = """
+-- Order Create Cycle Time - PFS
+
+SELECT DISTINCT
+'Claims/ODM' AS [Metric Group]
+,'Order Create Cycle Time' AS [Metric Name]
+,DATEPART(YEAR, ([CSR Creation Date] + DATEADD(HOUR, -6, [CSR Creation Time]))) AS [Year]
+,DATEPART(MONTH, ([CSR Creation Date] + DATEADD(HOUR, -6, [CSR Creation Time]))) AS [Month]
+,[CSR Number]
+,[Customer]
+,([CSR Creation Date] + DATEADD(HOUR, -6, [CSR Creation Time])) AS [Start Date]
+,([Delivery Create Date] + DATEADD(HOUR, -6, [Delivery Created On Time])) AS [End Date]
+,(BCAMDB.dbo.BusinessMinutes(([CSR Creation Date] + DATEADD(HOUR, -6, [CSR Creation Time])),([Delivery Create Date] + DATEADD(HOUR, -6, [Delivery Created On Time]))) * 1.00 / 60) AS [Business Hours]
+
+FROM BI_ARM_CMS_COMBINED
+
+WHERE DATEPART(YEAR, [CSR Creation Date]) >= 2018
+AND ([CSR Creation Date] + [CSR Creation Time]) IS NOT NULL
+AND ([Delivery Create Date] + [Delivery Created On Time]) IS NOT NULL
+AND [Company Region] = 'RNAM'
+AND [Order Type] IN ('Replacement', 'Replacement Request')
+AND ([CSR Item] % 2) = 0
+AND CASE WHEN ISNULL([CSR Number Description],'') LIKE '%FCO%' AND ISNULL([Reason Code],'') LIKE '%VENDOR%' THEN 'FCO'
+          WHEN [Order Type] = 'Non-Valuated' THEN 'Non-Valuated Claims'
+          WHEN (([Project Name] LIKE '%Sprint%' AND [Project Name] LIKE '%CLEAN%')
+                OR ([Project Name] LIKE '%SNV%' AND [Project Name] LIKE '%CLEAN%')
+                OR ([Project Name] LIKE '%TMO%' AND [Project Name] LIKE '%CLEAN%')
+                OR ([Project Name] LIKE '%TMO%' AND [Project Name] LIKE '%HYBRID%')
+                OR ([Project Name] LIKE '%FCO%')
+                OR ([CSR Number Description] LIKE '%CLEAN%')
+                ) THEN 'Special Projects'
+          ELSE 'Standard Claims' END = 'Standard Claims'
+"""
+
+writeRawData(MetricRawQuery, MetricRawDataSheetName)
+print('Raw Data written to ' + MetricRawDataSheetName + ' sheet.')
+```
+
+**Data Table**
+
+```{r, warning=FALSE, message=FALSE}
+MetricDataTable(MetricQuery)
+```
+
+</div>
+</div>
+
+## Requestor Accuracy
+
+<div class = "row">
+<div class = "col-md-6">
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Mattis aliquam faucibus purus in massa. Aliquet nec ullamcorper sit amet risus. Lectus urna duis convallis convallis tellus. Nibh mauris cursus mattis molestie a iaculis. Turpis egestas pretium aenean pharetra magna ac. Dis parturient montes nascetur ridiculus mus mauris. Eget sit amet tellus cras. Commodo odio aenean sed adipiscing diam donec adipiscing tristique risus. Viverra aliquet eget sit amet tellus.
+
+```{r, out.width="100%", warning=FALSE, message=FALSE}
+MetricName <- "Requestor Accuracy"
+MetricYLabel <- "In Percent"
+MetricQuery <- "
+-- Requestor Accuracy
+
+SELECT
+'Claims/ODM' AS [Metric Group]
+,'Requestor Accuracy' AS [Metric Name]
+,DATEPART(YEAR, [CSR Creation Date]) AS [Year]
+,DATEPART(MONTH, [CSR Creation Date]) AS [Month]
+,CAST(DATEPART(MONTH, [CSR Creation Date]) AS VARCHAR(2)) + '-' + '1' + '-' + CAST(DATEPART(YEAR, [CSR Creation Date]) AS VARCHAR(4)) AS [Date]
+,'All' AS [Individual Role]
+,COUNT(DISTINCT CASE WHEN [Accuracy Type] = 'Accurate Upon Receipt' THEN [CSR Number] ELSE NULL END) * 1.0 / COUNT(DISTINCT [CSR Number]) AS [Value]
+
+FROM BI_ARM_CMS_COMBINED
+
+WHERE
+DATEPART(YEAR, [CSR Creation Date]) >= 2018
+AND [Company Region] = 'RNAM'
+AND [CSR Status] IN ('Approved', 'Awaiting Information', 'Closed', 'Rejected')
+AND [Reason Code] NOT IN ('Excess at Site (leftovers)')
+AND [Accuracy Type] IS NOT NULL
+AND [Customer] IN ('AT&T','Canada','Emerging Business','Regional Carriers','Sprint','T-Mobile','Verizon')
+AND CASE WHEN ISNULL([CSR Number Description],'') LIKE '%FCO%' AND ISNULL([Reason Code],'') LIKE '%VENDOR%' THEN 'FCO'
+            WHEN [Order Type] = 'Non-Valuated' THEN 'Non-Valuated Claims'
+            WHEN (([Project Name] LIKE '%Sprint%' AND [Project Name] LIKE '%CLEAN%')
+                  OR ([Project Name] LIKE '%SNV%' AND [Project Name] LIKE '%CLEAN%')
+                  OR ([Project Name] LIKE '%TMO%' AND [Project Name] LIKE '%CLEAN%')
+                  OR ([Project Name] LIKE '%TMO%' AND [Project Name] LIKE '%HYBRID%')
+                  OR ([Project Name] LIKE '%FCO%')
+                  OR ([CSR Number Description] LIKE '%CLEAN%')
+                  ) THEN 'Special Projects'
+            ELSE 'Standard Claims' END = 'Standard Claims'
+
+GROUP BY
+DATEPART(YEAR, [CSR Creation Date])
+,DATEPART(MONTH, [CSR Creation Date])
+--,[Customer]
+
+UNION
+
+SELECT
+'Claims/ODM' AS [Metric Group]
+,'Requestor Accuracy' AS [Metric Name]
+,DATEPART(YEAR, [CSR Creation Date]) AS [Year]
+,DATEPART(MONTH, [CSR Creation Date]) AS [Month]
+,CAST(DATEPART(MONTH, [CSR Creation Date]) AS VARCHAR(2)) + '-' + '1' + '-' + CAST(DATEPART(YEAR, [CSR Creation Date]) AS VARCHAR(4)) AS [Date]
+,[Customer] AS [Individual Role]
+,COUNT(DISTINCT CASE WHEN [Accuracy Type] = 'Accurate Upon Receipt' THEN [CSR Number] ELSE NULL END) * 1.0 / COUNT(DISTINCT [CSR Number]) AS [Value]
+
+FROM BI_ARM_CMS_COMBINED
+
+WHERE
+DATEPART(YEAR, [CSR Creation Date]) >= 2018
+AND [Company Region] = 'RNAM'
+AND [CSR Status] IN ('Approved', 'Awaiting Information', 'Closed', 'Rejected')
+AND [Reason Code] NOT IN ('Excess at Site (leftovers)')
+AND [Accuracy Type] IS NOT NULL
+AND [Customer] IN ('AT&T','Canada','Emerging Business','Regional Carriers','Sprint','T-Mobile','Verizon')
+AND CASE WHEN ISNULL([CSR Number Description],'') LIKE '%FCO%' AND ISNULL([Reason Code],'') LIKE '%VENDOR%' THEN 'FCO'
+            WHEN [Order Type] = 'Non-Valuated' THEN 'Non-Valuated Claims'
+            WHEN (([Project Name] LIKE '%Sprint%' AND [Project Name] LIKE '%CLEAN%')
+                  OR ([Project Name] LIKE '%SNV%' AND [Project Name] LIKE '%CLEAN%')
+                  OR ([Project Name] LIKE '%TMO%' AND [Project Name] LIKE '%CLEAN%')
+                  OR ([Project Name] LIKE '%TMO%' AND [Project Name] LIKE '%HYBRID%')
+                  OR ([Project Name] LIKE '%FCO%')
+                  OR ([CSR Number Description] LIKE '%CLEAN%')
+                  ) THEN 'Special Projects'
+            ELSE 'Standard Claims' END = 'Standard Claims'
+
+GROUP BY
+DATEPART(YEAR, [CSR Creation Date])
+,DATEPART(MONTH, [CSR Creation Date])
+,[Customer]
+"
+
+MetricLineChart(MetricName, MetricYLabel, MetricQuery)
+```
+
+</div>
+<div class = "col-md-6">
+
+**Raw Data**
+
+```{python}
+MetricRawDataSheetName = "Requestor_Accuracy"
+MetricRawQuery = """
+-- Requestor Accuracy
+
+SELECT DISTINCT
+'Claims/ODM' AS [Metric Group]
+,'Requestor Accuracy' AS [Metric Name]
+,DATEPART(YEAR, [CSR Creation Date]) AS [Year]
+,DATEPART(MONTH, [CSR Creation Date]) AS [Month]
+,CAST(DATEPART(MONTH, [CSR Creation Date]) AS VARCHAR(2)) + '-' + '1' + '-' + CAST(DATEPART(YEAR, [CSR Creation Date]) AS VARCHAR(4)) AS [Date]
+,[Customer] AS [Individual Role]
+,CASE WHEN [Accuracy Type] = 'Accurate Upon Receipt' THEN [CSR Number] ELSE NULL END AS [Numerator]
+,[CSR Number] AS [Denominator]
+
+FROM BI_ARM_CMS_COMBINED
+
+WHERE
+DATEPART(YEAR, [CSR Creation Date]) >= 2018
+AND [Company Region] = 'RNAM'
+AND [CSR Status] IN ('Approved', 'Awaiting Information', 'Closed', 'Rejected')
+AND [Reason Code] NOT IN ('Excess at Site (leftovers)')
+AND [Accuracy Type] IS NOT NULL
+AND [Customer] IN ('AT&T','Canada','Emerging Business','Regional Carriers','Sprint','T-Mobile','Verizon')
+AND CASE WHEN ISNULL([CSR Number Description],'') LIKE '%FCO%' AND ISNULL([Reason Code],'') LIKE '%VENDOR%' THEN 'FCO'
+          WHEN [Order Type] = 'Non-Valuated' THEN 'Non-Valuated Claims'
+          WHEN (([Project Name] LIKE '%Sprint%' AND [Project Name] LIKE '%CLEAN%')
+                OR ([Project Name] LIKE '%SNV%' AND [Project Name] LIKE '%CLEAN%')
+                OR ([Project Name] LIKE '%TMO%' AND [Project Name] LIKE '%CLEAN%')
+                OR ([Project Name] LIKE '%TMO%' AND [Project Name] LIKE '%HYBRID%')
+                OR ([Project Name] LIKE '%FCO%')
+                OR ([CSR Number Description] LIKE '%CLEAN%')
+                ) THEN 'Special Projects'
+          ELSE 'Standard Claims' END = 'Standard Claims'
+"""
+
+writeRawData(MetricRawQuery, MetricRawDataSheetName)
+print('Raw Data written to ' + MetricRawDataSheetName + ' sheet.')
+```
+
+**Data Table**
+
+```{r, warning=FALSE, message=FALSE}
+MetricDataTable(MetricQuery)
+```
+
+</div>
+</div>
+
+## Claims Input Internally
+
+<div class = "row">
+<div class = "col-md-6">
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Mattis aliquam faucibus purus in massa. Aliquet nec ullamcorper sit amet risus. Lectus urna duis convallis convallis tellus. Nibh mauris cursus mattis molestie a iaculis. Turpis egestas pretium aenean pharetra magna ac. Dis parturient montes nascetur ridiculus mus mauris. Eget sit amet tellus cras. Commodo odio aenean sed adipiscing diam donec adipiscing tristique risus. Viverra aliquet eget sit amet tellus.
+
+```{r, out.width="100%", warning=FALSE, message=FALSE}
+MetricName <- "Claims Input Internally"
+MetricYLabel <- "In Percent"
+MetricQuery <- "
+-- Percent of Claims Input Internally
+
+SELECT DISTINCT
+'Claims/ODM' AS [Metric Group]
+,'% of Claims Input Internally' AS [Metric Name]
+,DATEPART(YEAR, [CSR Creation Date]) AS [Year]
+,DATEPART(MONTH, [CSR Creation Date]) AS [Month]
+,CAST(DATEPART(MONTH, [CSR Creation Date]) AS VARCHAR(2)) + '-' + '1' + '-' + CAST(DATEPART(YEAR, [CSR Creation Date]) AS VARCHAR(4)) AS [Date]
+,'All' AS [Individual Role]
+,COUNT(DISTINCT CASE WHEN [CSR Requestor Name] IN ('Aimeet Terrades', 'Kathy Scott', 'Laponda Flowers', 'Lillian Spell') THEN [CSR Number] ELSE NULL END) * 1.0 / COUNT(DISTINCT [CSR Number]) AS [Value]
+
+FROM BI_ARM_CMS_COMBINED
+
+WHERE 
+DATEPART(YEAR, [CSR Creation Date]) >= 2018
+AND [Company Region] = 'RNAM'
+AND [Accuracy Type] IS NOT NULL
+AND [CSR Status] IN ('Closed', 'Delivered', 'Rejected', 'Released to Supplier')
+AND [Order Type] LIKE '%Replacement%'
+AND [Reason Code] NOT LIKE '%Excess%'
+AND CASE WHEN ISNULL([CSR Number Description],'') LIKE '%FCO%' AND ISNULL([Reason Code],'') LIKE '%VENDOR%' THEN 'FCO'
+          WHEN [Order Type] = 'Non-Valuated' THEN 'Non-Valuated Claims'
+          WHEN (([Project Name] LIKE '%Sprint%' AND [Project Name] LIKE '%CLEAN%')
+                OR ([Project Name] LIKE '%SNV%' AND [Project Name] LIKE '%CLEAN%')
+                OR ([Project Name] LIKE '%TMO%' AND [Project Name] LIKE '%CLEAN%')
+                OR ([Project Name] LIKE '%TMO%' AND [Project Name] LIKE '%HYBRID%')
+                OR ([Project Name] LIKE '%FCO%')
+                OR ([CSR Number Description] LIKE '%CLEAN%')
+                ) THEN 'Special Projects'
+          ELSE 'Standard Claims' END = 'Standard Claims'
+
+GROUP BY
+DATEPART(YEAR, [CSR Creation Date])
+,DATEPART(MONTH, [CSR Creation Date])
+
+UNION
+
+SELECT DISTINCT
+'Claims/ODM' AS [Metric Group]
+,'% of Claims Input Internally' AS [Metric Name]
+,DATEPART(YEAR, [CSR Creation Date]) AS [Year]
+,DATEPART(MONTH, [CSR Creation Date]) AS [Month]
+,CAST(DATEPART(MONTH, [CSR Creation Date]) AS VARCHAR(2)) + '-' + '1' + '-' + CAST(DATEPART(YEAR, [CSR Creation Date]) AS VARCHAR(4)) AS [Date]
+,[Customer] AS [Individual Role]
+,COUNT(DISTINCT CASE WHEN [CSR Requestor Name] IN ('Aimeet Terrades', 'Kathy Scott', 'Laponda Flowers', 'Lillian Spell') THEN [CSR Number] ELSE NULL END) * 1.0 / COUNT(DISTINCT [CSR Number]) AS [Value]
+
+FROM BI_ARM_CMS_COMBINED
+
+WHERE 
+DATEPART(YEAR, [CSR Creation Date]) >= 2018
+AND [Company Region] = 'RNAM'
+AND [Accuracy Type] IS NOT NULL
+AND [CSR Status] IN ('Closed', 'Delivered', 'Rejected', 'Released to Supplier')
+AND [Order Type] LIKE '%Replacement%'
+AND [Reason Code] NOT LIKE '%Excess%'
+AND CASE WHEN ISNULL([CSR Number Description],'') LIKE '%FCO%' AND ISNULL([Reason Code],'') LIKE '%VENDOR%' THEN 'FCO'
+          WHEN [Order Type] = 'Non-Valuated' THEN 'Non-Valuated Claims'
+          WHEN (([Project Name] LIKE '%Sprint%' AND [Project Name] LIKE '%CLEAN%')
+                OR ([Project Name] LIKE '%SNV%' AND [Project Name] LIKE '%CLEAN%')
+                OR ([Project Name] LIKE '%TMO%' AND [Project Name] LIKE '%CLEAN%')
+                OR ([Project Name] LIKE '%TMO%' AND [Project Name] LIKE '%HYBRID%')
+                OR ([Project Name] LIKE '%FCO%')
+                OR ([CSR Number Description] LIKE '%CLEAN%')
+                ) THEN 'Special Projects'
+          ELSE 'Standard Claims' END = 'Standard Claims'
+
+GROUP BY
+DATEPART(YEAR, [CSR Creation Date])
+,DATEPART(MONTH, [CSR Creation Date])
+,[Customer]
+"
+
+MetricLineChart(MetricName, MetricYLabel, MetricQuery)
+```
+
+</div>
+<div class = "col-md-6">
+
+**Raw Data**
+
+```{python}
+MetricRawDataSheetName = "Claims_Input_Internally"
+MetricRawQuery = """
+-- Claims Input Internally
+
+SELECT DISTINCT
+'Claims/ODM' AS [Metric Group]
+,'% of Claims Input Internally' AS [Metric Name]
+,DATEPART(YEAR, [CSR Creation Date]) AS [Year]
+,DATEPART(MONTH, [CSR Creation Date]) AS [Month]
+,[CSR Number]
+,[CSR Creation Date]
+,[Customer]
+,[CSR Requestor Name]
+,CASE WHEN [CSR Requestor Name] IN ('Aimeet Terrades', 'Kathy Scott', 'Laponda Flowers', 'Lillian Spell') THEN [CSR Number] ELSE NULL END AS [Numerator]
+,[CSR Number] AS [Denominator]
+
+FROM BI_ARM_CMS_COMBINED
+
+WHERE 
+DATEPART(YEAR, [CSR Creation Date]) >= 2018
+AND [Company Region] = 'RNAM'
+AND [Accuracy Type] IS NOT NULL
+AND [CSR Status] IN ('Closed', 'Delivered', 'Rejected', 'Released to Supplier')
+AND [Order Type] LIKE '%Replacement%'
+AND [Reason Code] NOT LIKE '%Excess%'
+AND CASE WHEN ISNULL([CSR Number Description],'') LIKE '%FCO%' AND ISNULL([Reason Code],'') LIKE '%VENDOR%' THEN 'FCO'
+          WHEN [Order Type] = 'Non-Valuated' THEN 'Non-Valuated Claims'
+          WHEN (([Project Name] LIKE '%Sprint%' AND [Project Name] LIKE '%CLEAN%')
+                OR ([Project Name] LIKE '%SNV%' AND [Project Name] LIKE '%CLEAN%')
+                OR ([Project Name] LIKE '%TMO%' AND [Project Name] LIKE '%CLEAN%')
+                OR ([Project Name] LIKE '%TMO%' AND [Project Name] LIKE '%HYBRID%')
+                OR ([Project Name] LIKE '%FCO%')
+                OR ([CSR Number Description] LIKE '%CLEAN%')
+                ) THEN 'Special Projects'
+          ELSE 'Standard Claims' END = 'Standard Claims'
+"""
+
+writeRawData(MetricRawQuery, MetricRawDataSheetName)
+print('Raw Data written to ' + MetricRawDataSheetName + ' sheet.')
+```
+
+**Data Table**
+
+```{r, warning=FALSE, message=FALSE}
+MetricDataTable(MetricQuery)
+```
+
+</div>
+</div>
+
+## Stock On-Hand Availability
+
+<div class = "row">
+<div class = "col-md-6">
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Mattis aliquam faucibus purus in massa. Aliquet nec ullamcorper sit amet risus. Lectus urna duis convallis convallis tellus. Nibh mauris cursus mattis molestie a iaculis. Turpis egestas pretium aenean pharetra magna ac. Dis parturient montes nascetur ridiculus mus mauris. Eget sit amet tellus cras. Commodo odio aenean sed adipiscing diam donec adipiscing tristique risus. Viverra aliquet eget sit amet tellus.
+
+```{r, out.width="100%", warning=FALSE, message=FALSE}
+MetricName <- "Stock On-Hand Availability"
+MetricYLabel <- "In Business Hours"
+MetricQuery <- "
+-- Stock On-Hand Availability
+
+SELECT
+'Claims/ODM' AS [Metric Group]
+,'Stock O/H Availability' AS [Metric Name]
+,[Year]
+,[Month]
+,CAST([Month] AS VARCHAR(2)) + '-' + '1' + '-' + CAST([Year] AS VARCHAR(4)) AS [Date]
+,'All' AS [Individual Role]
+,AVG([Business Hours]) AS [Value]
+
+FROM (SELECT DISTINCT
+		DATEPART(YEAR, [SO Line Create Date]) AS [Year]
+		,DATEPART(MONTH, [SO Line Create Date]) AS [Month]
+		,[CSR Number]
+		,[Customer]
+		,([SO Line Create Date] + [SO Line Created On Time]) AS [Start Date]
+		,([Delivery Create Date] + [Delivery Created On Time]) AS [End Date]
+		,(BCAMDB.dbo.BusinessMinutes(([SO Line Create Date] + [SO Line Created On Time]),([Delivery Create Date] + [Delivery Created On Time])) * 1.0 / 60) AS [Business Hours]
+
+		FROM BI_ARM_CMS_COMBINED
+
+		WHERE DATEPART(YEAR, [SO Line Create Date]) >= 2018
+		AND ([SO Line Create Date] + [SO Line Created On Time]) IS NOT NULL
+		AND ([Delivery Create Date] + [Delivery Created On Time]) IS NOT NULL
+		AND [Company Region] = 'RNAM'
+		AND [Order Type] IN ('Replacement', 'Replacement Request')
+    AND CASE WHEN ISNULL([CSR Number Description],'') LIKE '%FCO%' AND ISNULL([Reason Code],'') LIKE '%VENDOR%' THEN 'FCO'
+              WHEN [Order Type] = 'Non-Valuated' THEN 'Non-Valuated Claims'
+              WHEN (([Project Name] LIKE '%Sprint%' AND [Project Name] LIKE '%CLEAN%')
+                    OR ([Project Name] LIKE '%SNV%' AND [Project Name] LIKE '%CLEAN%')
+                    OR ([Project Name] LIKE '%TMO%' AND [Project Name] LIKE '%CLEAN%')
+                    OR ([Project Name] LIKE '%TMO%' AND [Project Name] LIKE '%HYBRID%')
+                    OR ([Project Name] LIKE '%FCO%')
+                    OR ([CSR Number Description] LIKE '%CLEAN%')
+                    ) THEN 'Special Projects'
+              ELSE 'Standard Claims' END = 'Standard Claims'
+		) T
+
+GROUP BY
+[Year]
+,[Month]
+
+UNION
+
+SELECT
+'Claims/ODM' AS [Metric Group]
+,'Stock O/H Availability' AS [Metric Name]
+,[Year]
+,[Month]
+,CAST([Month] AS VARCHAR(2)) + '-' + '1' + '-' + CAST([Year] AS VARCHAR(4)) AS [Date]
+,[Customer] AS [Individual Role]
+,AVG([Business Hours]) AS [Value]
+
+FROM (SELECT DISTINCT
+		DATEPART(YEAR, [SO Line Create Date]) AS [Year]
+		,DATEPART(MONTH, [SO Line Create Date]) AS [Month]
+		,[CSR Number]
+		,[Customer]
+		,([SO Line Create Date] + [SO Line Created On Time]) AS [Start Date]
+		,([Delivery Create Date] + [Delivery Created On Time]) AS [End Date]
+		,(BCAMDB.dbo.BusinessMinutes(([SO Line Create Date] + [SO Line Created On Time]),([Delivery Create Date] + [Delivery Created On Time])) * 1.0 / 60) AS [Business Hours]
+
+		FROM BI_ARM_CMS_COMBINED
+
+		WHERE DATEPART(YEAR, [SO Line Create Date]) >= 2018
+		AND ([SO Line Create Date] + [SO Line Created On Time]) IS NOT NULL
+		AND ([Delivery Create Date] + [Delivery Created On Time]) IS NOT NULL
+		AND [Company Region] = 'RNAM'
+		AND [Order Type] IN ('Replacement', 'Replacement Request')
+    AND CASE WHEN ISNULL([CSR Number Description],'') LIKE '%FCO%' AND ISNULL([Reason Code],'') LIKE '%VENDOR%' THEN 'FCO'
+              WHEN [Order Type] = 'Non-Valuated' THEN 'Non-Valuated Claims'
+              WHEN (([Project Name] LIKE '%Sprint%' AND [Project Name] LIKE '%CLEAN%')
+                    OR ([Project Name] LIKE '%SNV%' AND [Project Name] LIKE '%CLEAN%')
+                    OR ([Project Name] LIKE '%TMO%' AND [Project Name] LIKE '%CLEAN%')
+                    OR ([Project Name] LIKE '%TMO%' AND [Project Name] LIKE '%HYBRID%')
+                    OR ([Project Name] LIKE '%FCO%')
+                    OR ([CSR Number Description] LIKE '%CLEAN%')
+                    ) THEN 'Special Projects'
+              ELSE 'Standard Claims' END = 'Standard Claims'
+		) T
+
+GROUP BY
+[Year]
+,[Month]
+,[Customer]
+"
+
+MetricLineChart(MetricName, MetricYLabel, MetricQuery)
+```
+
+</div>
+<div class = "col-md-6">
+
+**Raw Data**
+
+```{python}
+MetricRawDataSheetName = "Stock_On_Hand_Availability"
+MetricRawQuery = """
+-- Stock On Hand Availability
+
+SELECT DISTINCT
+'Claims/ODM' AS [Metric Group]
+,'Stock On Hand Availability' AS [Metric Name]
+,DATEPART(YEAR, [SO Line Create Date]) AS [Year]
+,DATEPART(MONTH, [SO Line Create Date]) AS [Month]
+,[CSR Number]
+,[Customer]
+,([SO Line Create Date] + [SO Line Created On Time]) AS [Start Date]
+,([Delivery Create Date] + [Delivery Created On Time]) AS [End Date]
+,(BCAMDB.dbo.BusinessMinutes(([SO Line Create Date] + [SO Line Created On Time]),([Delivery Create Date] + [Delivery Created On Time])) * 1.0 / 60) AS [Business Hours]
+
+FROM BI_ARM_CMS_COMBINED
+
+WHERE DATEPART(YEAR, [SO Line Create Date]) >= 2018
+AND ([SO Line Create Date] + [SO Line Created On Time]) IS NOT NULL
+AND ([Delivery Create Date] + [Delivery Created On Time]) IS NOT NULL
+AND [Company Region] = 'RNAM'
+AND [Order Type] IN ('Replacement', 'Replacement Request')
+AND CASE WHEN ISNULL([CSR Number Description],'') LIKE '%FCO%' AND ISNULL([Reason Code],'') LIKE '%VENDOR%' THEN 'FCO'
+          WHEN [Order Type] = 'Non-Valuated' THEN 'Non-Valuated Claims'
+          WHEN (([Project Name] LIKE '%Sprint%' AND [Project Name] LIKE '%CLEAN%')
+                OR ([Project Name] LIKE '%SNV%' AND [Project Name] LIKE '%CLEAN%')
+                OR ([Project Name] LIKE '%TMO%' AND [Project Name] LIKE '%CLEAN%')
+                OR ([Project Name] LIKE '%TMO%' AND [Project Name] LIKE '%HYBRID%')
+                OR ([Project Name] LIKE '%FCO%')
+                OR ([CSR Number Description] LIKE '%CLEAN%')
+                ) THEN 'Special Projects'
+          ELSE 'Standard Claims' END = 'Standard Claims'
+"""
+
+writeRawData(MetricRawQuery, MetricRawDataSheetName)
+print('Raw Data written to ' + MetricRawDataSheetName + ' sheet.')
+```
+
+**Data Table**
+
+```{r, warning=FALSE, message=FALSE}
+MetricDataTable(MetricQuery)
+```
+
+</div>
+</div>
+
+## Returns Aging Days
+
+<div class = "row">
+<div class = "col-md-6">
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Mattis aliquam faucibus purus in massa. Aliquet nec ullamcorper sit amet risus. Lectus urna duis convallis convallis tellus. Nibh mauris cursus mattis molestie a iaculis. Turpis egestas pretium aenean pharetra magna ac. Dis parturient montes nascetur ridiculus mus mauris. Eget sit amet tellus cras. Commodo odio aenean sed adipiscing diam donec adipiscing tristique risus. Viverra aliquet eget sit amet tellus.
+
+```{r, out.width="100%", warning=FALSE, message=FALSE}
+MetricName <- "Returns Aging Days"
+MetricYLabel <- "In Days"
+MetricQuery <- "
+-- Returns Aging Days
+
+SELECT
+'Claims/ODM' AS [Metric Group]
+,'Stock O/H Availability' AS [Metric Name]
+,[Year]
+,[Month]
+,CAST([Month] AS VARCHAR(2)) + '-' + '1' + '-' + CAST([Year] AS VARCHAR(4)) AS [Date]
+,'All' AS [Individual Role]
+,AVG([Returns Aging]) AS [Value]
+
+FROM (SELECT
+		DATEPART(YEAR, [SO Create Date]) AS [Year]
+		,DATEPART(MONTH, [SO Create Date]) AS [Month]
+		,CAST(DATEPART(MONTH, [SO Create Date]) AS VARCHAR(2)) + '-' + '1' + '-' + CAST(DATEPART(YEAR, [SO Create Date]) AS VARCHAR(4)) AS [Date]
+		,[SO Create Date]
+		,[GR Date]
+		,[Customer]
+		,DATEDIFF(DAY, [SO Create Date], [GR Date]) * 1.0 AS [Returns Aging]
+
+		FROM BI_RETURNS_E2E
+
+		WHERE
+		DATEPART(YEAR, [SO Create Date]) >= 2018
+		AND [Reason for Rej Text] IS NULL
+		AND [Sales Document Type] = 'ZRE2'
+		AND [GR Date] IS NOT NULL
+		AND [SO] LIKE '6%'
+		AND [SO Item] LIKE '%15') T
+
+GROUP BY
+[Year]
+,[Month]
+
+UNION
+
+SELECT
+'Claims/ODM' AS [Metric Group]
+,'Stock O/H Availability' AS [Metric Name]
+,[Year]
+,[Month]
+,CAST([Month] AS VARCHAR(2)) + '-' + '1' + '-' + CAST([Year] AS VARCHAR(4)) AS [Date]
+,[Customer] AS [Individual Role]
+,AVG([Returns Aging]) AS [Value]
+
+FROM (SELECT
+		DATEPART(YEAR, [SO Create Date]) AS [Year]
+		,DATEPART(MONTH, [SO Create Date]) AS [Month]
+		,CAST(DATEPART(MONTH, [SO Create Date]) AS VARCHAR(2)) + '-' + '1' + '-' + CAST(DATEPART(YEAR, [SO Create Date]) AS VARCHAR(4)) AS [Date]
+		,[SO Create Date]
+		,[GR Date]
+		,[Customer]
+		,DATEDIFF(DAY, [SO Create Date], [GR Date]) * 1.0 AS [Returns Aging]
+
+		FROM BI_RETURNS_E2E
+
+		WHERE
+		DATEPART(YEAR, [SO Create Date]) >= 2018
+		AND [Reason for Rej Text] IS NULL
+		AND [Sales Document Type] = 'ZRE2'
+		AND [GR Date] IS NOT NULL
+		AND [SO] LIKE '6%'
+		AND [SO Item] LIKE '%15') T
+
+GROUP BY
+[Year]
+,[Month]
+,[Customer]
+"
+
+MetricLineChart(MetricName, MetricYLabel, MetricQuery)
+```
+
+</div>
+<div class = "col-md-6">
+
+**Raw Data**
+
+```{python}
+MetricRawDataSheetName = "Returns_Aging_Days"
+MetricRawQuery = """
+-- Returns Aging Days
+
+SELECT
+'Claims/ODM' AS [Metric Group]
+,'Returns Aging Days' AS [Metric Name]
+,DATEPART(YEAR, [SO Create Date]) AS [Year]
+,DATEPART(MONTH, [SO Create Date]) AS [Month]
+,CAST(DATEPART(MONTH, [SO Create Date]) AS VARCHAR(2)) + '-' + '1' + '-' + CAST(DATEPART(YEAR, [SO Create Date]) AS VARCHAR(4)) AS [Date]
+,[SO Create Date]
+,[GR Date]
+,[Customer]
+,DATEDIFF(DAY, [SO Create Date], [GR Date]) * 1.0 AS [Returns Aging]
+,[SO]
+,[SO Item]
+
+FROM BI_RETURNS_E2E
+
+WHERE
+DATEPART(YEAR, [SO Create Date]) >= 2018
+AND [Reason for Rej Text] IS NULL
+AND [Sales Document Type] = 'ZRE2'
+AND [GR Date] IS NOT NULL
+AND [SO] LIKE '6%'
+AND [SO Item] LIKE '%15'
+"""
+
+writeRawData(MetricRawQuery, MetricRawDataSheetName)
+print('Raw Data written to ' + MetricRawDataSheetName + ' sheet.')
+```
+
+**Data Table**
+
+```{r, warning=FALSE, message=FALSE}
+MetricDataTable(MetricQuery)
+```
+
+</div>
+</div>
+
+# Delivery Managers
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Mattis aliquam faucibus purus in massa. Aliquet nec ullamcorper sit amet risus. Lectus urna duis convallis convallis tellus. Nibh mauris cursus mattis molestie a iaculis. Turpis egestas pretium aenean pharetra magna ac. Dis parturient montes nascetur ridiculus mus mauris. Eget sit amet tellus cras. Commodo odio aenean sed adipiscing diam donec adipiscing tristique risus. Viverra aliquet eget sit amet tellus.
+
+## Delivery Drop to Goods Issue Hours
+
+<div class = "row">
+<div class = "col-md-6">
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Mattis aliquam faucibus purus in massa. Aliquet nec ullamcorper sit amet risus. Lectus urna duis convallis convallis tellus. Nibh mauris cursus mattis molestie a iaculis. Turpis egestas pretium aenean pharetra magna ac. Dis parturient montes nascetur ridiculus mus mauris. Eget sit amet tellus cras. Commodo odio aenean sed adipiscing diam donec adipiscing tristique risus. Viverra aliquet eget sit amet tellus.
+
+```{r, out.width="100%", warning=FALSE, message=FALSE}
+MetricName <- "Delivery Drop to GI Hours"
+MetricYLabel <- "In Business Hours"
+MetricQuery <- "
+-- Delivery Drop to GI Hours
+
+SELECT
+'Claims/DM' AS [Metric Group]
+,'Delivery Drop to GI Hours' AS [Metric Name]
+,[Year]
+,[Month]
+,CAST([Month] AS VARCHAR(2)) + '-' + '1' + '-' + CAST([Year] AS VARCHAR(4)) AS [Date]
+,'All' AS [Individual Role]
+,AVG([Business Hours]) AS [Value]
+
+FROM(SELECT DISTINCT
+		DATEPART(YEAR, [Delivery Create Date]) AS [Year]
+		,DATEPART(MONTH, [Delivery Create Date]) AS [Month]
+		,[CSR Number]
+		,[Customer]
+		,([Delivery Create Date] + DATEADD(HOUR, -6, [Delivery Created On Time])) AS [Start Date]
+		,([Actual GI (Ship) date] + [Actual GI Time]) AS [End Date]
+		,(BCAMDB.dbo.BusinessMinutes(([Delivery Create Date] + DATEADD(HOUR, -6, [Delivery Created On Time])), ([Actual GI (Ship) date] + [Actual GI Time])) * 1.00 / 60) AS [Business Hours]
+
+		FROM BI_ARM_CMS_COMBINED
+
+		WHERE
+		DATEPART(YEAR, [Delivery Create Date]) >= 2018
+		AND ([Delivery Create Date] + [Delivery Created On Time]) IS NOT NULL
+		AND ([Actual GI (Ship) date] + [Actual GI Time]) IS NOT NULL
+		AND [Company Region] = 'RNAM'
+		AND ([CSR Item] % 2) = 0
+		AND [Route] <> '0003'
+		AND CASE WHEN ISNULL([CSR Number Description],'') LIKE '%FCO%' AND ISNULL([Reason Code],'') LIKE '%VENDOR%' THEN 'FCO'
+				  WHEN [Order Type] = 'Non-Valuated' THEN 'Non-Valuated Claims'
+				  WHEN (([Project Name] LIKE '%Sprint%' AND [Project Name] LIKE '%CLEAN%')
+						OR ([Project Name] LIKE '%SNV%' AND [Project Name] LIKE '%CLEAN%')
+						OR ([Project Name] LIKE '%TMO%' AND [Project Name] LIKE '%CLEAN%')
+						OR ([Project Name] LIKE '%TMO%' AND [Project Name] LIKE '%HYBRID%')
+						OR ([Project Name] LIKE '%FCO%')
+						OR ([CSR Number Description] LIKE '%CLEAN%')
+						) THEN 'Special Projects'
+				  ELSE 'Standard Claims' END = 'Standard Claims'
+         ) T
+         
+GROUP BY
+[Year]
+,[Month]
+
+UNION
+
+SELECT
+'Claims/DM' AS [Metric Group]
+,'Delivery Drop to GI Hours' AS [Metric Name]
+,[Year]
+,[Month]
+,CAST([Month] AS VARCHAR(2)) + '-' + '1' + '-' + CAST([Year] AS VARCHAR(4)) AS [Date]
+,[Customer] AS [Individual Role]
+,AVG([Business Hours]) AS [Value]
+
+FROM(SELECT DISTINCT
+		DATEPART(YEAR, [Delivery Create Date]) AS [Year]
+		,DATEPART(MONTH, [Delivery Create Date]) AS [Month]
+		,[CSR Number]
+		,[Customer]
+		,([Delivery Create Date] + DATEADD(HOUR, -6, [Delivery Created On Time])) AS [Start Date]
+		,([Actual GI (Ship) date] + [Actual GI Time]) AS [End Date]
+		,(BCAMDB.dbo.BusinessMinutes(([Delivery Create Date] + DATEADD(HOUR, -6, [Delivery Created On Time])), ([Actual GI (Ship) date] + [Actual GI Time])) * 1.00 / 60) AS [Business Hours]
+
+		FROM BI_ARM_CMS_COMBINED
+
+		WHERE
+		DATEPART(YEAR, [Delivery Create Date]) >= 2018
+		AND ([Delivery Create Date] + [Delivery Created On Time]) IS NOT NULL
+		AND ([Actual GI (Ship) date] + [Actual GI Time]) IS NOT NULL
+		AND [Company Region] = 'RNAM'
+		AND ([CSR Item] % 2) = 0
+		AND [Route] <> '0003'
+		AND CASE WHEN ISNULL([CSR Number Description],'') LIKE '%FCO%' AND ISNULL([Reason Code],'') LIKE '%VENDOR%' THEN 'FCO'
+				  WHEN [Order Type] = 'Non-Valuated' THEN 'Non-Valuated Claims'
+				  WHEN (([Project Name] LIKE '%Sprint%' AND [Project Name] LIKE '%CLEAN%')
+						OR ([Project Name] LIKE '%SNV%' AND [Project Name] LIKE '%CLEAN%')
+						OR ([Project Name] LIKE '%TMO%' AND [Project Name] LIKE '%CLEAN%')
+						OR ([Project Name] LIKE '%TMO%' AND [Project Name] LIKE '%HYBRID%')
+						OR ([Project Name] LIKE '%FCO%')
+						OR ([CSR Number Description] LIKE '%CLEAN%')
+						) THEN 'Special Projects'
+				  ELSE 'Standard Claims' END = 'Standard Claims'
+         ) T
+         
+GROUP BY
+[Year]
+,[Month]
+,[Customer]
+"
+
+MetricLineChart(MetricName, MetricYLabel, MetricQuery)
+```
+
+</div>
+<div class = "col-md-6">
+
+**Raw Data**
+
+```{python}
+MetricRawDataSheetName = "Delivery_Drop_to_GI_Hours"
+MetricRawQuery = """
+-- Delivery Drop to GI Hours
+
+SELECT DISTINCT
+'Claims/DM' AS [Metric Group]
+,'Delivery Drop to GI Hours' AS [Metric Name]
+,DATEPART(YEAR, [Delivery Create Date]) AS [Year]
+,DATEPART(MONTH, [Delivery Create Date]) AS [Month]
+,[CSR Number]
+,[Customer]
+,([Delivery Create Date] + DATEADD(HOUR, -6, [Delivery Created On Time])) AS [Start Date]
+,([Actual GI (Ship) date] + [Actual GI Time]) AS [End Date]
+,(BCAMDB.dbo.BusinessMinutes(([Delivery Create Date] + DATEADD(HOUR, -6, [Delivery Created On Time])), ([Actual GI (Ship) date] + [Actual GI Time])) * 1.00 / 60) AS [Business Hours]
+
+FROM BI_ARM_CMS_COMBINED
+
+WHERE
+DATEPART(YEAR, [Delivery Create Date]) >= 2018
+AND ([Delivery Create Date] + [Delivery Created On Time]) IS NOT NULL
+AND ([Actual GI (Ship) date] + [Actual GI Time]) IS NOT NULL
+AND [Company Region] = 'RNAM'
+AND ([CSR Item] % 2) = 0
+AND [Route] <> '0003'
+AND CASE WHEN ISNULL([CSR Number Description],'') LIKE '%FCO%' AND ISNULL([Reason Code],'') LIKE '%VENDOR%' THEN 'FCO'
+    		  WHEN [Order Type] = 'Non-Valuated' THEN 'Non-Valuated Claims'
+    		  WHEN (([Project Name] LIKE '%Sprint%' AND [Project Name] LIKE '%CLEAN%')
+    				OR ([Project Name] LIKE '%SNV%' AND [Project Name] LIKE '%CLEAN%')
+    				OR ([Project Name] LIKE '%TMO%' AND [Project Name] LIKE '%CLEAN%')
+    				OR ([Project Name] LIKE '%TMO%' AND [Project Name] LIKE '%HYBRID%')
+    				OR ([Project Name] LIKE '%FCO%')
+    				OR ([CSR Number Description] LIKE '%CLEAN%')
+    				) THEN 'Special Projects'
+    		  ELSE 'Standard Claims' END = 'Standard Claims'
+"""
+
+writeRawData(MetricRawQuery, MetricRawDataSheetName)
+print('Raw Data written to ' + MetricRawDataSheetName + ' sheet.')
+```
+
+**Data Table**
+
+```{r, warning=FALSE, message=FALSE}
+MetricDataTable(MetricQuery)
+```
+
+</div>
+</div>
+
+## Average Tech Pickup Days after TU Issued
+
+<div class = "row">
+<div class = "col-md-6">
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Mattis aliquam faucibus purus in massa. Aliquet nec ullamcorper sit amet risus. Lectus urna duis convallis convallis tellus. Nibh mauris cursus mattis molestie a iaculis. Turpis egestas pretium aenean pharetra magna ac. Dis parturient montes nascetur ridiculus mus mauris. Eget sit amet tellus cras. Commodo odio aenean sed adipiscing diam donec adipiscing tristique risus. Viverra aliquet eget sit amet tellus.
+
+```{r, out.width="100%", warning=FALSE, message=FALSE}
+MetricName <- "Average Tech Pickup Days"
+MetricYLabel <- "In Days"
+MetricQuery <- "
+-- Average Tech Pickup Days
+
+SELECT
+'Claims/DM' AS [Metric Group]
+,'Delivery Drop to GI Hours' AS [Metric Name]
+,[Year]
+,[Month]
+,CAST([Month] AS VARCHAR(2)) + '-' + '1' + '-' + CAST([Year] AS VARCHAR(4)) AS [Date]
+,'All' AS [Individual Role]
+,AVG([Tech Pickup Days]) AS [Value]
+
+FROM (SELECT DISTINCT
+		DATEPART(YEAR, [Shp Crtdon]) AS [Year]
+		,DATEPART(MONTH, [Shp Crtdon]) AS [Month]
+		,[CSR Number]
+		,[Customer]
+		,DATEDIFF(DAY, [Shp Crtdon], [Replacement Delivery Date]) * 1.0 AS [Tech Pickup Days]
+
+		FROM BI_ARM_CMS_COMBINED 
+
+		WHERE
+		DATEPART(YEAR, [CSR Creation Date]) >= 2018
+		AND [Company Region] = 'RNAM'
+		AND [Order Type] IN ('Non-Valuated', 'Replacement', 'Replacement Request')
+		AND [Route] = '0003'
+		AND CASE WHEN ISNULL([CSR Number Description],'') LIKE '%FCO%' AND ISNULL([Reason Code],'') LIKE '%VENDOR%' THEN 'FCO'
+				  WHEN [Order Type] = 'Non-Valuated' THEN 'Non-Valuated Claims'
+				  WHEN (([Project Name] LIKE '%Sprint%' AND [Project Name] LIKE '%CLEAN%')
+						OR ([Project Name] LIKE '%SNV%' AND [Project Name] LIKE '%CLEAN%')
+						OR ([Project Name] LIKE '%TMO%' AND [Project Name] LIKE '%CLEAN%')
+						OR ([Project Name] LIKE '%TMO%' AND [Project Name] LIKE '%HYBRID%')
+						OR ([Project Name] LIKE '%FCO%')
+						OR ([CSR Number Description] LIKE '%CLEAN%')
+						) THEN 'Special Projects'
+				  ELSE 'Standard Claims' END = 'Standard Claims'
+         )T
+         
+GROUP BY
+[Year]
+,[Month]
+
+UNION
+
+SELECT
+'Claims/DM' AS [Metric Group]
+,'Delivery Drop to GI Hours' AS [Metric Name]
+,[Year]
+,[Month]
+,CAST([Month] AS VARCHAR(2)) + '-' + '1' + '-' + CAST([Year] AS VARCHAR(4)) AS [Date]
+,[Customer] AS [Individual Role]
+,AVG([Tech Pickup Days]) AS [Value]
+
+FROM (SELECT DISTINCT
+		DATEPART(YEAR, [Shp Crtdon]) AS [Year]
+		,DATEPART(MONTH, [Shp Crtdon]) AS [Month]
+		,[CSR Number]
+		,[Customer]
+		,DATEDIFF(DAY, [Shp Crtdon], [Replacement Delivery Date]) * 1.0 AS [Tech Pickup Days]
+
+		FROM BI_ARM_CMS_COMBINED 
+
+		WHERE
+		DATEPART(YEAR, [CSR Creation Date]) >= 2018
+		AND [Company Region] = 'RNAM'
+		AND [Order Type] IN ('Non-Valuated', 'Replacement', 'Replacement Request')
+		AND [Route] = '0003'
+		AND CASE WHEN ISNULL([CSR Number Description],'') LIKE '%FCO%' AND ISNULL([Reason Code],'') LIKE '%VENDOR%' THEN 'FCO'
+				  WHEN [Order Type] = 'Non-Valuated' THEN 'Non-Valuated Claims'
+				  WHEN (([Project Name] LIKE '%Sprint%' AND [Project Name] LIKE '%CLEAN%')
+						OR ([Project Name] LIKE '%SNV%' AND [Project Name] LIKE '%CLEAN%')
+						OR ([Project Name] LIKE '%TMO%' AND [Project Name] LIKE '%CLEAN%')
+						OR ([Project Name] LIKE '%TMO%' AND [Project Name] LIKE '%HYBRID%')
+						OR ([Project Name] LIKE '%FCO%')
+						OR ([CSR Number Description] LIKE '%CLEAN%')
+						) THEN 'Special Projects'
+				  ELSE 'Standard Claims' END = 'Standard Claims'
+         )T
+         
+GROUP BY
+[Year]
+,[Month]
+,[Customer]
+"
+
+MetricLineChart(MetricName, MetricYLabel, MetricQuery)
+```
+
+</div>
+<div class = "col-md-6">
+
+**Raw Data**
+
+```{python}
+MetricRawDataSheetName = "Average_Tech_Pickup_Days"
+MetricRawQuery = """
+-- Average Tech Pickup Days
+
+SELECT DISTINCT
+'Claims/DM' AS [Metric Group]
+,'Delivery Drop to GI Hours' AS [Metric Name]
+,DATEPART(YEAR, [Shp Crtdon]) AS [Year]
+,DATEPART(MONTH, [Shp Crtdon]) AS [Month]
+,[CSR Number]
+,[Customer]
+,DATEDIFF(DAY, [Shp Crtdon], [Replacement Delivery Date]) * 1.0 AS [Tech Pickup Days]
+
+FROM BI_ARM_CMS_COMBINED 
+
+WHERE
+DATEPART(YEAR, [CSR Creation Date]) >= 2018
+AND [Company Region] = 'RNAM'
+AND [Order Type] IN ('Non-Valuated', 'Replacement', 'Replacement Request')
+AND [Route] = '0003'
+AND CASE WHEN ISNULL([CSR Number Description],'') LIKE '%FCO%' AND ISNULL([Reason Code],'') LIKE '%VENDOR%' THEN 'FCO'
+		  WHEN [Order Type] = 'Non-Valuated' THEN 'Non-Valuated Claims'
+		  WHEN (([Project Name] LIKE '%Sprint%' AND [Project Name] LIKE '%CLEAN%')
+				OR ([Project Name] LIKE '%SNV%' AND [Project Name] LIKE '%CLEAN%')
+				OR ([Project Name] LIKE '%TMO%' AND [Project Name] LIKE '%CLEAN%')
+				OR ([Project Name] LIKE '%TMO%' AND [Project Name] LIKE '%HYBRID%')
+				OR ([Project Name] LIKE '%FCO%')
+				OR ([CSR Number Description] LIKE '%CLEAN%')
+				) THEN 'Special Projects'
+		  ELSE 'Standard Claims' END = 'Standard Claims'
+"""
+
+writeRawData(MetricRawQuery, MetricRawDataSheetName)
+print('Raw Data written to ' + MetricRawDataSheetName + ' sheet.')
+```
+
+**Data Table**
+
+```{r, warning=FALSE, message=FALSE}
+MetricDataTable(MetricQuery)
+```
+
+</div>
+</div>
+
+## Air Transport Mode Frequency
+
+<div class = "row">
+<div class = "col-md-6">
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Mattis aliquam faucibus purus in massa. Aliquet nec ullamcorper sit amet risus. Lectus urna duis convallis convallis tellus. Nibh mauris cursus mattis molestie a iaculis. Turpis egestas pretium aenean pharetra magna ac. Dis parturient montes nascetur ridiculus mus mauris. Eget sit amet tellus cras. Commodo odio aenean sed adipiscing diam donec adipiscing tristique risus. Viverra aliquet eget sit amet tellus.
+
+```{r, out.width="100%", warning=FALSE, message=FALSE}
+MetricName <- "Air Transport Mode Frequency"
+MetricYLabel <- "In Percent"
+MetricQuery <- "
+-- Air Transport Mode Frequency
+
+SELECT
+'Claims/DM' AS [Metric Group]
+,'Air Transport Mode Frequency' AS [Metric Name]
+,DATEPART(YEAR, [Delivery Date]) AS [Year]
+,DATEPART(MONTH, [Delivery Date]) AS [Month]
+,CAST(DATEPART(MONTH, [Delivery Date]) AS VARCHAR(2)) + '-' + '1' + '-' + CAST(DATEPART(YEAR, [Delivery Date]) AS VARCHAR(4)) AS [Date]
+,'All' AS [Individual Role]
+,COUNT(DISTINCT CASE WHEN [Service Type] = 'AIR' THEN [TU] ELSE NULL END) * 1.0 / COUNT(DISTINCT [TU]) AS [Value]
+
+FROM BI_CRST_PWH_LINE_HAUL 
+
+WHERE
+DATEPART(YEAR, [Delivery Date]) >= 2018
+AND [Claims Type] = 'Replacement'
+
+GROUP BY
+DATEPART(YEAR, [Delivery Date])
+,DATEPART(MONTH, [Delivery Date])
+
+UNION
+
+SELECT
+'Claims/DM' AS [Metric Group]
+,'Air Transport Mode Frequency' AS [Metric Name]
+,DATEPART(YEAR, [Delivery Date]) AS [Year]
+,DATEPART(MONTH, [Delivery Date]) AS [Month]
+,CAST(DATEPART(MONTH, [Delivery Date]) AS VARCHAR(2)) + '-' + '1' + '-' + CAST(DATEPART(YEAR, [Delivery Date]) AS VARCHAR(4)) AS [Date]
+,[CU] AS [Individual Role]
+,COUNT(DISTINCT CASE WHEN [Service Type] = 'AIR' THEN [TU] ELSE NULL END) * 1.0 / COUNT(DISTINCT [TU]) AS [Value]
+
+FROM BI_CRST_PWH_LINE_HAUL 
+
+WHERE
+DATEPART(YEAR, [Delivery Date]) >= 2018
+AND [Claims Type] = 'Replacement'
+
+GROUP BY
+DATEPART(YEAR, [Delivery Date])
+,DATEPART(MONTH, [Delivery Date])
+,[CU]
+"
+
+MetricLineChart(MetricName, MetricYLabel, MetricQuery)
+```
+
+</div>
+<div class = "col-md-6">
+
+**Raw Data**
+
+```{python}
+MetricRawDataSheetName = "Air_Transport_Mode_Frequency"
+MetricRawQuery = """
+-- Air Transport Mode Frequency
+
+SELECT DISTINCT
+'Claims/DM' AS [Metric Group]
+,'Air Transport Mode Frequency' AS [Metric Name]
+,DATEPART(YEAR, [Delivery Date]) AS [Year]
+,DATEPART(MONTH, [Delivery Date]) AS [Month]
+,[Delivery Date]
+,[CU] AS [Customer]
+,[TU]
+,CASE WHEN [Service Type] = 'AIR' THEN [TU] ELSE NULL END AS [Numerator] 
+,[TU] AS [Denominator]
+
+FROM BI_CRST_PWH_LINE_HAUL 
+
+WHERE
+DATEPART(YEAR, [Delivery Date]) >= 2018
+AND [Claims Type] = 'Replacement'
+"""
+
+writeRawData(MetricRawQuery, MetricRawDataSheetName)
+print('Raw Data written to ' + MetricRawDataSheetName + ' sheet.')
+```
+
+**Data Table**
+
+```{r, warning=FALSE, message=FALSE}
+MetricDataTable(MetricQuery)
+```
+
+</div>
+</div>
+
+## Transport Cost per Delivery
+
+<div class = "row">
+<div class = "col-md-6">
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Mattis aliquam faucibus purus in massa. Aliquet nec ullamcorper sit amet risus. Lectus urna duis convallis convallis tellus. Nibh mauris cursus mattis molestie a iaculis. Turpis egestas pretium aenean pharetra magna ac. Dis parturient montes nascetur ridiculus mus mauris. Eget sit amet tellus cras. Commodo odio aenean sed adipiscing diam donec adipiscing tristique risus. Viverra aliquet eget sit amet tellus.
+
+```{r, out.width="100%", warning=FALSE, message=FALSE}
+MetricName <- "Transport Cost per Delivery"
+MetricYLabel <- "In Dollars"
+MetricQuery <- "
+-- Transport Cost per Delivery
+
+SELECT DISTINCT
+'Claims/DM' AS [Metric Group]
+,'Transport Cost Per Delivery' AS [Metric Name]
+,DATEPART(YEAR, [Delivery Date]) AS [Year]
+,DATEPART(MONTH, [Delivery Date]) AS [Month]
+,CAST(DATEPART(MONTH, [Delivery Date]) AS VARCHAR(2)) + '-' + '1' + '-' + CAST(DATEPART(YEAR, [Delivery Date]) AS VARCHAR(4)) AS [Date]
+,'All' AS [Individual Role]
+,SUM([TU Allocation Cost]) / COUNT(DISTINCT [TU]) AS [Value]
+
+FROM BI_CRST_PWH_LINE_HAUL 
+
+WHERE
+DATEPART(YEAR, [Delivery Date]) >= 2018
+AND [Claims Type] = 'Replacement'
+
+GROUP BY
+DATEPART(YEAR, [Delivery Date])
+,DATEPART(MONTH, [Delivery Date])
+
+UNION
+
+SELECT DISTINCT
+'Claims/DM' AS [Metric Group]
+,'Transport Cost Per Delivery' AS [Metric Name]
+,DATEPART(YEAR, [Delivery Date]) AS [Year]
+,DATEPART(MONTH, [Delivery Date]) AS [Month]
+,CAST(DATEPART(MONTH, [Delivery Date]) AS VARCHAR(2)) + '-' + '1' + '-' + CAST(DATEPART(YEAR, [Delivery Date]) AS VARCHAR(4)) AS [Date]
+,[CU] AS [Individual Role]
+,SUM([TU Allocation Cost]) / COUNT(DISTINCT [TU]) AS [Value]
+
+FROM BI_CRST_PWH_LINE_HAUL 
+
+WHERE
+DATEPART(YEAR, [Delivery Date]) >= 2018
+AND [Claims Type] = 'Replacement'
+
+GROUP BY
+DATEPART(YEAR, [Delivery Date])
+,DATEPART(MONTH, [Delivery Date])
+,[CU]
+"
+
+MetricLineChart(MetricName, MetricYLabel, MetricQuery)
+```
+
+</div>
+<div class = "col-md-6">
+
+**Raw Data**
+
+```{python}
+MetricRawDataSheetName = "Transport_Cost_Per_Delivery"
+MetricRawQuery = """
+-- Transport Cost per Delivery
+
+SELECT DISTINCT
+'Claims/DM' AS [Metric Group]
+,'Transport Cost Per Delivery' AS [Metric Name]
+,DATEPART(YEAR, [Delivery Date]) AS [Year]
+,DATEPART(MONTH, [Delivery Date]) AS [Month]
+,[Delivery Date]
+,[CU] AS [Customer]
+,[TU]
+,[TU Allocation Cost]
+,[TU Allocation Cost] AS [Numerator] 
+,[TU] AS [Denominator]
+
+FROM BI_CRST_PWH_LINE_HAUL 
+
+WHERE
+DATEPART(YEAR, [Delivery Date]) >= 2018
+AND [Claims Type] = 'Replacement'
+"""
+
+writeRawData(MetricRawQuery, MetricRawDataSheetName)
+print('Raw Data written to ' + MetricRawDataSheetName + ' sheet.')
+```
+
+**Data Table**
+
+```{r, warning=FALSE, message=FALSE}
+MetricDataTable(MetricQuery)
+```
+
+</div>
+</div>
+
+## SAP Goods Issue to POD Interval
+
+<div class = "row">
+<div class = "col-md-6">
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Natoque penatibus et magnis dis parturient montes nascetur ridiculus. Mattis aliquam faucibus purus in massa. Aliquet nec ullamcorper sit amet risus. Lectus urna duis convallis convallis tellus. Nibh mauris cursus mattis molestie a iaculis. Turpis egestas pretium aenean pharetra magna ac. Dis parturient montes nascetur ridiculus mus mauris. Eget sit amet tellus cras. Commodo odio aenean sed adipiscing diam donec adipiscing tristique risus. Viverra aliquet eget sit amet tellus.
+
+```{r, out.width="100%", warning=FALSE, message=FALSE}
+MetricName <- "SAP Goods Issue to POD Interval"
+MetricYLabel <- "In "
+MetricQuery <- "
+-- SAP Goods Issue to POD Interval
+
+SELECT
+'Claims/DM' AS [Metric Group]
+,'SAP Goods Issue to POD Interval' AS [Metric Name]
+,[Year]
+,[Month]
+,CAST([Month] AS VARCHAR(2)) + '-' + '1' + '-' + CAST([Year] AS VARCHAR(4)) AS [Date]
+,'All' AS [Individual Role]
+,AVG([SAP GI to POD Interval]) AS [Value]
+
+FROM ( SELECT DISTINCT
+		DATEPART(YEAR, [CSR Creation Date]) AS [Year]
+		,DATEPART(MONTH, [CSR Creation Date]) AS [Month]		
+		,[CSR Number]
+		,[Customer]
+		,[CSR Creation Date]
+		,DATEDIFF(DAY, [Actual GI (Ship) date], [Replacement Delivery Date]) * 1.0 AS [SAP GI to POD Interval]
+
+		FROM BI_ARM_CMS_COMBINED
+
+		WHERE
+		DATEPART(YEAR, [CSR Creation Date]) >= 2018
+		AND [Company Region] = 'RNAM'								
+		AND [Order Type] IN ('Non-Valuated','Replacement','Replacement Request')
+		AND CASE WHEN ISNULL([CSR Number Description],'') LIKE '%FCO%' AND ISNULL([Reason Code],'') LIKE '%VENDOR%' THEN 'FCO'
+				  WHEN [Order Type] = 'Non-Valuated' THEN 'Non-Valuated Claims'
+				  WHEN (([Project Name] LIKE '%Sprint%' AND [Project Name] LIKE '%CLEAN%')
+						OR ([Project Name] LIKE '%SNV%' AND [Project Name] LIKE '%CLEAN%')
+						OR ([Project Name] LIKE '%TMO%' AND [Project Name] LIKE '%CLEAN%')
+						OR ([Project Name] LIKE '%TMO%' AND [Project Name] LIKE '%HYBRID%')
+						OR ([Project Name] LIKE '%FCO%')
+						OR ([CSR Number Description] LIKE '%CLEAN%')
+						) THEN 'Special Projects'
+				  ELSE 'Standard Claims' END = 'Standard Claims'
+          )T
+          
+GROUP BY
+[Year]
+,[Month]
+
+UNION
+
+SELECT
+'Claims/DM' AS [Metric Group]
+,'SAP Goods Issue to POD Interval' AS [Metric Name]
+,[Year]
+,[Month]
+,CAST([Month] AS VARCHAR(2)) + '-' + '1' + '-' + CAST([Year] AS VARCHAR(4)) AS [Date]
+,[Customer] AS [Individual Role]
+,AVG([SAP GI to POD Interval]) AS [Value]
+
+FROM ( SELECT DISTINCT
+		DATEPART(YEAR, [CSR Creation Date]) AS [Year]
+		,DATEPART(MONTH, [CSR Creation Date]) AS [Month]		
+		,[CSR Number]
+		,[Customer]
+		,[CSR Creation Date]
+		,DATEDIFF(DAY, [Actual GI (Ship) date], [Replacement Delivery Date]) * 1.0 AS [SAP GI to POD Interval]
+
+		FROM BI_ARM_CMS_COMBINED
+
+		WHERE
+		DATEPART(YEAR, [CSR Creation Date]) >= 2018
+		AND [Company Region] = 'RNAM'								
+		AND [Order Type] IN ('Non-Valuated','Replacement','Replacement Request')
+		AND CASE WHEN ISNULL([CSR Number Description],'') LIKE '%FCO%' AND ISNULL([Reason Code],'') LIKE '%VENDOR%' THEN 'FCO'
+				  WHEN [Order Type] = 'Non-Valuated' THEN 'Non-Valuated Claims'
+				  WHEN (([Project Name] LIKE '%Sprint%' AND [Project Name] LIKE '%CLEAN%')
+						OR ([Project Name] LIKE '%SNV%' AND [Project Name] LIKE '%CLEAN%')
+						OR ([Project Name] LIKE '%TMO%' AND [Project Name] LIKE '%CLEAN%')
+						OR ([Project Name] LIKE '%TMO%' AND [Project Name] LIKE '%HYBRID%')
+						OR ([Project Name] LIKE '%FCO%')
+						OR ([CSR Number Description] LIKE '%CLEAN%')
+						) THEN 'Special Projects'
+				  ELSE 'Standard Claims' END = 'Standard Claims'
+          )T
+          
+GROUP BY
+[Year]
+,[Month]
+,[Customer]
+"
+
+MetricLineChart(MetricName, MetricYLabel, MetricQuery)
+```
+
+</div>
+<div class = "col-md-6">
+
+**Raw Data**
+
+```{python}
+MetricRawDataSheetName = "SAP_Goods_Issue_to_POD_Interval"
+MetricRawQuery = """
+-- SAP Goods Issue to POD Interval
+
+SELECT DISTINCT
+'Claims/DM' AS [Metric Group]
+,'SAP Goods Issue to POD Interval' AS [Metric Name]
+,DATEPART(YEAR, [CSR Creation Date]) AS [Year]
+,DATEPART(MONTH, [CSR Creation Date]) AS [Month]
+,[CSR Number]
+,[Customer]
+,[CSR Creation Date]
+,DATEDIFF(DAY, [Actual GI (Ship) date], [Replacement Delivery Date]) AS [SAP GI to POD Interval]
+
+FROM BI_ARM_CMS_COMBINED
+
+WHERE
+DATEPART(YEAR, [CSR Creation Date]) >= 2018
+AND [Company Region] = 'RNAM'								
+AND [Order Type] IN ('Non-Valuated','Replacement','Replacement Request')
+AND CASE WHEN ISNULL([CSR Number Description],'') LIKE '%FCO%' AND ISNULL([Reason Code],'') LIKE '%VENDOR%' THEN 'FCO'
+          WHEN [Order Type] = 'Non-Valuated' THEN 'Non-Valuated Claims'
+          WHEN (([Project Name] LIKE '%Sprint%' AND [Project Name] LIKE '%CLEAN%')
+                OR ([Project Name] LIKE '%SNV%' AND [Project Name] LIKE '%CLEAN%')
+                OR ([Project Name] LIKE '%TMO%' AND [Project Name] LIKE '%CLEAN%')
+                OR ([Project Name] LIKE '%TMO%' AND [Project Name] LIKE '%HYBRID%')
+                OR ([Project Name] LIKE '%FCO%')
+                OR ([CSR Number Description] LIKE '%CLEAN%')
+                ) THEN 'Special Projects'
+          ELSE 'Standard Claims' END = 'Standard Claims'
+"""
+
+writeRawData(MetricRawQuery, MetricRawDataSheetName)
+print('Raw Data written to ' + MetricRawDataSheetName + ' sheet.')
+```
+
+**Data Table**
+
+```{r, warning=FALSE, message=FALSE}
+MetricDataTable(MetricQuery)
+```
+
+</div>
+</div>
