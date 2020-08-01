@@ -374,7 +374,7 @@ export default {
   name: "Frame",
   head() {
     return {
-      title: "WQMT"
+      title: "CRUD",
     };
   },
   data() {
@@ -400,7 +400,7 @@ export default {
         delivery: "",
         issue_category: "",
         issue: "",
-        detail: ""
+        detail: "",
       },
 
       issueList: {
@@ -410,28 +410,28 @@ export default {
           { value: "Printed on Double Sided Paper" },
           { value: "Serial Number Missing" },
           { value: "Serial Number Incorrect" },
-          { value: "Other (Enter Detail)" }
+          { value: "Other (Enter Detail)" },
         ],
         Placard: [
           { value: "Incorrect Data" },
           { value: "Missing" },
-          { value: "Other (Enter Detail)" }
+          { value: "Other (Enter Detail)" },
         ],
         Damage: [
           { value: "Damaged Packaging" },
           { value: "Improperly Packaged" },
-          { value: "Other (Enter Detail)" }
+          { value: "Other (Enter Detail)" },
         ],
-        "Other (Enter Detail)": [{ value: "" }]
+        "Other (Enter Detail)": [{ value: "" }],
       },
       issueDetails: [],
       selectedIssueCategory: "",
-      selectedissueDetail: ""
+      selectedissueDetail: "",
     };
   },
   async asyncData({ $axios, params }) {
     try {
-      let items = await $axios.$get("/wqmt/");
+      let items = await $axios.$get("/crud/");
       return { items };
     } catch (e) {
       return { items: [] };
@@ -451,14 +451,14 @@ export default {
           duration: 2000,
           message: "Table refreshed",
           type: "is-light",
-          actionText: "Ok"
+          actionText: "Ok",
         });
       } catch (e) {
         this.$snackbar.open({
           duration: 2000,
           message: "Table not refreshed",
           type: "is-danger",
-          actionText: "Ok"
+          actionText: "Ok",
         });
       }
     },
@@ -469,7 +469,7 @@ export default {
     // API methods
     async getData() {
       try {
-        let items = await this.$axios.$get("/wqmt/");
+        let items = await this.$axios.$get("/crud/");
 
         this.items = items;
       } catch (e) {
@@ -477,25 +477,25 @@ export default {
       }
     },
     async fetchItem(params) {
-      const item = await this.$axios.$get(`/wqmt/${params}`);
+      const item = await this.$axios.$get(`/crud/${params}`);
       this.item = item;
     },
     async postItem() {
       const config = {
-        headers: { "content-type": "multipart/form-data" }
+        headers: { "content-type": "multipart/form-data" },
       };
       var issueFormData = new FormData();
       for (let data in this.item) {
         issueFormData.append(data, this.item[data]);
       }
       try {
-        let response = await this.$axios.$post("/wqmt/", issueFormData, config);
+        let response = await this.$axios.$post("/crud/", issueFormData, config);
         this.getData();
         this.$snackbar.open({
           duration: 3000,
           message: `Added Issue for Delivery ${this.item.delivery}`,
           type: "is-light",
-          actionText: "Ok"
+          actionText: "Ok",
         });
         this.clearModal();
       } catch (e) {
@@ -506,7 +506,7 @@ export default {
       let editedItem = this.item;
       console.log(editedItem.pk);
       const config = {
-        headers: { "content-type": "multipart/form-data" }
+        headers: { "content-type": "multipart/form-data" },
       };
       let itemFormData = new FormData();
       for (let data in editedItem) {
@@ -514,7 +514,7 @@ export default {
       }
       try {
         let response = await this.$axios.$put(
-          `/wqmt/${editedItem.pk}/`,
+          `/crud/${editedItem.pk}/`,
           itemFormData,
           config
         );
@@ -524,7 +524,7 @@ export default {
           duration: 3000,
           message: `Updated Issue for Delivery ${editedItem.delivery}`,
           type: "is-light",
-          actionText: "Ok"
+          actionText: "Ok",
         });
       } catch (e) {
         console.log(e);
@@ -533,21 +533,21 @@ export default {
     async deleteItem() {
       let deletedItem = this.item;
       try {
-        let response = await this.$axios.$delete(`/wqmt/${deletedItem.pk}/`);
+        let response = await this.$axios.$delete(`/crud/${deletedItem.pk}/`);
         this.$snackbar.open({
           duration: 3000,
           message: `Deleted Issue for Delivery ${deletedItem.delivery}`,
           type: "is-light",
-          actionText: "Ok"
+          actionText: "Ok",
         });
         this.getData();
       } catch (e) {
         console.log(e);
       }
-    }
+    },
   },
   computed: {
-    isDisabled: function() {
+    isDisabled: function () {
       if (
         this.item.issue_category.length == 0 ||
         this.item.issue_category == "Other (Enter Detail)"
@@ -556,8 +556,8 @@ export default {
       } else {
         return false;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

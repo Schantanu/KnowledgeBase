@@ -32,7 +32,7 @@ INSTALLED_APPS = [
     'django.contrib.admin', 'django.contrib.auth',
     'django.contrib.contenttypes', 'django.contrib.sessions',
     'django.contrib.messages', 'django.contrib.staticfiles', 'rest_framework',
-    'corsheaders', 'apps.appcards', 'apps.wqmt', 'apps.navcards'
+    'corsheaders', 'apps.appcards', 'apps.crud', 'apps.navcards'
 ]
 
 MIDDLEWARE = [
@@ -77,20 +77,6 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'sql_server.pyodbc',
-#         'NAME': 'TRAINING',
-#         'USER': '',
-#         'PASSWORD': '',
-#         'HOST': 'EUSAAMW0656\\REPORTINGDB',
-#         'OPTIONS': {
-#             'driver': 'ODBC Driver 17 for SQL Server',
-#             'isolation_level': 'READ UNCOMMITTED',  # prevent SELECT deadlocks
-#         },
-#     }
-# }
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
